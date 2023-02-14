@@ -1,0 +1,8 @@
+#!/usr/bin/env sh
+. "$(dirname -- "$0")/_/husky.sh"
+
+yarn lint-staged --no-stash
+
+# 여기는 lint-staged 설정입니다.
+# git add .을 하면 staged 상태가 되는데,
+# 이때 staged 상태인 파일들만 lint-staged가 실행됩니다.
