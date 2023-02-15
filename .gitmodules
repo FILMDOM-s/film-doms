@@ -1,0 +1,4 @@
+[submodule "film-doms-env"]
+	path = film-doms-env
+	url = https://github.com/FILMDOM-s/film-doms-env.git
+	branch = develop
