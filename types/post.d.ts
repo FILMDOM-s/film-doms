@@ -1,4 +1,4 @@
-export type PostListItemType = {
+type PostListItemType = {
   id: string
   title: string
   author: string
@@ -6,4 +6,3 @@ export type PostListItemType = {
   createdAt: string
   updatedAt: string
 }
-//
