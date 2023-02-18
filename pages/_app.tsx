@@ -11,6 +11,7 @@ import { Toaster } from 'react-hot-toast'
 import Header from '@/components/Header'
 import Footer from '@/components/Footer'
 import { startWorker } from '@/mocks'
+import GlobalStyles from '@/styles/GlobalStyles'
 
 export default function App({
   Component,
@@ -45,6 +46,7 @@ export default function App({
   return (
     <SessionProvider session={session}>
       <QueryClientProvider client={queryClient}>
+        <GlobalStyles />
         <Header></Header>
         <Script src="https://nsp.pay.naver.com/sdk/js/naverpay.min.js"></Script>
         {/* <!-- Google tag (gtag.js) --> */}
