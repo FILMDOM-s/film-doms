@@ -4,8 +4,8 @@ const queryKeys = {
   reviews: ['reviews'],
   review: (id: Review['id']) => ['review', id],
 
-  communities: ['communities'],
-  community: (id: Community['id']) => ['community', id],
+  recents: ['recents'],
+  recent: (id: Recent['id']) => ['recent', id],
 
   comments: ['comments'],
   comment: (id: Comment['id']) => ['comment', id],
