@@ -1,18 +1,18 @@
 import { rest } from 'msw'
 
-export const getReviews = rest.get('/api/review', (req, res, ctx) => {
+export const getRecents = rest.get('/api/recent', (req, res, ctx) => {
   return res(
     ctx.status(200),
     ctx.json([
       {
         id: 1,
-        title: '영화리뷰해보자',
-        category: '공포',
+        title: '영화잡담해보자',
+        category: '영화잡담',
         comment: ['1'],
       },
       {
         id: 2,
-        title: '영화리뷰를 합시다~~',
+        title: '나눔교환을 해봅시다',
         category: '나눔교환',
         comment: [],
       },
@@ -25,7 +25,7 @@ export const getReviews = rest.get('/api/review', (req, res, ctx) => {
       },
       {
         id: 4,
-        title: '아바타 보고 후기 남깁니다.',
+        title: '아바타 새로나왔어요',
         category:
           '카테고리의 길이 테스트 용도입니다.카테고리의 길이 테스트 용도입니다.카테고리의 길이 테스트 용도입니다.카테고리의 길이 테스트 용도입니다.카테고리의 길이 테스트 용도입니다.카테고리의 길이 테스트 용도입니다.카테고리의 길이 테스트 용도입니다.카테고리의 길이 테스트 용도입니다.카테고리의 길이 테스트 용도입니다.카테고리의 길이 테스트 용도입니다.카테고리의 길이 테스트 용도입니다.',
         comment: ['1', '2', '3'],

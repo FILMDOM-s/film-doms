@@ -1,4 +1,4 @@
-interface Community {
+interface Recent {
   id: number
   title: string
   category: string

@@ -1,4 +1,4 @@
-import * as community from './community'
+import * as community from './recent'
 import * as review from './review'
 import * as banner from './banner'
 import * as critic from './critic'
