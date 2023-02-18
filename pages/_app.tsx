@@ -10,6 +10,7 @@ import Script from 'next/script'
 import { Toaster } from 'react-hot-toast'
 import Header from '@/components/Header'
 import Footer from '@/components/Footer'
+import { startWorker } from '@/mocks'
 
 export default function App({
   Component,
@@ -18,6 +19,8 @@ export default function App({
   session: Session
 }>) {
   const router = useRouter()
+
+  startWorker()
 
   useEffect(() => {
     const handleRouteChange = (url: URL) => {

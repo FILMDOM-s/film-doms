@@ -1,4 +1,3 @@
-import { BasicNoticeType } from '@/types/notices'
 import styled from '@emotion/styled'
 
 export default function BasicNotice({
@@ -6,7 +5,7 @@ export default function BasicNotice({
   title,
   color,
 }: {
-  notices: BasicNoticeType[]
+  notices: Notice[]
   title: string
   color?: string
 }) {
@@ -17,8 +16,8 @@ export default function BasicNotice({
       </Header>
       {notices?.map((notice, index) => {
         return (
-          <div key={notice.id} className="flex py-2 bg-white border px-2">
-            <div className="px-2">{notice.date}</div>
+          <div key={notice.id} className="flex px-2 py-2 bg-white border">
+            <div className="px-2">{notice.startAt}</div>
             <div>{notice.title}</div>
           </div>
         )

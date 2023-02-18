@@ -41,6 +41,7 @@
     "autoprefixer": "^10.4.13",
     "husky": "^8.0.3",
     "lint-staged": "^13.1.2",
+    "msw": "^1.0.1",
     "postcss": "^8.4.21",
     "prettier": "^2.8.4"
   },
@@ -50,5 +51,8 @@
       "prettier --write",
       "git add"
     ]
+  },
+  "msw": {
+    "workerDirectory": "public"
   }
 }
