@@ -1,10 +1,6 @@
-import { useFetchNotices } from '@/services/notice'
 import Head from 'next/head'
 
 export default function Home() {
-  const { data } = useFetchNotices()
-  console.log(data)
-
   return (
     <>
       <Head>
