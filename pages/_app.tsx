@@ -2,7 +2,7 @@ import '@/styles/globals.css'
 import { Session } from 'next-auth'
 import type { AppProps } from 'next/app'
 import { useRouter } from 'next/router'
-import { useEffect } from 'react'
+import { useEffect, useState } from 'react'
 import * as gtag from 'lib/gtag'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import { SessionProvider } from 'next-auth/react'
@@ -20,8 +20,7 @@ export default function App({
   session: Session
 }>) {
   const router = useRouter()
-
-  startWorker()
+  const [isActiveServiceWorker, setIsActiveServiceWorker] = useState(false)
 
   useEffect(() => {
     const handleRouteChange = (url: URL) => {
@@ -42,6 +41,16 @@ export default function App({
       },
     },
   })
+
+  useEffect(() => {
+    startWorker().then(() => {
+      setIsActiveServiceWorker(true)
+    })
+  }, [])
+
+  if (!isActiveServiceWorker) {
+    return <div>서비스워커가 활성화 되기 전입니다.</div>
+  }
 
   return (
     <SessionProvider session={session}>

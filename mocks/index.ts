@@ -2,14 +2,14 @@ import { isServer } from '@tanstack/react-query'
 
 export const startWorker = () => {
   if (isServer) {
-    ;(async () => {
+    return (async () => {
       const { default: server } = await import('./server')
-      server.listen()
+      return server.listen()
     })()
   } else {
-    ;(async () => {
+    return (async () => {
       const { default: worker } = await import('./browser')
-      worker.start()
+      return worker.start()
     })()
   }
 }
