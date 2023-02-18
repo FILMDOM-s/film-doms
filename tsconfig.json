@@ -17,7 +17,8 @@
     "baseUrl": ".",
     "paths": {
       "@/*": ["./*"],
-      "@components/*": ["components/*"]
+      "@components/*": ["components/*"],
+      "@views/*": ["components/views/*"]
     },
     "types": [
       "@emotion/react/types/css-prop",
