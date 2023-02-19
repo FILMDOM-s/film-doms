@@ -1,6 +1,7 @@
 import { ResetErrorBoundary, Section } from '@/components/common'
 import { flexCenter } from '@/styles/emotion'
 import { css } from '@emotion/react'
+import { useRouter } from 'next/router'
 import { Suspense, useState } from 'react'
 import MovieReviewContainer from './MovieReview'
 import RecentContainer from './Recent'
@@ -17,6 +18,7 @@ const getViewsByTap = (tap: Tap) => {
 }
 
 const CommunityContainer = () => {
+  const { push } = useRouter()
   const [tap, setTap] = useState<Tap>('recent')
 
   return (
@@ -74,6 +76,26 @@ const CommunityContainer = () => {
               {getViewsByTap(tap)}
             </Suspense>
           </ResetErrorBoundary>
+          <button
+            css={css`
+              width: 100%;
+              max-width: 375px;
+              height: 44px;
+              background-color: #f5f5f5;
+            `}
+            onClick={() => push(`/community/${tap}`)}
+          >
+            <span
+              css={css`
+                font-size: 14px;
+                font-weight: 500;
+                line-height: 20px;
+                letter-spacing: 1%;
+              `}
+            >
+              전체보기
+            </span>
+          </button>
         </div>
       </Section.Body>
     </Section>
