@@ -2,8 +2,10 @@ import { Badge } from '@/components/common'
 import { flexCenter } from '@/styles/emotion'
 import cutString from '@/utils'
 import { css } from '@emotion/react'
+import { useRouter } from 'next/router'
 
-const Recent = ({ category, title, comment }: Recent) => {
+const Recent = ({ id, category, title, comment }: Recent) => {
+  const { push } = useRouter()
   const cutTitle = cutString(title, 15)
   const cutCategory = cutString(category, 6)
 
@@ -14,6 +16,7 @@ const Recent = ({ category, title, comment }: Recent) => {
         display: flex;
         gap: 0.5rem;
       `}
+      onClick={() => push(`/community/recent/${id}`)}
     >
       <Badge>{cutCategory}</Badge>
       <div
