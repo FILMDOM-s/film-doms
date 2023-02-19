@@ -1,4 +1,4 @@
-import { useFetchRecents } from '@/services/Recent'
+import { useFetchRecents } from '@/services/recent'
 import { flexGap } from '@/styles/emotion'
 import { css } from '@emotion/react'
 import Recent from './Recent'
