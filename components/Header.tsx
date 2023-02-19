@@ -20,13 +20,13 @@ export default function Header() {
   useEffect(() => setMounted(true), [])
 
   return (
-    <header className="bg-white dark:bg-zinc-800 fixed top-0 left-0 right-0 z-50 py-2 border-b border-zinc-300 dark:border-white">
+    <header className="sticky top-0 left-0 right-0 z-50 py-2 bg-white border-b dark:bg-zinc-800 border-zinc-300 dark:border-white">
       <div
-        className="m-auto flex h-12 items-center w-full"
+        className="flex items-center w-full h-12 m-auto"
         style={{ maxWidth: '1080px' }}
       >
         <div
-          className="cursor-pointer font-bold text-lg xs:text-2xl flex flex-col justify-center items-center ml-4"
+          className="flex flex-col items-center justify-center ml-4 text-lg font-bold cursor-pointer xs:text-2xl"
           onClick={() => {
             router.push('/')
           }}
@@ -39,7 +39,7 @@ export default function Header() {
         </div>
         <span className="m-auto"></span>
         <div
-          className="cursor-pointer mr-2 text-xs xs:text-sm flex justify-center items-center px-2 py-1 text-black rounded-md hover:text-zinc-600 transition duration-200 ease-in-out"
+          className="flex items-center justify-center px-2 py-1 mr-2 text-xs text-black transition duration-200 ease-in-out rounded-md cursor-pointer xs:text-sm hover:text-zinc-600"
           onClick={() => {
             router.push('/temp')
           }}
@@ -47,10 +47,10 @@ export default function Header() {
           임시 메뉴
         </div>
         {session ? (
-          <div className="mr-4 flex justify-center items-center relative">
+          <div className="relative flex items-center justify-center mr-4">
             <Image
               onClick={clickProfile}
-              className="rounded-full cursor-pointer mx-2"
+              className="mx-2 rounded-full cursor-pointer"
               alt=""
               src={session.user?.image!}
               width={30}
@@ -60,7 +60,7 @@ export default function Header() {
           </div>
         ) : (
           <div
-            className="cursor-pointer text-xs xs:text-sm flex justify-center items-center px-2 hover:bg-zinc-50 transition duration-200 ease-in-out h-full"
+            className="flex items-center justify-center h-full px-2 text-xs transition duration-200 ease-in-out cursor-pointer xs:text-sm hover:bg-zinc-50"
             onClick={() => {
               signIn()
             }}
@@ -85,7 +85,7 @@ const ProfileMenu = () => {
     >
       {menus.map((menu) => (
         <Link href={menu.link} className="text-zinc-700" key={menu.title}>
-          <li className="hover:bg-zinc-100 transition duration-200 ease-in-out px-4 py-2 w-full text-center text-sm text-darkGray">
+          <li className="w-full px-4 py-2 text-sm text-center transition duration-200 ease-in-out hover:bg-zinc-100 text-darkGray">
             {menu.title}
           </li>
         </Link>
