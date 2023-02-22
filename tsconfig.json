@@ -18,7 +18,9 @@
     "paths": {
       "@/*": ["./*"],
       "@components/*": ["components/*"],
-      "@views/*": ["components/views/*"]
+      "@views/*": ["components/views/*"],
+      "@images/*": ["assets/images/*"],
+      "@svgs/*": ["assets/svgs/*"]
     },
     "types": [
       "@emotion/react/types/css-prop",
