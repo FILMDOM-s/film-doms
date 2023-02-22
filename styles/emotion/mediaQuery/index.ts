@@ -7,6 +7,10 @@ const breakpoints = {
   pc: 1440,
 }
 
+const addSemicolon = (str: string) => {
+  return str.endsWith(';') ? str : `${str};`
+}
+
 const isSerializedStyles = (value: unknown): value is SerializedStyles => {
   return (
     !!value &&
@@ -22,7 +26,7 @@ const createMediaQuery =
   (size: number) =>
   (strings: TemplateStringsArray, ...values: unknown[]) => {
     const serializedValues = values.map((value) =>
-      isSerializedStyles(value) ? value.styles : value
+      isSerializedStyles(value) ? addSemicolon(value.styles) : value
     )
 
     return css`
