@@ -24,18 +24,18 @@ const SectionBody = css`
   padding: 0 20px;
   display: flex;
   justify-content: center;
-  margin-top: 24px;
+  margin: 24px 0 36px 0;
 
   @media screen and (min-width: 768px) {
     padding: 0 40px;
-    margin-top: 32px;
+    margin: 32px 0 72px 0;
   }
   @media screen and (min-width: 1040px) {
     padding: 0 60px;
-    margin-top: 44px;
+    margin: 44px 0 80px 0;
   }
   @media screen and (min-width: 1440px) {
     padding: 0 60px;
-    margin-top: 56px;
+    margin: 56px 0 150px 0;
   }
 `
