@@ -6,6 +6,7 @@ import { useRouter } from 'next/router'
 import { useEffect, useState } from 'react'
 import { signIn } from 'next-auth/react'
 import { useTheme } from 'next-themes'
+import SideNav from './SideNav'
 
 export default function Header() {
   const { data: session, status } = useSession()
@@ -25,27 +26,18 @@ export default function Header() {
         className="flex items-center w-full h-12 m-auto"
         style={{ maxWidth: '1080px' }}
       >
-        <div
-          className="flex flex-col items-center justify-center ml-4 text-lg font-bold cursor-pointer xs:text-2xl"
-          onClick={() => {
-            router.push('/')
-          }}
-        >
-          {mounted && (theme === 'dark' || resolvedTheme === 'dark') ? (
-            <Image alt="" src={filmdoms} width={60} height={60}></Image>
-          ) : (
-            <Image alt="" src={filmdoms} width={60} height={60}></Image>
-          )}
-        </div>
+        <SideNav></SideNav>
         <span className="m-auto"></span>
-        <div
+        <div className='title'>FILMDOM's</div>
+        <span className="m-auto"></span>
+        {/* <div
           className="flex items-center justify-center px-2 py-1 mr-2 text-xs text-black transition duration-200 ease-in-out rounded-md cursor-pointer xs:text-sm hover:text-zinc-600"
           onClick={() => {
             router.push('/temp')
           }}
         >
           임시 메뉴
-        </div>
+        </div> */}
         {session ? (
           <div className="relative flex items-center justify-center mr-4">
             <Image
@@ -65,7 +57,7 @@ export default function Header() {
               signIn()
             }}
           >
-            로그인 / 회원가입
+            로그인
           </div>
         )}
       </div>
