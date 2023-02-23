@@ -10,7 +10,7 @@ interface Props extends Omit<React.ComponentProps<'div'>, 'children'> {
         isActive: boolean
       }) => React.ReactNode)
     | React.ReactNode
-  value: string | number
+  value: TabContextType['selected']
 }
 
 const TabView = ({ children, value, ...rest }: Props) => {
