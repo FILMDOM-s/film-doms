@@ -29,7 +29,7 @@ const CommunityContainer = () => {
                 <Fragment key={`Tab-${tab}`}>
                   <Tab css={TabBox} value={tab}>
                     {({ isActive }) => (
-                      <button css={TapButton(isActive)}>
+                      <button css={TabButton(isActive)}>
                         {tab[0].toUpperCase() + tab.slice(1)}
                       </button>
                     )}
@@ -101,7 +101,7 @@ const Text = styled.span`
   `}
 `
 
-const TapButton = (isActive: boolean) => css`
+const TabButton = (isActive: boolean) => css`
   width: 60%;
   height: 100%;
   font-weight: 400;
