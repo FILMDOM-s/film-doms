@@ -16,21 +16,61 @@ export const MainSwiper = () => {
       spaceBetween={20}
       slidesPerView={'auto'}
       centeredSlides={true}
-      navigation
       autoplay={{ delay: 3000 }}
       //   disableOnInteraction:false}}
       pagination={{ clickable: true }}
       className="my-swiper"
       loop={true}
-      height={800}
+      height={276}
     >
-      <SwiperSlide className="my-swiper-slide">
+      <SwiperSlide>
+        <div className="relative bg-black w-full h-full flex flex-col justify-center items-center">
+          <Image
+            src={'/assets/film-dummy.jpg'}
+            alt="film-doms"
+            width={375}
+            height={276}
+          ></Image>
+          <div className='absolute text-white text-2xl'>FilmDom's</div>
+        </div>
+      </SwiperSlide>
+      <SwiperSlide>
         <div className="bg-black w-full h-full flex flex-col justify-center items-center">
           <Image
-            src={'/assets/film-doms.png'}
+            src={'/assets/film-dummy.jpg'}
             alt="film-doms"
-            width={1000}
-            height={418}
+            width={375}
+            height={276}
+          ></Image>
+        </div>
+      </SwiperSlide>
+      <SwiperSlide>
+        <div className="bg-black w-full h-full flex flex-col justify-center items-center">
+          <Image
+            src={'/assets/film-dummy.jpg'}
+            alt="film-doms"
+            width={375}
+            height={276}
+          ></Image>
+        </div>
+      </SwiperSlide>
+      <SwiperSlide>
+        <div className="bg-black w-full h-full flex flex-col justify-center items-center">
+          <Image
+            src={'/assets/film-dummy.jpg'}
+            alt="film-doms"
+            width={375}
+            height={276}
+          ></Image>
+        </div>
+      </SwiperSlide>
+      <SwiperSlide>
+        <div className="bg-black w-full h-full flex flex-col justify-center items-center">
+          <Image
+            src={'/assets/film-dummy.jpg'}
+            alt="film-doms"
+            width={375}
+            height={276}
           ></Image>
         </div>
       </SwiperSlide>
