@@ -1,4 +1,4 @@
-import CommunityContainer from './Community/CommunityContainer'
+import CommunityContainer from './Community'
 import CriticConatiner from './Critic/CriticConatiner'
 
 const HomeContainer = () => {
