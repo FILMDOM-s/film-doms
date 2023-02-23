@@ -22,7 +22,11 @@ export default Critics
 
 const CriticsList = css`
   display: grid;
-  grid-template-columns: repeat(1, 335px);
+  justify-content: center;
+  width: 100%;
+  grid-template-columns: repeat(1, minmax(335px, 1fr));
+  grid-template-columns: repeat(1, 1fr);
+
   grid-template-rows: repeat(4, 132px);
   row-gap: 24px;
   .critic:nth-of-type(n + 5) {
@@ -30,7 +34,9 @@ const CriticsList = css`
   }
 
   @media screen and (min-width: 768px) {
-    grid-template-columns: repeat(2, 335px);
+    grid-template-columns: repeat(2, minmax(335px, 1fr));
+    grid-template-columns: repeat(2, 1fr);
+
     grid-template-rows: repeat(3, 132px);
     column-gap: 16px;
 
@@ -43,7 +49,9 @@ const CriticsList = css`
   }
 
   @media screen and (min-width: 1024px) {
-    grid-template-columns: repeat(3, 295px);
+    grid-template-columns: repeat(3, minmax(295px, 1fr));
+    grid-template-columns: repeat(3, 1fr);
+
     grid-template-rows: repeat(2, 320px);
     column-gap: 30px;
     row-gap: 48px;
@@ -55,5 +63,9 @@ const CriticsList = css`
     column-gap: 36px;
     row-gap: 72px;
     padding: 0 60px;
+  }
+
+  a {
+    width: 100%;
   }
 `

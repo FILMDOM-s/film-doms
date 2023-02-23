@@ -91,6 +91,7 @@ const CriticBox = css`
   align-items: flex-start;
   border-bottom: 1px solid #eeeeee;
   height: 100%;
+  width: 100%;
   @media screen and (min-width: 1024px) {
     flex-direction: column-reverse;
     border: none;
@@ -98,15 +99,17 @@ const CriticBox = css`
 `
 
 const ImageContainer = css`
-  width: 104px;
-  height: 104px;
+  min-width: 104px;
+  min-height: 104px;
   position: relative;
   object-fit: cover;
   margin-left: 13px;
   @media screen and (min-width: 1024px) {
     margin: 0 0 20px 0;
-    width: 295px;
-    height: 166px;
+    min-width: 295px;
+    width: 100%;
+    height: 100%;
+    min-height: 166px;
   }
   @media screen and (min-width: 1440px) {
     margin-bottom: 22px;
