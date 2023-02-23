@@ -96,7 +96,6 @@ const LinkText = styled.p`
   font-weight: 400;
   font-size: 12px;
   line-height: 18px;
-  letter-spacing: 1%;
   color: #999999;
 
   ${mediaQuery.tablet`
@@ -109,7 +108,6 @@ const CopyRight = styled.p`
   font-weight: 300;
   font-size: 12px;
   line-height: 18px;
-  letter-spacing: 1%;
   color: #666666;
 
   ${mediaQuery.tablet`
