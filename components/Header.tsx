@@ -21,7 +21,7 @@ export default function Header() {
   useEffect(() => setMounted(true), [])
 
   return (
-    <header className="sticky top-0 left-0 right-0 z-50 py-2 bg-white border-b dark:bg-zinc-800 border-zinc-300 dark:border-white">
+    <header className="sticky top-0 left-0 right-0 z-50 py-2 bg-white dark:border-white">
       <div
         className="flex items-center w-full h-12 m-auto"
         style={{ maxWidth: '1080px' }}
