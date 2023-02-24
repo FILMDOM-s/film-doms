@@ -61,7 +61,6 @@ export default function App({
         <GlobalStyles />
         <AppLayout>
           <Header></Header>
-          <Script src="https://nsp.pay.naver.com/sdk/js/naverpay.min.js"></Script>
           {/* <!-- Google tag (gtag.js) --> */}
           <Script
             strategy="afterInteractive"
