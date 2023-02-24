@@ -1,3 +1,4 @@
+import { mediaQuery } from '@/styles/emotion'
 import { css } from '@emotion/react'
 import Image from 'next/image'
 import React from 'react'
@@ -44,17 +45,18 @@ const Tag = css`
   font-weight: 700;
   color: #222222;
   margin-bottom: 8px;
-  @media screen and (min-width: 1024px) {
+  ${mediaQuery.laptop`{
     font-size: 16px;
     width: 42px;
     margin-bottom: 14px;
-  }
-  @media screen and (min-width: 1440px) {
+  `}
+
+  ${mediaQuery.pc`{
     font-size: 18px;
     line-height: 27px;
     margin-bottom: 16px;
     width: 47px;
-  }
+  `}
 `
 
 const Title = css`
@@ -70,19 +72,19 @@ const Title = css`
   display: -webkit-box;
   -webkit-box-orient: vertical;
   -webkit-line-clamp: 2;
-  @media screen and (min-width: 1024px) {
+  ${mediaQuery.laptop`{
     width: 295px;
     font-size: 18px;
     line-height: 24px;
     margin-bottom: 18px;
-  }
+  `}
 
-  @media screen and (min-width: 1440px) {
+  ${mediaQuery.pc`{
     width: 411px;
     font-size: 22px;
     line-height: 33px;
     margin-bottom: 21px;
-  }
+  `}
 `
 
 const CriticBox = css`
@@ -92,10 +94,10 @@ const CriticBox = css`
   border-bottom: 1px solid #eeeeee;
   height: 100%;
   width: 100%;
-  @media screen and (min-width: 1024px) {
+  ${mediaQuery.laptop`{
     flex-direction: column-reverse;
     border: none;
-  }
+  `}
 `
 
 const ImageContainer = css`
@@ -104,30 +106,30 @@ const ImageContainer = css`
   position: relative;
   object-fit: cover;
   margin-left: 13px;
-  @media screen and (min-width: 1024px) {
+  ${mediaQuery.laptop`{
     margin: 0 0 20px 0;
     min-width: 295px;
     width: 100%;
     height: 100%;
     min-height: 166px;
-  }
-  @media screen and (min-width: 1440px) {
+  `}
+  ${mediaQuery.pc`{
     margin-bottom: 22px;
     width: 416px;
     height: 234px;
-  }
+  `}
 `
 const Time = css`
   font-size: 14px;
   line-height: 20px;
   font-weight: 400;
 
-  @media screen and (min-width: 1024px) {
+  ${mediaQuery.laptop`{
     font-size: 16px;
-  }
+  `}
 
-  @media screen and (min-width: 1440px) {
+  ${mediaQuery.pc`{
     font-size: 18px;
     line-height: 27px;
-  }
+  `}
 `

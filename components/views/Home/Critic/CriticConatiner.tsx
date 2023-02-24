@@ -1,4 +1,5 @@
 import { ResetErrorBoundary, Section } from '@/components/common'
+import { mediaQuery } from '@/styles/emotion'
 import { css } from '@emotion/react'
 import React, { Suspense } from 'react'
 import Critics from './Critics'
@@ -26,16 +27,16 @@ const SectionBody = css`
   justify-content: center;
   margin: 24px 0 36px 0;
 
-  @media screen and (min-width: 768px) {
+  ${mediaQuery.tablet`{
     padding: 0 40px;
     margin: 32px 0 72px 0;
-  }
-  @media screen and (min-width: 1040px) {
+  `}
+  ${mediaQuery.laptop`{
     padding: 0 60px;
     margin: 44px 0 80px 0;
-  }
-  @media screen and (min-width: 1440px) {
+  `}
+  ${mediaQuery.pc`{
     padding: 0 60px;
     margin: 56px 0 150px 0;
-  }
+  `}
 `

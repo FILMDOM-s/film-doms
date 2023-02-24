@@ -1,4 +1,5 @@
 import { useFetchCritics } from '@/services/critic'
+import { mediaQuery } from '@/styles/emotion'
 import { css } from '@emotion/react'
 import Link from 'next/link'
 import React from 'react'
@@ -33,7 +34,7 @@ const CriticsList = css`
     display: none;
   }
 
-  @media screen and (min-width: 768px) {
+  ${mediaQuery.tablet`{
     grid-template-columns: repeat(2, minmax(335px, 1fr));
     grid-template-columns: repeat(2, 1fr);
 
@@ -46,24 +47,24 @@ const CriticsList = css`
     .critic:nth-of-type(n + 7) {
       display: none;
     }
-  }
+  `}
 
-  @media screen and (min-width: 1024px) {
+  ${mediaQuery.laptop`{
     grid-template-columns: repeat(3, minmax(295px, 1fr));
     grid-template-columns: repeat(3, 1fr);
 
     grid-template-rows: repeat(2, 320px);
     column-gap: 30px;
     row-gap: 48px;
-  }
+  `}
 
-  @media screen and (min-width: 1440px) {
+  ${mediaQuery.pc`{
     grid-template-columns: repeat(3, 416px);
     grid-template-rows: repeat(2, 427px);
     column-gap: 36px;
     row-gap: 72px;
     padding: 0 60px;
-  }
+  `}
 
   a {
     width: 100%;
