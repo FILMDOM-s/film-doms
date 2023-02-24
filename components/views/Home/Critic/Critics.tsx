@@ -1,15 +1,15 @@
-import { useFetchCritcis } from '@/services/critic'
+import { useFetchCritics } from '@/services/critic'
 import { css } from '@emotion/react'
 import Link from 'next/link'
 import React from 'react'
 import Critic from './Critic'
 
 const Critics = () => {
-  const { data: critics } = useFetchCritcis()
+  const { data: critics } = useFetchCritics()
 
   return (
     <div css={CriticsList}>
-      {critics.map((critic) => (
+      {critics.map(critic => (
         <Link key={critic.id} className="critic" href={`critic/${critic.id}`}>
           <Critic {...critic} />
         </Link>
