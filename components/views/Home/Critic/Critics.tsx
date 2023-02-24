@@ -11,7 +11,7 @@ const Critics = () => {
   return (
     <div css={CriticsList}>
       {critics.map(critic => (
-        <Link key={critic.id} className="critic" href={`critic/${critic.id}`}>
+        <Link key={critic.id} className="critic" href={`/critic/${critic.id}`}>
           <Critic {...critic} />
         </Link>
       ))}
