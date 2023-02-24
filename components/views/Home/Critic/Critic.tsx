@@ -63,7 +63,7 @@ const Title = css`
   white-space: wrap;
   overflow: hidden;
   text-overflow: ellipsis;
-  width: 219px;
+  width: 100%;
   font-weight: 400;
   font-size: 16px;
   line-height: 24px;
@@ -73,7 +73,6 @@ const Title = css`
   -webkit-box-orient: vertical;
   -webkit-line-clamp: 2;
   ${mediaQuery.laptop`{
-    width: 295px;
     font-size: 18px;
     line-height: 24px;
     margin-bottom: 18px;
