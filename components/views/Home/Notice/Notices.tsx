@@ -9,8 +9,8 @@ const Notices = () => {
   const { data: notices } = useFetchNotices()
   return (
     <div css={NoticeAlign}>
-      {notices?.map((notice: Notice) => (
-        <Link className='flex items-center justify-center' key={notice.id} href={`notice/${notice.id}`}>
+      {notices.map((notice: Notice) => (
+        <Link className='flex items-center justify-center' key={notice.id} href={`/notice/${notice.id}`}>
           <Notice {...notice} />
         </Link>
       ))}

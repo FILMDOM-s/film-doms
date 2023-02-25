@@ -8,6 +8,7 @@ import 'swiper/css/autoplay'
 import Image from 'next/image'
 import { css } from '@emotion/react'
 import { mediaQuery } from '@/styles/emotion'
+import styled from '@emotion/styled'
 
 function SliderWrapper({
   type,
@@ -28,7 +29,8 @@ function SliderWrapper({
     >
       {banners?.map(({ id, title, image }: Banner) => (
         <SwiperSlide key={id}>
-          <Image width={1323} height={973} src={image} alt={title}></Image>
+          <Image src={image} alt={title} fill />
+          <TextArea>{"[한국독립영화] '철원기행' 결국 산다는 대답"}</TextArea>
         </SwiperSlide>
       ))}
     </Swiper>
@@ -40,7 +42,8 @@ export default SliderWrapper
 const SliderMasterCss = css`
   min-width: 375px;
   height: 276px;
-  margin-bottom:48px;
+  margin-bottom: 48px;
+  padding-bottom: 48px;
 
   ${mediaQuery.tablet`
   height: 512px;
@@ -58,5 +61,48 @@ const SliderMasterCss = css`
     height: 979px;
     max-width: 1323px;
     margin-bottom:72px;
+  `}
+`
+
+const TextArea = styled.div`
+  position: absolute;
+  color: white;
+  width: 245px;
+  transform: translate(-50%, -50%);
+  bottom: 24px;
+  left: 50%;
+  text-align: center;
+  font-family: Pretendard;
+  font-size: 22px;
+  font-weight: 700;
+  line-height: 33px;
+
+  ${mediaQuery.tablet`
+  font-family: Pretendard;
+font-size: 28px;
+font-weight: 700;
+line-height: 42px;
+  font-size: 24px;
+  width: 472px;
+  bottom: 36px;
+  `}
+
+  ${mediaQuery.laptop`
+  font-family: Pretendard;
+  font-size: 36px;
+  font-weight: 700;
+  line-height: 54px;
+  font-size: 24px;
+  width: 700px;
+  bottom: 42px;
+  `}
+
+  ${mediaQuery.pc`
+  font-family: Pretendard;
+  font-size: 44px;
+  font-weight: 700;
+  line-height: 66px;
+  width: 1092px;
+  bottom: 64px;
   `}
 `

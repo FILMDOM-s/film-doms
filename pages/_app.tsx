@@ -60,7 +60,6 @@ export default function App({
       <QueryClientProvider client={queryClient}>
         <GlobalStyles />
         <AppLayout>
-          <Header></Header>
           {/* <!-- Google tag (gtag.js) --> */}
           <Script
             strategy="afterInteractive"

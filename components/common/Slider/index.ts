@@ -1,8 +1,5 @@
-import SliderWrapper from "./SliderWrapper";
-import Slide from "./Slide";
+import SliderWrapper from './SliderWrapper'
 
-const Slider =  Object.assign(SliderWrapper, {
-    Slide: Slide
-});
+const Slider = Object.assign(SliderWrapper, {})
 
-export default Slider;
+export default Slider
