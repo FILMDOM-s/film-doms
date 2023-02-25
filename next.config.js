@@ -12,6 +12,7 @@ const nextConfig = {
       'ssl.pstatic.net',
       'k.kakaocdn.net',
       'lh3.googleusercontent.com',
+      'picsum.photos',
     ],
   },
   eslint: {
