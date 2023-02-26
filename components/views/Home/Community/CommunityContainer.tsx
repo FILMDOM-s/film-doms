@@ -170,12 +170,16 @@ const TabGroup = css`
 
 const SectionBody = css`
   ${flexCenter}
-  padding: 0 20px;
   width: 100%;
-  max-width: 1094px;
+  max-width: 1320px;
+  padding: 0 20px;
 
   ${mediaQuery.tablet`
     padding: 0 40px;
+  `}
+
+  ${mediaQuery.pc`
+    padding: 0;
   `}
 `
 
