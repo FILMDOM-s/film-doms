@@ -1,4 +1,3 @@
-import { Fragment } from 'react'
 import CommunityContainer from './Community'
 import BannerContainer from './Banner'
 import NoticeContainer from './Notice'

@@ -1,7 +1,6 @@
-import SideNav from '@/components/SideNav'
 import { mediaQuery } from '@/styles/emotion'
 import styled from '@emotion/styled'
-import { logoEng, logoKor } from '@images/common'
+import { logoEngBk } from '@images/common'
 import {
   IconBrandInstagram,
   IconUser,
@@ -10,28 +9,12 @@ import {
 } from '@tabler/icons-react'
 import Image from 'next/image'
 import { flexCenter } from '@/styles/emotion'
-import { useEffect, useState } from 'react'
+import useResizeWindow from '@/hooks/useResizeWindow'
 
 const Header = () => {
-  const [windowWidth, setWindowWidth] = useState(0)
-  // resize 될때만 함수 불러오기
-  let timer: string | number | NodeJS.Timeout
-  const resizeWindow = () => {
-    clearTimeout(timer)
-    timer = setTimeout(() => {
-      // 현재 window width 값
-      setWindowWidth(window.innerWidth)
-    }, 300)
-  }
-  const [toggle, setToggle] = useState(false)
-  const responseFontSize = windowWidth <= 768 ? '16px' : '24px';
-  useEffect(() => {
-    setWindowWidth(window.innerWidth)
-    window.addEventListener('resize', resizeWindow)
-    return () => {
-      window.removeEventListener('resize', resizeWindow)
-    }
-  }, [windowWidth])
+  const windowWidth = useResizeWindow()
+  const responseFontSize = windowWidth <= 768 ? '28px' : '32px';
+  
   return (
     <HeaderContainer>
       <HeaderInner>
@@ -39,7 +22,7 @@ const Header = () => {
           <IconMenu2 stroke={2} size={responseFontSize} />
         </NavWrapper>
         <ImageWrapper>
-          <Image src={logoEng} alt="filmdoms-logo-eng" />
+          <Image src={logoEngBk} alt="filmdoms-logo-eng" />
         </ImageWrapper>
         <RightSide>
           <RightSideWrapper>
@@ -60,7 +43,6 @@ const Header = () => {
 export default Header
 
 const HeaderContainer = styled.header`
-  background-color: gray;
   height: 80px;
   ${mediaQuery.pc`
     height:150px
@@ -70,11 +52,27 @@ const HeaderContainer = styled.header`
 
 const HeaderInner = styled.div`
   width: 100%;
-  max-width: 1323px;
   display: flex;
   justify-content: center;
   items-center: center;
   position: relative;
+  max-width: 375px;
+  margin:0px 30px;
+
+  ${mediaQuery.tablet`
+    max-width: 688px;
+    margin:0px 40px;
+  `}
+
+  ${mediaQuery.laptop`
+    max-width:1019px;
+    margin:0px 40px;
+  `}
+
+  ${mediaQuery.pc`
+    max-width: 1323px;
+    margin:0px 58px;
+  `}
 `
 
 const ImageWrapper = styled.div`
