@@ -1,3 +1,5 @@
+const dotenv = require('dotenv')
+
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   reactStrictMode: true,
@@ -26,5 +28,9 @@ const nextConfig = {
     return config
   },
 }
+
+dotenv.config({
+  path: './film-doms-env/.env.local',
+})
 
 module.exports = nextConfig
