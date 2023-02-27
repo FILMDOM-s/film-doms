@@ -7,37 +7,36 @@ import 'swiper/css/scrollbar'
 import 'swiper/css/autoplay'
 import Image from 'next/image'
 import { css } from '@emotion/react'
-import { mediaQuery } from '@/styles/emotion'
+import { flexCenter, mediaQuery } from '@/styles/emotion'
 import styled from '@emotion/styled'
 
-function SliderWrapper({
-  type,
-  banners,
-  ...props
-}: {
-  type: string
-  banners?: Banner[]
-}) {
+function SliderWrapper({ banners }: { banners?: Banner[] }) {
   return (
-    <Swiper
-      id="carousel"
-      slidesPerView={1}
-      loop={true}
-      modules={[Navigation, Pagination, A11y, Autoplay]}
-      css={SliderMasterCss}
-      pagination={{ clickable: true }}
-    >
-      {banners?.map(({ id, title, image }: Banner) => (
-        <SwiperSlide key={id}>
-          <Image src={image} alt={title} fill />
-          <TextArea>{"[한국독립영화] '철원기행' 결국 산다는 대답"}</TextArea>
-        </SwiperSlide>
-      ))}
-    </Swiper>
+    <SliderOutsideAlign>
+      <Swiper
+        id="carousel"
+        slidesPerView={1}
+        loop={true}
+        modules={[Navigation, Pagination, A11y, Autoplay]}
+        css={SliderMasterCss}
+        pagination={{ clickable: true }}
+      >
+        {banners?.map(({ id, title, image }: Banner) => (
+          <SwiperSlide key={id}>
+            <Image src={image} alt={title} fill />
+            <TextArea>{title}</TextArea>
+          </SwiperSlide>
+        ))}
+      </Swiper>
+    </SliderOutsideAlign>
   )
 }
 
 export default SliderWrapper
+
+const SliderOutsideAlign = styled.div`
+  ${flexCenter}
+`
 
 const SliderMasterCss = css`
   min-width: 375px;
@@ -46,21 +45,24 @@ const SliderMasterCss = css`
   padding-bottom: 48px;
 
   ${mediaQuery.tablet`
-  height: 512px;
-  min-width: 688px;
-  margin-bottom:56px;
+    height: 512px;
+    max-width: 688px;
+    margin-bottom:56px;
+    margin: 0px 40px;
   `}
 
   ${mediaQuery.laptop`
     height: 758px;
-    min-width:1019px
+    max-width:1019px;
     margin-bottom:65px;
+    margin: 0px 40px;
   `}
 
   ${mediaQuery.pc`
     height: 979px;
     max-width: 1323px;
     margin-bottom:72px;
+    margin: 0px 58px;
   `}
 `
 
