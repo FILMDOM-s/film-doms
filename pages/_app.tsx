@@ -3,18 +3,16 @@ import '@/styles/carousel.css'
 import '@/styles/side-nav.css'
 import { Session } from 'next-auth'
 import type { AppProps } from 'next/app'
-import { useRouter } from 'next/router'
-import { useEffect, useState } from 'react'
-import * as gtag from 'lib/gtag'
+import { useCallback } from 'react'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import { SessionProvider } from 'next-auth/react'
-import Script from 'next/script'
 import { Toaster } from 'react-hot-toast'
+import * as gtag from 'lib/gtag'
 import Header from '@/components/Header'
-import Footer from '@/components/Footer'
-import { startWorker } from '@/mocks'
 import GlobalStyles from '@/styles/GlobalStyles'
-import { AppLayout } from '@/components/views/Layout'
+import { AppLayout } from '@views/Layout'
+import { AppScript, useStartWorker } from '@views/_App'
+import { useRouterChange } from '@/hooks'
 
 export default function App({
   Component,
@@ -22,20 +20,6 @@ export default function App({
 }: AppProps<{
   session: Session
 }>) {
-  const router = useRouter()
-  const [isActiveServiceWorker, setIsActiveServiceWorker] = useState(false)
-
-  useEffect(() => {
-    const handleRouteChange = (url: URL) => {
-      gtag.pageview(url)
-    }
-    router.events.on('routeChangeComplete', handleRouteChange)
-    router.events.on('hashChangeComplete', handleRouteChange)
-    return () => {
-      router.events.off('routeChangeComplete', handleRouteChange)
-      router.events.off('hashChangeComplete', handleRouteChange)
-    }
-  }, [router.events])
   const queryClient = new QueryClient({
     defaultOptions: {
       queries: {
@@ -45,11 +29,13 @@ export default function App({
     },
   })
 
-  useEffect(() => {
-    startWorker().then(() => {
-      setIsActiveServiceWorker(true)
-    })
+  const handleRouteChange = useCallback((url: URL) => {
+    gtag.pageview(url)
   }, [])
+
+  useRouterChange(handleRouteChange)
+
+  const { isActiveServiceWorker } = useStartWorker()
 
   if (!isActiveServiceWorker) {
     return <div>서비스워커가 활성화 되기 전입니다.</div>
@@ -59,30 +45,11 @@ export default function App({
     <SessionProvider session={session}>
       <QueryClientProvider client={queryClient}>
         <GlobalStyles />
+        <AppScript />
         <AppLayout>
-          <Header></Header>
-          <Script src="https://nsp.pay.naver.com/sdk/js/naverpay.min.js"></Script>
-          {/* <!-- Google tag (gtag.js) --> */}
-          <Script
-            strategy="afterInteractive"
-            src={`https://www.googletagmanager.com/gtag/js?id=${gtag.GA_TRACKING_ID}`}
-          />
-          <Script
-            id="gtag-init"
-            strategy="afterInteractive"
-            dangerouslySetInnerHTML={{
-              __html: `
-            window.dataLayer = window.dataLayer || [];
-            function gtag(){dataLayer.push(arguments);}
-            gtag('js', new Date());
-            gtag('config', '${gtag.GA_TRACKING_ID}', {
-              page_path: window.location.pathname,
-            });
-          `,
-            }}
-          />
+          <Header />
           <Component {...pageProps} />
-          <Toaster></Toaster>
+          <Toaster />
         </AppLayout>
       </QueryClientProvider>
     </SessionProvider>
