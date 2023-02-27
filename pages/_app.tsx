@@ -47,7 +47,6 @@ export default function App({
         <GlobalStyles />
         <AppScript />
         <AppLayout>
-          <Header />
           <Component {...pageProps} />
           <Toaster />
         </AppLayout>
