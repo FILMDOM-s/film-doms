@@ -1,12 +1,18 @@
 import { flexGap, mediaQuery } from '@/styles/emotion'
 import styled from '@emotion/styled'
 import CommunityContainer from './Community'
+import BannerContainer from './Banner'
+import NoticeContainer from './Notice'
+import NavContainer from './Nav/NavContainer'
 import CriticConatiner from './Critic/CriticConatiner'
 
 const HomeContainer = () => {
   return (
     <PageContainer>
+      <NavContainer />
+      <BannerContainer />
       <CommunityContainer />
+      <NoticeContainer />
       <CriticConatiner />
     </PageContainer>
   )
