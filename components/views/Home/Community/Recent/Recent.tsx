@@ -1,19 +1,18 @@
 import { flexCenter, mediaQuery } from '@/styles/emotion'
-import { useRouter } from 'next/router'
 import styled from '@emotion/styled'
+import { css } from '@emotion/react'
+import Link from 'next/link'
 
 const Recent = ({ id, category, title, comment }: Recent) => {
-  const { push } = useRouter()
-
   return (
-    <Container onClick={() => push(`/community/recent/${id}`)}>
+    <Container>
       <Badge>
         <BadgeText>{category}</BadgeText>
       </Badge>
-      <Box>
+      <Link href={`/community/recent/${id}`} css={LinkBox}>
         <Title>{title}</Title>
         <CommentCount>[{comment.length}]</CommentCount>
-      </Box>
+      </Link>
     </Container>
   )
 }
@@ -44,7 +43,6 @@ const Title = styled.div`
   text-overflow: ellipsis;
   white-space: nowrap;
   overflow: hidden;
-  flex: 1;
   padding-right: 6px;
 
   ${mediaQuery.tablet`
@@ -58,7 +56,7 @@ const Title = styled.div`
   `}
 `
 
-const Box = styled.div`
+const LinkBox = css`
   display: flex;
   overflow: hidden;
   padding-right: 1rem;
