@@ -38,8 +38,12 @@ const MobileHiddenBox = styled.div`
 `
 
 const Box = styled.div`
-  width: 50%;
+  width: 100%;
   ${flexGap('1.5rem')}
+
+  ${mediaQuery.tablet`
+    width: 50%;
+  `}
 `
 
 const Center = styled.div`

@@ -1,22 +1,18 @@
-import { Badge } from '@/components/common'
 import { flexCenter, mediaQuery } from '@/styles/emotion'
-import cutString from '@/utils'
-import { css } from '@emotion/react'
-import { useRouter } from 'next/router'
 import styled from '@emotion/styled'
+import { css } from '@emotion/react'
+import Link from 'next/link'
 
 const Recent = ({ id, category, title, comment }: Recent) => {
-  const { push } = useRouter()
-  const cutTitle = cutString(title, 15)
-  const cutCategory = cutString(category, 6)
-
   return (
-    <Container onClick={() => push(`/community/recent/${id}`)}>
-      <Badge css={BadgeBox}>
-        <BadgeText>{cutCategory}</BadgeText>
+    <Container>
+      <Badge>
+        <BadgeText>{category}</BadgeText>
       </Badge>
-      <Title>{cutTitle}</Title>
-      <CommentCount>[{comment.length}]</CommentCount>
+      <Link href={`/community/recent/${id}`} css={LinkBox}>
+        <Title>{title}</Title>
+        <CommentCount>[{comment.length}]</CommentCount>
+      </Link>
     </Container>
   )
 }
@@ -41,10 +37,13 @@ const CommentCount = styled.div`
 `
 
 const Title = styled.div`
-  ${flexCenter}
   font-size: 14px;
   font-weight: 400;
   line-height: 20px;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  overflow: hidden;
+  padding-right: 6px;
 
   ${mediaQuery.tablet`
     font-size: 16px;
@@ -57,11 +56,21 @@ const Title = styled.div`
   `}
 `
 
-const BadgeText = styled.span`
+const LinkBox = css`
+  display: flex;
+  overflow: hidden;
+  padding-right: 1rem;
+`
+
+const BadgeText = styled.div`
   font-size: 12px;
   font-weight: 500;
   line-height: 18px;
   color: #666666;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  max-width: 6rem;
 
   ${mediaQuery.tablet`
     font-size: 14px;
@@ -73,25 +82,25 @@ const BadgeText = styled.span`
   `}
 `
 
-const BadgeBox = css`
-  width: 45px;
+const Badge = styled.div`
+  width: max-content;
   height: 20px;
   border-radius: 4px;
   padding: 1px 12px;
+  background-color: #f5f5f5;
+  flex-shrink: 0;
 
   ${mediaQuery.tablet`
-    width: 49px;
     height: 23px;
   `}
 
   ${mediaQuery.pc`
-    width: 54px;
     height: 24px;
   `}
 `
 
 const Container = styled.div`
-  width: 336px;
+  width: 100%;
   display: flex;
   gap: 0.5rem;
 `
