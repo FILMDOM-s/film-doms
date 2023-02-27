@@ -29,8 +29,10 @@ const nextConfig = {
   },
 }
 
+const isDev = process.env.NODE_ENV !== 'production'
+
 dotenv.config({
-  path: './film-doms-env/.env.local',
+  path: isDev ? './film-doms-env/.env.local' : './film-doms-env/.env',
 })
 
 module.exports = nextConfig
