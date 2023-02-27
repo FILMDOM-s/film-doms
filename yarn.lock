@@ -380,6 +380,19 @@
   dependencies:
     tslib "^2.4.0"
 
+"@tabler/icons-react@^2.5.0":
+  version "2.5.0"
+  resolved "https://registry.yarnpkg.com/@tabler/icons-react/-/icons-react-2.5.0.tgz#db847043e632d94e501129ef5c6b1c0dcafbfa86"
+  integrity sha512-RP5gOEis5QPArMkAuOomMEvT4+nDWF2CBNv2SCGVYFC8mXEz5tYzjPoaBQDpyWO7vB6IeJvvk7feOaLBvD2zRA==
+  dependencies:
+    "@tabler/icons" "2.5.0"
+    prop-types "^15.7.2"
+
+"@tabler/icons@2.5.0", "@tabler/icons@^2.5.0":
+  version "2.5.0"
+  resolved "https://registry.yarnpkg.com/@tabler/icons/-/icons-2.5.0.tgz#d212de4953c8fad778571c5da2a4d4bb5b23abe0"
+  integrity sha512-gQceaW6itR2Wna2Kqcrxz3gm2cNxwg/DCgT17W1N9la4Iri1r9g681uO2LryDskGXfs71Trhd3CtrED/T6dzUQ==
+
 "@tailwindcss/typography@^0.5.9":
   version "0.5.9"
   resolved "https://registry.yarnpkg.com/@tailwindcss/typography/-/typography-0.5.9.tgz#027e4b0674929daaf7c921c900beee80dbad93e8"
@@ -2885,7 +2898,7 @@ pretty-format@^3.8.0:
   resolved "https://registry.yarnpkg.com/pretty-format/-/pretty-format-3.8.0.tgz#bfbed56d5e9a776645f4b1ff7aa1a3ac4fa3c385"
   integrity sha512-WuxUnVtlWL1OfZFQFuqvnvs6MiAGk9UNsBostyBOB0Is9wb5uRESevA6rnl/rkksXaGX3GzZhPup5d6Vp1nFew==
 
-prop-types@^15.8.1:
+prop-types@^15.7.2, prop-types@^15.8.1:
   version "15.8.1"
   resolved "https://registry.yarnpkg.com/prop-types/-/prop-types-15.8.1.tgz#67d87bf1a694f48435cf332c24af10214a3140b5"
   integrity sha512-oj87CgZICdulUohogVAR7AjlC0327U4el4L6eAvOqCeudMDVU0NThNaV+b9Df4dXgSP1gXMTnPdhfe/2qDH5cg==

@@ -10,8 +10,6 @@ import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import { SessionProvider } from 'next-auth/react'
 import Script from 'next/script'
 import { Toaster } from 'react-hot-toast'
-import Header from '@/components/Header'
-import Footer from '@/components/Footer'
 import { startWorker } from '@/mocks'
 import GlobalStyles from '@/styles/GlobalStyles'
 import { AppLayout } from '@/components/views/Layout'
@@ -60,8 +58,6 @@ export default function App({
       <QueryClientProvider client={queryClient}>
         <GlobalStyles />
         <AppLayout>
-          <Header></Header>
-          <Script src="https://nsp.pay.naver.com/sdk/js/naverpay.min.js"></Script>
           {/* <!-- Google tag (gtag.js) --> */}
           <Script
             strategy="afterInteractive"

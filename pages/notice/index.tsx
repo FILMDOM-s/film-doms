@@ -11,7 +11,7 @@ export default function Index() {
   return (
     <div>
       <Head>
-        <title>필름덤즈 | TEMP</title>
+        <title>필름덤즈 | NOTICE</title>
         <meta
           property="og:url"
           content={`${process.env.NEXT_PUBLIC_NEXTAUTH_URL}/temp`}
@@ -28,7 +28,7 @@ export default function Index() {
         />
       </Head>
 
-      <main className="mx-auto"></main>
+      <main className="mx-auto">NOTICE</main>
     </div>
   )
 }
