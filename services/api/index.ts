@@ -13,7 +13,7 @@ const createApi = () => {
     baseURL: `${getDomain()}`,
   })
 
-  _api.interceptors.response.use((response) => {
+  _api.interceptors.response.use(response => {
     return response.data
   })
 

@@ -25,5 +25,4 @@ const SectionBody = css`
   display: flex;
   justify-content: center;
   margin: 24px 0 36px 0;
-  
 `

@@ -13,8 +13,8 @@ import useResizeWindow from '@/hooks/useResizeWindow'
 
 const Header = () => {
   const windowWidth = useResizeWindow()
-  const responseFontSize = windowWidth <= 768 ? '28px' : '32px';
-  
+  const responseFontSize = windowWidth <= 768 ? '28px' : '32px'
+
   return (
     <HeaderContainer>
       <HeaderInner>
@@ -26,12 +26,12 @@ const Header = () => {
         </ImageWrapper>
         <RightSide>
           <RightSideWrapper>
-          <IconBrandInstagram
-            stroke={2}
-            size={responseFontSize}
-            id="instagram"
-          />
-          <IconUser stroke={2} id="user" size={responseFontSize} />
+            <IconBrandInstagram
+              stroke={2}
+              size={responseFontSize}
+              id="instagram"
+            />
+            <IconUser stroke={2} id="user" size={responseFontSize} />
           </RightSideWrapper>
           <IconSearch stroke={2} id="search" size={responseFontSize} />
         </RightSide>
@@ -57,7 +57,7 @@ const HeaderInner = styled.div`
   items-center: center;
   position: relative;
   max-width: 375px;
-  margin:0px 30px;
+  margin: 0px 30px;
 
   ${mediaQuery.tablet`
     max-width: 688px;
@@ -105,7 +105,6 @@ const RightSide = styled.div`
   gap: 50px;
   height: 100%;
 `
-
 
 const RightSideWrapper = styled.div`
   display: none;

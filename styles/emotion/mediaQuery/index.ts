@@ -25,7 +25,7 @@ const isSerializedStyles = (value: unknown): value is SerializedStyles => {
 const createMediaQuery =
   (size: number) =>
   (strings: TemplateStringsArray, ...values: unknown[]) => {
-    const serializedValues = values.map((value) =>
+    const serializedValues = values.map(value =>
       isSerializedStyles(value) ? addSemicolon(value.styles) : value
     )
 
