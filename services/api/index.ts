@@ -4,7 +4,7 @@ const getDomain = () => {
   if (process.env.NODE_ENV === 'development') {
     return 'http://localhost:3000'
   } else {
-    return 'https://www.filmdoms.com'
+    return 'https://film-doms.vercel.app'
   }
 }
 
