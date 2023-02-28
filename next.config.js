@@ -1,3 +1,5 @@
+const dotenv = require('dotenv')
+
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   reactStrictMode: true,
@@ -12,6 +14,7 @@ const nextConfig = {
       'ssl.pstatic.net',
       'k.kakaocdn.net',
       'lh3.googleusercontent.com',
+      'picsum.photos',
     ],
   },
   eslint: {
@@ -25,5 +28,11 @@ const nextConfig = {
     return config
   },
 }
+
+const isDev = process.env.NODE_ENV !== 'production'
+
+dotenv.config({
+  path: isDev ? './film-doms-env/.env.local' : './film-doms-env/.env',
+})
 
 module.exports = nextConfig
