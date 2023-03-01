@@ -6,7 +6,7 @@ import Nav from './Nav'
 const NavContainer = () => {
   return (
     <Container>
-      {navItems.map((item) => (
+      {navItems.map(item => (
         <Nav key={item.text} {...item} />
       ))}
     </Container>
@@ -19,10 +19,9 @@ const Container = styled.div`
   justify-content: center;
   align-items: center;
   gap: 30px;
-  padding-top:15px;
-  padding-bottom:15px;
-    
-  
+  padding-top: 15px;
+  padding-bottom: 15px;
+
   ${mediaQuery.tablet`
     gap: 70px;
   `}
