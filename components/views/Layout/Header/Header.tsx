@@ -10,10 +10,9 @@ import {
 import Image from 'next/image'
 import { flexCenter } from '@/styles/emotion'
 import useResizeWindow from '@/hooks/useResizeWindow'
-import { useState } from 'react'
-import SideNav from '../SideNav/SideNav'
 import { useRecoilState } from 'recoil'
 import { navState } from '@/states/states'
+import SideNav from '../SideNav'
 
 const Header = () => {
   const windowWidth = useResizeWindow()
