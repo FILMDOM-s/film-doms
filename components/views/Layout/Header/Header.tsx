@@ -10,15 +10,24 @@ import {
 import Image from 'next/image'
 import { flexCenter } from '@/styles/emotion'
 import useResizeWindow from '@/hooks/useResizeWindow'
+import { useState } from 'react'
+import SideNav from '../SideNav/SideNav'
+import { useRecoilState } from 'recoil'
+import { navState } from '@/states/states'
 
 const Header = () => {
   const windowWidth = useResizeWindow()
   const responseFontSize = windowWidth <= 768 ? '28px' : '32px'
+  const [sideNav, setSideNav] = useRecoilState(navState)
 
   return (
     <HeaderContainer>
       <HeaderInner>
-        <NavWrapper>
+        <NavWrapper
+          onClick={() => {
+            setSideNav(!sideNav)
+          }}
+        >
           <IconMenu2 stroke={2} size={responseFontSize} />
         </NavWrapper>
         <ImageWrapper>
@@ -26,16 +35,23 @@ const Header = () => {
         </ImageWrapper>
         <RightSide>
           <RightSideWrapper>
-            <IconBrandInstagram
-              stroke={2}
-              size={responseFontSize}
-              id="instagram"
-            />
-            <IconUser stroke={2} id="user" size={responseFontSize} />
+            <IconWrapper>
+              <IconBrandInstagram
+                stroke={2}
+                size={responseFontSize}
+                id="instagram"
+              />
+            </IconWrapper>
+            <IconWrapper>
+              <IconUser stroke={2} id="user" size={responseFontSize} />
+            </IconWrapper>
           </RightSideWrapper>
-          <IconSearch stroke={2} id="search" size={responseFontSize} />
+          <IconWrapper>
+            <IconSearch stroke={2} id="search" size={responseFontSize} />
+          </IconWrapper>
         </RightSide>
       </HeaderInner>
+      <SideNav />
     </HeaderContainer>
   )
 }
@@ -94,6 +110,10 @@ const NavWrapper = styled.nav`
   ${mediaQuery.pc`
     display: none;
   `};
+
+  &:hover {
+    cursor: pointer;
+  }
 `
 
 const RightSide = styled.div`
@@ -114,4 +134,14 @@ const RightSideWrapper = styled.div`
     items-center: center;
     gap: 40px;
   `};
+`
+
+const IconWrapper = styled.div`
+  ${flexCenter}
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  &:hover {
+    cursor: pointer;
+  }
 `
