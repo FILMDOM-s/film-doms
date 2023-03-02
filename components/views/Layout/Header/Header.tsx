@@ -9,22 +9,21 @@ import {
 } from '@tabler/icons-react'
 import Image from 'next/image'
 import { flexCenter } from '@/styles/emotion'
-import useResizeWindow from '@/hooks/useResizeWindow'
-import { useRecoilState } from 'recoil'
-import { navState } from '@/states/states'
 import SideNav from '../SideNav'
+import { useState } from 'react'
+import { useResizeWindow } from '@/hooks'
 
 const Header = () => {
   const windowWidth = useResizeWindow()
   const responseFontSize = windowWidth <= 768 ? '28px' : '32px'
-  const [sideNav, setSideNav] = useRecoilState(navState)
+  const [showSideNav, setShowSideNav] = useState<boolean>(false)
 
   return (
     <HeaderContainer>
       <HeaderInner>
         <NavWrapper
           onClick={() => {
-            setSideNav(!sideNav)
+            setShowSideNav(!showSideNav)
           }}
         >
           <IconMenu2 stroke={2} size={responseFontSize} />
@@ -50,7 +49,7 @@ const Header = () => {
           </IconWrapper>
         </RightSide>
       </HeaderInner>
-      <SideNav />
+      <SideNav showSideNav={showSideNav} setShowSideNav={setShowSideNav} />
     </HeaderContainer>
   )
 }

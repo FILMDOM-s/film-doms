@@ -1,19 +1,25 @@
-import { navState } from '@/states/states'
 import styled from '@emotion/styled'
 import { IconX } from '@tabler/icons-react'
-import { useRecoilState } from 'recoil'
 import SideNavList from './SideNavList'
+import { Dispatch, SetStateAction } from 'react'
+import { css } from '@emotion/react'
 
-const SideNav = () => {
-  const [show, setShow] = useRecoilState(navState)
+const SideNav = ({
+  showSideNav,
+  setShowSideNav,
+}: {
+  showSideNav: boolean
+  setShowSideNav: Dispatch<SetStateAction<boolean>>
+}) => {
   return (
-    <SideNavContainer show={show}>
+    <SideNavContainer show={showSideNav}>
       <SideNavButtonWrapper>
         <IconX
+          css={XIconStyle}
           stroke={2}
           size={30}
           onClick={() => {
-            setShow(!show)
+            setShowSideNav(!showSideNav)
           }}
         />
       </SideNavButtonWrapper>
@@ -43,4 +49,8 @@ const SideNavButtonWrapper = styled.div`
   display: flex;
   justify-content: flex-end;
   padding: 1rem 1rem;
+`
+
+const XIconStyle = css`
+  cursor: pointer;
 `
