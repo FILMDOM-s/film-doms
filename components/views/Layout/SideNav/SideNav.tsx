@@ -5,21 +5,21 @@ import { Dispatch, SetStateAction } from 'react'
 import { css } from '@emotion/react'
 
 const SideNav = ({
-  showSideNav,
-  setShowSideNav,
+  isShow,
+  onClose,
 }: {
-  showSideNav: boolean
-  setShowSideNav: Dispatch<SetStateAction<boolean>>
+  isShow: boolean
+  onClose: Dispatch<SetStateAction<boolean>>
 }) => {
   return (
-    <SideNavContainer show={showSideNav}>
+    <SideNavContainer show={isShow}>
       <SideNavButtonWrapper>
         <IconX
           css={XIconStyle}
           stroke={2}
           size={30}
           onClick={() => {
-            setShowSideNav(!showSideNav)
+            onClose(!isShow)
           }}
         />
       </SideNavButtonWrapper>

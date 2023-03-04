@@ -16,23 +16,23 @@ import { useResizeWindow } from '@/hooks'
 const Header = () => {
   const windowWidth = useResizeWindow()
   const responseFontSize = windowWidth <= 768 ? '28px' : '32px'
-  const [showSideNav, setShowSideNav] = useState<boolean>(false)
+  const [showSideNav, setShowSideNav] = useState(false)
 
   return (
     <HeaderContainer>
       <HeaderInner>
-        <NavWrapper
+        <MenuWrapper
           onClick={() => {
             setShowSideNav(!showSideNav)
           }}
         >
           <IconMenu2 stroke={2} size={responseFontSize} />
-        </NavWrapper>
+        </MenuWrapper>
         <ImageWrapper>
           <Image src={logoEngBk} alt="filmdoms-logo-eng" />
         </ImageWrapper>
-        <RightSide>
-          <RightSideWrapper>
+        <RightSideWrapper>
+          <IconMutableWrapper>
             <IconWrapper>
               <IconBrandInstagram
                 stroke={2}
@@ -43,13 +43,13 @@ const Header = () => {
             <IconWrapper>
               <IconUser stroke={2} id="user" size={responseFontSize} />
             </IconWrapper>
-          </RightSideWrapper>
+          </IconMutableWrapper>
           <IconWrapper>
             <IconSearch stroke={2} id="search" size={responseFontSize} />
           </IconWrapper>
-        </RightSide>
+        </RightSideWrapper>
       </HeaderInner>
-      <SideNav showSideNav={showSideNav} setShowSideNav={setShowSideNav} />
+      <SideNav isShow={showSideNav} onClose={setShowSideNav} />
     </HeaderContainer>
   )
 }
@@ -99,7 +99,7 @@ const ImageWrapper = styled.div`
   `};
 `
 
-const NavWrapper = styled.nav`
+const MenuWrapper = styled.nav`
   position: absolute;
   left: 0;
   ${mediaQuery.laptop`
@@ -114,7 +114,7 @@ const NavWrapper = styled.nav`
   }
 `
 
-const RightSide = styled.div`
+const RightSideWrapper = styled.div`
   position: absolute;
   right: 0;
   display: flex;
@@ -124,7 +124,7 @@ const RightSide = styled.div`
   height: 100%;
 `
 
-const RightSideWrapper = styled.div`
+const IconMutableWrapper = styled.div`
   display: none;
   ${mediaQuery.laptop`
     display: flex;
