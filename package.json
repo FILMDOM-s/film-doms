@@ -42,6 +42,7 @@
   },
   "devDependencies": {
     "@types/gtag.js": "^0.0.12",
+    "@types/uuid": "^9.0.1",
     "autoprefixer": "^10.4.13",
     "dotenv": "^16.0.3",
     "husky": "^8.0.3",
@@ -59,5 +60,8 @@
   },
   "msw": {
     "workerDirectory": "public"
-  }
+  },
+  "main": "index.js",
+  "repository": "https://github.com/FILMDOM-s/film-doms.git",
+  "license": "MIT"
 }

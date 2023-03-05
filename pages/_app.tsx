@@ -12,6 +12,7 @@ import GlobalStyles from '@/styles/GlobalStyles'
 import { AppLayout } from '@views/Layout'
 import { AppScript, useStartWorker } from '@views/_App'
 import { useRouterChange } from '@/hooks'
+import { RecoilRoot } from 'recoil'
 
 export default function App({
   Component,
@@ -43,12 +44,14 @@ export default function App({
   return (
     <SessionProvider session={session}>
       <QueryClientProvider client={queryClient}>
-        <GlobalStyles />
-        <AppScript />
-        <AppLayout>
-          <Component {...pageProps} />
-          <Toaster />
-        </AppLayout>
+        <RecoilRoot>
+          <GlobalStyles />
+          <AppScript />
+          <AppLayout>
+            <Component {...pageProps} />
+            <Toaster />
+          </AppLayout>
+        </RecoilRoot>
       </QueryClientProvider>
     </SessionProvider>
   )
