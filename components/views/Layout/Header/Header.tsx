@@ -49,7 +49,7 @@ const Header = () => {
           </IconWrapper>
         </RightSideWrapper>
       </HeaderInner>
-      <SideNav isShow={showSideNav} onClose={setShowSideNav} />
+      <SideNav isShow={showSideNav} onClose={()=>setShowSideNav(!showSideNav)} />
     </HeaderContainer>
   )
 }

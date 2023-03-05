@@ -9,7 +9,7 @@ const SideNav = ({
   onClose,
 }: {
   isShow: boolean
-  onClose: Dispatch<SetStateAction<boolean>>
+  onClose: VoidFunction
 }) => {
   return (
     <SideNavContainer show={isShow}>
@@ -19,7 +19,7 @@ const SideNav = ({
           stroke={2}
           size={30}
           onClick={() => {
-            onClose(!isShow)
+            onClose()
           }}
         />
       </SideNavButtonWrapper>
