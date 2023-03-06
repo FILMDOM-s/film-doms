@@ -11,11 +11,13 @@ module.exports = {
     '@storybook/addon-links',
     '@storybook/addon-essentials',
     '@storybook/addon-interactions',
+    'storybook-addon-next',
   ],
   framework: '@storybook/react',
   core: {
     builder: '@storybook/builder-webpack5',
   },
+  staticDirs: ['../public'],
   webpackFinal: async config => {
     config.module.rules.push({
       test: /\.(ts|tsx)$/,
@@ -30,6 +32,10 @@ module.exports = {
 
               // emotion의 css prop을 사용하기 위한 설정입니다.
               '@emotion/babel-preset-css-prop',
+            ],
+            plugins: [
+              // react를 사용하기 위한 설정입니다.
+              'babel-plugin-react-require',
             ],
           },
         },
