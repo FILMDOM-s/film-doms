@@ -21,7 +21,8 @@
       "@components/*": ["components/*"],
       "@views/*": ["components/views/*"],
       "@images/*": ["assets/images/*"],
-      "@svgs/*": ["assets/svgs/*"]
+      "@svgs/*": ["assets/svgs/*"],
+      "@storybook/*": [".storybook/*"]
     },
     "types": [
       "@emotion/react/types/css-prop",
