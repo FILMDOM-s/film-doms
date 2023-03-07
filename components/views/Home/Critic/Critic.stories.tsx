@@ -11,6 +11,11 @@ export default {
         disable: true,
       },
     },
+    createAt: {
+      control: {
+        type: 'date',
+      },
+    },
   },
 } as ComponentMeta<typeof Critic>
 

@@ -5,6 +5,18 @@ import Notice from './Notice'
 export default {
   component: Notice,
   title: 'Section/Notice/Item',
+  argTypes: {
+    startAt: {
+      control: {
+        type: 'date',
+      },
+    },
+    endAt: {
+      control: {
+        type: 'date',
+      },
+    },
+  },
 } as ComponentMeta<typeof Notice>
 
 export const Default: ComponentStory<typeof Notice> = args => (
