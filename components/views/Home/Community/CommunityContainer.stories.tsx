@@ -1,5 +1,5 @@
-import CommunityContainer from './CommunityContainer'
 import { ComponentMeta } from '@storybook/react'
+import CommunityContainer from './CommunityContainer'
 
 export default {
   component: CommunityContainer,
