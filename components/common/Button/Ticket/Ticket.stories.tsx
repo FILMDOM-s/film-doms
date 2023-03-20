@@ -22,7 +22,7 @@ export const List = () => (
 
       ${mediaQuery.tablet`
           flex-direction: row;
-        `}
+      `}
     `}
   >
     <Ticket>
