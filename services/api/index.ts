@@ -2,9 +2,11 @@ import axios from 'axios'
 
 const getDomain = () => {
   if (process.env.NODE_ENV === 'development') {
-    return 'http://localhost:3000'
+    return '/'
   } else {
-    return 'https://www.filmdoms.com'
+    // * change domain when backend api server is ready
+    // ? 'https://www.filmdoms.com'
+    return '/'
   }
 }
 
