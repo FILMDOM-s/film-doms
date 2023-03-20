@@ -33,7 +33,7 @@ export const parameters = {
   msw: handlers,
   options: {
     storySort: {
-      order: ['Default'],
+      order: ['StyleGuide', 'Default'],
     },
   },
 }
