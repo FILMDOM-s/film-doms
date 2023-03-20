@@ -2,7 +2,7 @@ import styled from '@emotion/styled'
 import * as Icons from '@svgs/common'
 
 export default {
-  title: 'Icons/AllIcons',
+  title: 'StyleGuide/Icons',
 }
 
 export const AllIcons = () => {
