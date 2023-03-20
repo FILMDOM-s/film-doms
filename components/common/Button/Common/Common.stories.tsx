@@ -1,7 +1,7 @@
 import { css } from '@emotion/react'
 import styled from '@emotion/styled'
 import { ComponentMeta, ComponentStory } from '@storybook/react'
-import { ArrowRight } from '@svgs/common'
+import { ArrowRight, Instagram, Search } from '@svgs/common'
 import { flexCenter, mediaQuery } from '@/styles/emotion'
 import Common from './Common'
 
@@ -26,18 +26,10 @@ export const List = () => (
       `}
     `}
   >
-    <Common>
-      <FlexBox>
-        More <ArrowRight />
-      </FlexBox>
-    </Common>
-    <Common>
-      <FlexBox>
-        <ArrowRight /> More
-      </FlexBox>
-    </Common>
-    <Common>
-      <FlexBox>자세히보기</FlexBox>
+    <Common rightIcon={<ArrowRight />}>More</Common>
+    <Common leftIcon={<ArrowRight />}>More</Common>
+    <Common leftIcon={<Instagram />} rightIcon={<Search />}>
+      자세히보기
     </Common>
   </div>
 )
