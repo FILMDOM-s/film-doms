@@ -2,10 +2,10 @@ const path = require('path')
 const TsconfigPathsPlugin = require('tsconfig-paths-webpack-plugin')
 
 module.exports = {
-  // components, pages 폴더 내부만 추가합니다.
+  // stories에 작성된 경로의 story가 추가됩니다.
   stories: [
-    '../(components|pages|assets/svgs)/**/*.stories.mdx',
-    '../(components|pages|assets/svgs)/**/*.stories.@(js|jsx|ts|tsx)',
+    '../(components|pages|assets/svgs|styles/emotion)/**/*.stories.mdx',
+    '../(components|pages|assets/svgs|styles/emotion)/**/*.stories.@(js|jsx|ts|tsx)',
   ],
   addons: [
     '@storybook/addon-links',
