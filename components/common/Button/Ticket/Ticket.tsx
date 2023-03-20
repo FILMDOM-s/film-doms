@@ -13,6 +13,7 @@ const Button = styled.button`
   padding: 12px 22px;
   position: relative;
   width: fit-content;
+  overflow: hidden;
 
   &::before {
     content: '';
