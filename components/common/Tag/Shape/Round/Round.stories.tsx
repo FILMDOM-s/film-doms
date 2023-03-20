@@ -1,6 +1,6 @@
-import { mediaQuery } from '@/styles/emotion'
-import { css } from '@emotion/react'
+import styled from '@emotion/styled'
 import { ComponentMeta, ComponentStory } from '@storybook/react'
+import { mediaQuery } from '@/styles/emotion'
 import Round from './Round'
 
 export default {
@@ -20,16 +20,7 @@ Orange.args = {
 }
 
 export const List: ComponentStory<typeof Round> = args => (
-  <div
-    css={css`
-      display: flex;
-      flex-direction: column;
-      gap: 1rem;
-      ${mediaQuery.tablet`
-        flex-direction: row;
-      `}
-    `}
-  >
+  <ListBox>
     <Round {...args}>공모전</Round>
     <Round {...args}>동아리</Round>
     <Round {...args}>대외활동</Round>
@@ -39,7 +30,7 @@ export const List: ComponentStory<typeof Round> = args => (
     <Round {...args}>Actor</Round>
     <Round {...args}>Director</Round>
     <Round {...args}>Movie</Round>
-  </div>
+  </ListBox>
 )
 List.argTypes = {
   color: {
@@ -48,3 +39,12 @@ List.argTypes = {
     },
   },
 }
+
+const ListBox = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  ${mediaQuery.tablet`
+    flex-direction: row;
+  `}
+`

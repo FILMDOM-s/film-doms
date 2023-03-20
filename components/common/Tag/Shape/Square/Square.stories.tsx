@@ -1,4 +1,4 @@
-import { css } from '@emotion/react'
+import styled from '@emotion/styled'
 import { ComponentMeta, ComponentStory } from '@storybook/react'
 import Square from './Square'
 import { mediaQuery } from '@/styles/emotion'
@@ -20,16 +20,7 @@ Orange.args = {
 }
 
 export const List: ComponentStory<typeof Square> = args => (
-  <div
-    css={css`
-      display: flex;
-      flex-direction: column;
-      gap: 1rem;
-      ${mediaQuery.tablet`
-      flex-direction: row;
-    `}
-    `}
-  >
+  <ListBox>
     <Square {...args}>영화</Square>
     <Square {...args}>OTT 시리즈</Square>
     <Square {...args} color="orange">
@@ -37,7 +28,7 @@ export const List: ComponentStory<typeof Square> = args => (
     </Square>
     <Square {...args}>드라마</Square>
     <Square {...args}>굿즈</Square>
-  </div>
+  </ListBox>
 )
 List.argTypes = {
   color: {
@@ -46,3 +37,12 @@ List.argTypes = {
     },
   },
 }
+
+const ListBox = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  ${mediaQuery.tablet`
+    flex-direction: row;
+  `}
+`
