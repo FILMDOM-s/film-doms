@@ -10,7 +10,11 @@ const Notices = () => {
   return (
     <div css={NoticeAlign}>
       {notices.map((notice: Notice) => (
-        <Link className='flex items-center justify-center' key={notice.id} href={`/notice/${notice.id}`}>
+        <Link
+          className="flex items-center justify-center"
+          key={notice.id}
+          href={`/notice/${notice.id}`}
+        >
           <Notice {...notice} />
         </Link>
       ))}
@@ -20,11 +24,11 @@ const Notices = () => {
 export default Notices
 
 const NoticeAlign = css`
-    max-width: 1323px;
-    display: grid;
-    grid-template-columns: repeat(2, 1fr);
-    grid-gap: 15px;
-    
+  max-width: 1323px;
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  grid-gap: 15px;
+
   ${mediaQuery.tablet`
     grid-template-columns: repeat(4, 1fr);
     grid-gap: 15px;

@@ -15,7 +15,7 @@ const Notice = ({
 }) => {
   return (
     <div css={NoticeElement} className="notice">
-      <Image width={303} height={392} src={image} alt="title"/>
+      <Image width={303} height={392} src={image} alt="title" />
       <div css={NoticeElementTitle}>{title}</div>
       <div css={NoticeElementDate}>{`${startAt} ~ ${endAt}`}</div>
     </div>

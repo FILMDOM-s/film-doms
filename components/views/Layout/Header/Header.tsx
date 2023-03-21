@@ -9,33 +9,47 @@ import {
 } from '@tabler/icons-react'
 import Image from 'next/image'
 import { flexCenter } from '@/styles/emotion'
-import useResizeWindow from '@/hooks/useResizeWindow'
+import SideNav from '../SideNav'
+import { useState } from 'react'
+import { useResizeWindow } from '@/hooks'
 
 const Header = () => {
   const windowWidth = useResizeWindow()
-  const responseFontSize = windowWidth <= 768 ? '28px' : '32px';
-  
+  const responseFontSize = windowWidth <= 768 ? '28px' : '32px'
+  const [showSideNav, setShowSideNav] = useState(false)
+
   return (
     <HeaderContainer>
       <HeaderInner>
-        <NavWrapper>
+        <MenuWrapper
+          onClick={() => {
+            setShowSideNav(!showSideNav)
+          }}
+        >
           <IconMenu2 stroke={2} size={responseFontSize} />
-        </NavWrapper>
+        </MenuWrapper>
         <ImageWrapper>
           <Image src={logoEngBk} alt="filmdoms-logo-eng" />
         </ImageWrapper>
-        <RightSide>
-          <RightSideWrapper>
-          <IconBrandInstagram
-            stroke={2}
-            size={responseFontSize}
-            id="instagram"
-          />
-          <IconUser stroke={2} id="user" size={responseFontSize} />
-          </RightSideWrapper>
-          <IconSearch stroke={2} id="search" size={responseFontSize} />
-        </RightSide>
+        <RightSideWrapper>
+          <IconMutableWrapper>
+            <IconWrapper>
+              <IconBrandInstagram
+                stroke={2}
+                size={responseFontSize}
+                id="instagram"
+              />
+            </IconWrapper>
+            <IconWrapper>
+              <IconUser stroke={2} id="user" size={responseFontSize} />
+            </IconWrapper>
+          </IconMutableWrapper>
+          <IconWrapper>
+            <IconSearch stroke={2} id="search" size={responseFontSize} />
+          </IconWrapper>
+        </RightSideWrapper>
       </HeaderInner>
+      <SideNav isShow={showSideNav} onClose={()=>setShowSideNav(!showSideNav)} />
     </HeaderContainer>
   )
 }
@@ -57,7 +71,7 @@ const HeaderInner = styled.div`
   items-center: center;
   position: relative;
   max-width: 375px;
-  margin:0px 30px;
+  margin: 0px 30px;
 
   ${mediaQuery.tablet`
     max-width: 688px;
@@ -85,7 +99,7 @@ const ImageWrapper = styled.div`
   `};
 `
 
-const NavWrapper = styled.nav`
+const MenuWrapper = styled.nav`
   position: absolute;
   left: 0;
   ${mediaQuery.laptop`
@@ -94,9 +108,13 @@ const NavWrapper = styled.nav`
   ${mediaQuery.pc`
     display: none;
   `};
+
+  &:hover {
+    cursor: pointer;
+  }
 `
 
-const RightSide = styled.div`
+const RightSideWrapper = styled.div`
   position: absolute;
   right: 0;
   display: flex;
@@ -106,8 +124,7 @@ const RightSide = styled.div`
   height: 100%;
 `
 
-
-const RightSideWrapper = styled.div`
+const IconMutableWrapper = styled.div`
   display: none;
   ${mediaQuery.laptop`
     display: flex;
@@ -115,4 +132,14 @@ const RightSideWrapper = styled.div`
     items-center: center;
     gap: 40px;
   `};
+`
+
+const IconWrapper = styled.div`
+  ${flexCenter}
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  &:hover {
+    cursor: pointer;
+  }
 `

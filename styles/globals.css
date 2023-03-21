@@ -2,34 +2,34 @@
 @tailwind components;
 @tailwind utilities;
 
-.nav-font{
-    font-family: Archivo;
-    font-size: 16px;
-    font-weight: 700;
-    line-height: 24px;
-    letter-spacing: 0em;
-    text-align: left;
+.nav-font {
+  font-family: Archivo;
+  font-size: 16px;
+  font-weight: 700;
+  line-height: 24px;
+  letter-spacing: 0em;
+  text-align: left;
 }
-.nav-red-font{
-    font-family: Archivo;
-    font-size: 16px;
-    font-weight: 700;
-    line-height: 24px;
-    letter-spacing: 0em;
-    text-align: left;
-    color: #F0380F;
-}
-
-.nav-red-font:hover{
-    color:black
+.nav-red-font {
+  font-family: Archivo;
+  font-size: 16px;
+  font-weight: 700;
+  line-height: 24px;
+  letter-spacing: 0em;
+  text-align: left;
+  color: #f0380f;
 }
 
-.title{
-    font-style: normal;
-    font-weight: 700;
-    font-size: 28px;
-    line-height: 42px;
-    /* identical to box height, or 150% */
+.nav-red-font:hover {
+  color: black;
+}
 
-    color: #000000;
+.title {
+  font-style: normal;
+  font-weight: 700;
+  font-size: 28px;
+  line-height: 42px;
+  /* identical to box height, or 150% */
+
+  color: #000000;
 }
