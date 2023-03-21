@@ -1,6 +1,7 @@
 import { css } from '@emotion/react'
 import { ComponentProps, ReactNode } from 'react'
 import SectionBody from './SectionBody'
+import SectionHeader from './SectionHeader'
 import SectionTitle from './SectionTitle'
 
 interface Props extends ComponentProps<'div'> {
@@ -25,4 +26,5 @@ const SectionContainer = ({ children, ...rest }: Props) => {
 export default Object.assign(SectionContainer, {
   Title: SectionTitle,
   Body: SectionBody,
+  Header: SectionHeader,
 })
