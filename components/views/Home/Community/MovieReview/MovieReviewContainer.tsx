@@ -1,56 +1,53 @@
-import { useFetchReviews } from '@/services/review'
-import { flexGap, flexCenter, mediaQuery } from '@/styles/emotion'
-import MovieReview from './MovieReview'
 import styled from '@emotion/styled'
+import { flexCenter, flexGap } from '@/styles/emotion'
+import { useFetchReviews } from '@/services/review'
+import { Button, Section } from '@/components/common'
+import { ArrowRight } from '@/assets/svgs/common'
+import MovieReview from './MovieReview'
 
 const MovieReviewContainer = () => {
-  const { data: reviews } = useFetchReviews()
-  // 이 부분은 test용 입니다.
-  // 모바일에서 5개보다 적거나
-  // 태블릿이상에서 10개보다 적을 경우의 디자인이 없어서
-  // 임의로 10개 이상이라고 가정합니다.
-  const reviewsMobile = [...reviews, ...reviews, ...reviews].slice(0, 5)
-  const reviewsOthers = [...reviews, ...reviews, ...reviews].slice(5, 10)
+  const { data: MovieReviews } = useFetchReviews()
 
   return (
-    <Center>
+    <Container>
+      <Section.Header
+        title="Movie"
+        right={
+          <Button>
+            <ButtonBox>
+              More <ArrowRight />
+            </ButtonBox>
+          </Button>
+        }
+      />
       <Box>
-        {reviewsMobile.map((review, index) => {
-          return <MovieReview key={`review-${review.id}${index}`} {...review} />
+        {MovieReviews.slice(0, 5).map((movieReview, index) => {
+          return (
+            <MovieReview
+              key={`MovieReview-${movieReview.id}${index}`}
+              {...movieReview}
+            />
+          )
         })}
       </Box>
-      <MobileHiddenBox>
-        {reviewsOthers.map((review, index) => {
-          return <MovieReview key={`review-${review.id}${index}`} {...review} />
-        })}
-      </MobileHiddenBox>
-    </Center>
+    </Container>
   )
 }
 
-const MobileHiddenBox = styled.div`
-  display: none;
-
-  ${mediaQuery.tablet`
-    width: 50%;
-    ${flexGap('1.5rem')}
-  `}
+const ButtonBox = styled.div`
+  ${flexGap('8px', 'row')};
+  ${flexCenter}
 `
 
 const Box = styled.div`
-  width: 100%;
   ${flexGap('1.5rem')}
-
-  ${mediaQuery.tablet`
-    width: 50%;
-  `}
-`
-
-const Center = styled.div`
   width: 100%;
-
-  ${mediaQuery.tablet`
-    ${flexCenter}
-  `}
 `
+
+const Container = styled.div`
+  ${flexGap('32px')}
+  width: 100%;
+  max-width: 600px;
+`
+
 export default MovieReviewContainer

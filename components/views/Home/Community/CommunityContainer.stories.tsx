@@ -1,4 +1,5 @@
 import { ComponentMeta } from '@storybook/react'
+import styled from '@emotion/styled'
 import CommunityContainer from './CommunityContainer'
 
 export default {
@@ -6,4 +7,12 @@ export default {
   title: 'Section/Community',
 } as ComponentMeta<typeof CommunityContainer>
 
-export const Default = () => <CommunityContainer />
+export const Default = () => (
+  <Container>
+    <CommunityContainer />
+  </Container>
+)
+
+const Container = styled.div`
+  width: 1280px;
+`
