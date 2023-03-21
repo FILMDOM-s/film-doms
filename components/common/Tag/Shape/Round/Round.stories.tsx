@@ -1,45 +1,52 @@
-import { mediaQuery } from '@/styles/emotion'
-import { css } from '@emotion/react'
+import styled from '@emotion/styled'
 import { ComponentMeta, ComponentStory } from '@storybook/react'
-import Round from './Round'
+import { mediaQuery } from '@/styles/emotion'
+import Tag from '../../Tag'
 
 export default {
   title: 'Common/Tag/Round',
-  component: Round,
-} as ComponentMeta<typeof Round>
+  component: Tag,
+} as ComponentMeta<typeof Tag>
 
-export const Default: ComponentStory<typeof Round> = args => (
-  <Round {...args}>공모전</Round>
+export const Default: ComponentStory<typeof Tag> = args => (
+  <Tag {...args}>공모전</Tag>
 )
+Default.args = {
+  shape: 'round',
+}
 
-export const Orange: ComponentStory<typeof Round> = args => (
-  <Round {...args}>Editor</Round>
+export const Orange: ComponentStory<typeof Tag> = args => (
+  <Tag {...args}>Editor</Tag>
 )
 Orange.args = {
   color: 'orange',
+  shape: 'round',
 }
 
-export const List: ComponentStory<typeof Round> = args => (
-  <div
-    css={css`
-      display: flex;
-      flex-direction: column;
-      gap: 1rem;
-      ${mediaQuery.tablet`
-        flex-direction: row;
-      `}
-    `}
-  >
-    <Round {...args}>공모전</Round>
-    <Round {...args}>동아리</Round>
-    <Round {...args}>대외활동</Round>
-    <Round {...args} color="orange">
+export const List: ComponentStory<typeof Tag> = args => (
+  <ListBox>
+    <Tag shape="round" {...args}>
+      공모전
+    </Tag>
+    <Tag shape="round" {...args}>
+      동아리
+    </Tag>
+    <Tag shape="round" {...args}>
+      대외활동
+    </Tag>
+    <Tag shape="round" {...args} color="orange">
       Editor
-    </Round>
-    <Round {...args}>Actor</Round>
-    <Round {...args}>Director</Round>
-    <Round {...args}>Movie</Round>
-  </div>
+    </Tag>
+    <Tag shape="round" {...args}>
+      Actor
+    </Tag>
+    <Tag shape="round" {...args}>
+      Director
+    </Tag>
+    <Tag shape="round" {...args}>
+      Movie
+    </Tag>
+  </ListBox>
 )
 List.argTypes = {
   color: {
@@ -47,4 +54,18 @@ List.argTypes = {
       disable: true,
     },
   },
+  shape: {
+    table: {
+      disable: true,
+    },
+  },
 }
+
+const ListBox = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  ${mediaQuery.tablet`
+    flex-direction: row;
+  `}
+`
