@@ -1,21 +1,19 @@
+import { forwardRef } from 'react'
 import styled from '@emotion/styled'
 import { colors, flexCenter, typography } from '@/styles/emotion'
 import { ButtonProps } from '../type'
 
-const Ticket = ({
-  leftIcon = null,
-  rightIcon = null,
-  children,
-  ...props
-}: ButtonProps) => {
-  return (
-    <Button {...props}>
-      {leftIcon}
-      {children}
-      {rightIcon}
-    </Button>
-  )
-}
+const Ticket = forwardRef<HTMLButtonElement, ButtonProps>(
+  ({ leftIcon = null, rightIcon = null, children, ...props }, ref) => {
+    return (
+      <Button {...props} ref={ref}>
+        {leftIcon}
+        {children}
+        {rightIcon}
+      </Button>
+    )
+  }
+)
 
 const Button = styled.button`
   ${typography.button}
@@ -52,5 +50,7 @@ const Button = styled.button`
     border-radius: 50%;
   }
 `
+
+Ticket.displayName = 'TicketButton'
 
 export default Ticket
