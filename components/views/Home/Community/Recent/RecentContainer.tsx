@@ -1,11 +1,13 @@
+import { useRouter } from 'next/router'
 import styled from '@emotion/styled'
-import { flexCenter, flexGap } from '@/styles/emotion'
+import { ArrowRight } from '@svgs/common'
+import { flexGap } from '@/styles/emotion'
 import { useFetchRecents } from '@/services/recent'
 import { Button, Section } from '@/components/common'
-import { ArrowRight } from '@/assets/svgs/common'
 import Recent from './Recent'
 
 const RecentContainer = () => {
+  const { push } = useRouter()
   const { data: recents } = useFetchRecents()
 
   return (
@@ -13,28 +15,24 @@ const RecentContainer = () => {
       <Section.Header
         title="Recent"
         right={
-          <Button>
-            <ButtonBox>
-              More <ArrowRight />
-            </ButtonBox>
+          <Button
+            rightIcon={<ArrowRight />}
+            onClick={() => push('/community/recent')}
+          >
+            More
           </Button>
         }
       />
       <Box>
-        {recents.slice(0, 5).map((recent, index) => {
-          return <Recent key={`recent-${recent.id}${index}`} {...recent} />
+        {recents.slice(0, 5).map(recent => {
+          return <Recent key={`recent-${recent.id}`} {...recent} />
         })}
       </Box>
     </Container>
   )
 }
 
-const ButtonBox = styled.div`
-  ${flexGap('8px', 'row')};
-  ${flexCenter}
-`
-
-const Box = styled.div`
+const Box = styled.ul`
   ${flexGap('1.5rem')}
   width: 100%;
 `
