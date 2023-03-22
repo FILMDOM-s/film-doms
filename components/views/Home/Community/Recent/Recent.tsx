@@ -46,7 +46,7 @@ const LinkBox = css`
   gap: 8px;
 `
 
-const Container = styled.div`
+const Container = styled.li`
   width: 100%;
   display: flex;
   gap: 16px;

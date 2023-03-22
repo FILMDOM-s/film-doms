@@ -4,7 +4,7 @@ import { css } from '@emotion/react'
 import { colors, flex, flexCenter, typography } from '@/styles/emotion'
 import { RenderIf, SwitchCase, Tag } from '@/components/common'
 
-const MovieReview = ({ id, category, title, comment }: Recent) => {
+const MovieReview = ({ id, category, title, comment }: Review) => {
   return (
     <Container>
       <SwitchCase
@@ -14,7 +14,7 @@ const MovieReview = ({ id, category, title, comment }: Recent) => {
         }}
         defaultRender={<Tag>{category}</Tag>}
       />
-      <Link href={`/community/recent/${id}`} css={LinkBox}>
+      <Link href={`/community/movie/${id}`} css={LinkBox}>
         <Title>{title}</Title>
         <RenderIf
           condition={comment.length > 0}
@@ -46,7 +46,7 @@ const LinkBox = css`
   gap: 8px;
 `
 
-const Container = styled.div`
+const Container = styled.li`
   width: 100%;
   display: flex;
   gap: 16px;
