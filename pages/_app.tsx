@@ -13,6 +13,7 @@ import { AppLayout } from '@views/Layout'
 import { AppScript, useStartWorker } from '@views/_App'
 import { useRouterChange } from '@/hooks'
 import { RecoilRoot } from 'recoil'
+import { Error, ResetErrorBoundary } from '@/components/common'
 
 export default function App({
   Component,
@@ -47,10 +48,12 @@ export default function App({
         <RecoilRoot>
           <GlobalStyles />
           <AppScript />
-          <AppLayout>
-            <Component {...pageProps} />
-            <Toaster />
-          </AppLayout>
+          <ResetErrorBoundary fallback={<Error />}>
+            <AppLayout>
+              <Component {...pageProps} />
+              <Toaster />
+            </AppLayout>
+          </ResetErrorBoundary>
         </RecoilRoot>
       </QueryClientProvider>
     </SessionProvider>

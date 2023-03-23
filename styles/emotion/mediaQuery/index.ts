@@ -4,7 +4,7 @@ export const breakpoints = {
   mobile: 0,
   tablet: 768,
   laptop: 1024,
-  pc: 1440,
+  pc: 1920,
 }
 
 const addSemicolon = (str: string) => {

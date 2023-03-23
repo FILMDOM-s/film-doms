@@ -28,7 +28,7 @@ export const parameters = {
       }),
       {}
     ),
-    defaultViewport: 'mobile',
+    defaultViewport: 'pc',
   },
   msw: handlers,
   options: {
@@ -50,7 +50,6 @@ const queryClient = new QueryClient({
       refetchIntervalInBackground: false,
       refetchInterval: false,
       refetchOnReconnect: false,
-      refetchOnMount: false,
       retryOnMount: false,
     },
   },

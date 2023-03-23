@@ -10,6 +10,12 @@ export default {
         disable: true,
       },
     },
+    category: {
+      control: {
+        type: 'radio',
+        options: ['영화', '이벤트', 'OTT 시리즈'],
+      },
+    },
   },
 } as ComponentMeta<typeof Recent>
 
@@ -19,6 +25,6 @@ export const Default = Template.bind({})
 Default.args = {
   id: 1,
   title: '이것은 Recent Title 입니다',
-  category: 'Category',
+  category: '영화',
   comment: [1, 2, 3, 4, 5],
 }
