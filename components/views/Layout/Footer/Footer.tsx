@@ -1,130 +1,78 @@
-import { flexCenter, mediaQuery } from '@/styles/emotion'
-import styled from '@emotion/styled'
 import Image from 'next/image'
-import { logoEng, logoKor } from '@images/common'
-import { Instagram } from '@svgs/common'
-import Link from 'next/link'
-
-const UTILITY_LINKS = {
-  about: {
-    title: 'About',
-    link: '/about',
-  },
-  advertisement: {
-    title: 'Advertisement',
-    link: '/advertisement',
-  },
-  privacy: {
-    title: 'Privacy',
-    link: '/privacy',
-  },
-  qna: {
-    title: 'QnA',
-    link: '/qna',
-  },
-}
+import styled from '@emotion/styled'
+import { logoEngGray } from '@images/common'
+import { Divider } from '@/components/common'
+import { colors, flexCenter, flexGap, typography } from '@/styles/emotion'
+import { FILMDOMS_INFO, CONTACT, ABOUT, FOLLOWUS } from './constants'
+import LinkSection from './LinkSection'
 
 const Footer = () => {
   return (
-    <FooterContainer>
-      <LogoEngBox>
-        <Image src={logoEng} alt="filmdoms-logo-eng" fill />
-      </LogoEngBox>
-      <LogoKorBox>
-        <Image src={logoKor} alt="filmdoms-logo-kor" fill />
-      </LogoKorBox>
-      <InstaGramBox>
-        <Link href="https://www.instagram.com/filmdoms/">
-          <Instagram />
-        </Link>
-      </InstaGramBox>
-      <HStack>
-        {Object.values(UTILITY_LINKS).map(({ title, link }) => {
-          return (
-            <Link key={`link-${title}`} href={link}>
-              <LinkText>{title}</LinkText>
-            </Link>
-          )
-        })}
-      </HStack>
-      <CopyRight>Copyright Filmdom`s Rights All Reserved</CopyRight>
-    </FooterContainer>
+    <Container>
+      <Box>
+        <Image src={logoEngGray} alt="filmdoms logo" width="360" height="40" />
+        <Divider color={colors.grey[900]} />
+        <BottomBox>
+          <LeftBox>
+            <InfoBox>
+              <Text>필름덤즈 대표자 : {FILMDOMS_INFO.대표자}</Text>
+              <Text>등록번호 : {FILMDOMS_INFO.등록번호}</Text>
+              <Text>등록일 : {FILMDOMS_INFO.등록일}</Text>
+              <Text>문의 및 제안 : {FILMDOMS_INFO.contact}</Text>
+            </InfoBox>
+            <Text color={colors.grey[900]}>
+              CopyRight&#40;C&#41; FILMDOM&#39;S. All Rights Reserved
+            </Text>
+          </LeftBox>
+          <RightBox>
+            <LinkSection title="Contact" list={CONTACT} />
+            <LinkSection title="About" list={ABOUT} />
+            <LinkSection title="Follow us" list={FOLLOWUS} />
+          </RightBox>
+        </BottomBox>
+      </Box>
+    </Container>
   )
 }
 
-const LogoEngBox = styled.div`
-  position: relative;
-  width: 245px;
-  height: 41px;
-
-  ${mediaQuery.tablet`
-    width: 314px;
-    height: 52px;
-  `}
+const RightBox = styled.div`
+  ${flexGap('100px', 'row')}
+  width: 50%;
+  padding-left: 40px;
 `
 
-const LogoKorBox = styled.div`
-  position: relative;
-  width: 115px;
-  height: 31px;
-
-  ${mediaQuery.tablet`
-    width: 147px;
-    height: 39px;
-  `}
+export const Text = styled.p<{
+  color?: string
+  typo?: (typeof typography)[keyof typeof typography]
+}>`
+  ${({ typo = typography.contentBody }) => typo};
+  color: ${({ color = '#888888' }) => color};
 `
 
-const InstaGramBox = styled.div`
-  position: relative;
-  width: 18px;
-  height: 18px;
-
-  ${mediaQuery.tablet`
-    width: 20px;
-    height: 20px;
-  `}
+const InfoBox = styled.div`
+  ${flexGap('18px')}
 `
 
-const HStack = styled.div`
+const LeftBox = styled.div`
+  ${flexGap('40px')}
+  width: 50%;
+`
+
+const BottomBox = styled.div`
   display: flex;
-  justify-content: space-between;
   width: 100%;
-  max-width: 400px;
 `
 
-const LinkText = styled.p`
-  font-weight: 400;
-  font-size: 12px;
-  line-height: 18px;
-  color: #999999;
-
-  ${mediaQuery.tablet`
-    font-size: 14px;
-    line-height: 22px;
-  `}
+const Box = styled.div`
+  ${flexGap('40px')}
+  width: 1280px;
 `
 
-const CopyRight = styled.p`
-  font-weight: 300;
-  font-size: 12px;
-  line-height: 18px;
-  color: #666666;
-
-  ${mediaQuery.tablet`
-    font-size: 14px;
-    line-height: 22px;
-  `}
-`
-
-const FooterContainer = styled.footer`
-  display: flex;
-  flex-direction: column;
+const Container = styled.footer`
   ${flexCenter}
-  padding: 2rem;
-  gap: 1.5rem;
-  background-color: #000000;
   width: 100%;
-  height: auto;
+  height: 604px;
+  background-color: ${colors.primary.black};
 `
 
 export default Footer
