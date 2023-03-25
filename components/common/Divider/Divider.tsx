@@ -3,10 +3,21 @@ import styled from '@emotion/styled'
 import { colors } from '@/styles/emotion'
 
 interface Props extends HTMLAttributes<HTMLHRElement> {
+  /**
+   * @description 수평, 수직을 지정합니다.
+   *
+   * @default horizontal
+   */
   orientation?: 'horizontal' | 'vertical'
+  /**
+   * @description 색상을 지정합니다.
+   *
+   * @default colors.primary.black
+   */
   color?: string
   /**
    * @description px단위입니다.
+   *
    * @default 2
    */
   size?: number
