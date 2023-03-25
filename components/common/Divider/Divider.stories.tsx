@@ -1,5 +1,5 @@
-import { colors } from '@/styles/emotion'
 import { ComponentMeta, ComponentStory } from '@storybook/react'
+import { colors } from '@/styles/emotion'
 import Divider from './Divider'
 
 export default {
@@ -7,9 +7,13 @@ export default {
   component: Divider,
 } as ComponentMeta<typeof Divider>
 
-const Template: ComponentStory<typeof Divider> = args => <Divider {...args} />
-
-export const Default = Template.bind({})
+export const Default: ComponentStory<typeof Divider> = args => {
+  return (
+    <div style={{ width: '500px', height: '500px' }}>
+      <Divider {...args} />
+    </div>
+  )
+}
 
 export const Horizontal = () => {
   return (
