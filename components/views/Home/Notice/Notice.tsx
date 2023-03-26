@@ -1,23 +1,40 @@
 import { flexCenter, mediaQuery } from '@/styles/emotion'
 import { css } from '@emotion/react'
 import Image from 'next/image'
+import * as Tag from '@components/common/Tag/Shape'
+import * as Button from '@components/common/Button'
 
 const Notice = ({
   title,
+  owner,
+  type,
+  classification,
   image,
   startAt,
   endAt,
 }: {
   title: string
+  owner: string
+  type: string
+  classification: string
   image: string
   startAt: string
   endAt: string
 }) => {
   return (
     <div css={NoticeElement} className="notice">
-      <Image width={303} height={392} src={image} alt="title" />
+      <Image width={360} height={400} src={image} alt="title" />
+      <div css={NoticeElementOwnerWrapper}>
+        <div css={NoticeElementOwner}>{owner}</div>
+        <div>
+          <Tag.Round>{classification}</Tag.Round>
+        </div>
+      </div>
       <div css={NoticeElementTitle}>{title}</div>
-      <div css={NoticeElementDate}>{`${startAt} ~ ${endAt}`}</div>
+      <div css={NoticeElementDateWrapper}>
+        <div css={NoticeElementDate}>{`${startAt} ~ ${endAt}`}</div>
+        <Button.TicketButton>{'자세히 보기'}</Button.TicketButton>
+      </div>
     </div>
   )
 }
@@ -25,67 +42,51 @@ const Notice = ({
 export default Notice
 
 const NoticeElement = css`
-  ${flexCenter}
   flex-direction: column;
-  min-width: 161px;
-  min-height: 210px;
+  font-family: 'Pretendard';
+  font-style: normal;
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+`
 
-  ${mediaQuery.tablet`
-    min-width: 161px
-    min-height: 210px;
-  `}
+const NoticeElementOwnerWrapper = css`
+  ${flexCenter}
+  justify-content: flex-start;
+  width: 100%;
+  padding-top: 20px;
+  gap: 16px;
+`
 
-  ${mediaQuery.laptop`
-    min-width: 211px;
-    min-height: 275px;
-  `}
+const NoticeElementDateWrapper = css`
+  ${flexCenter}
+  justify-content: space-between;
+  width: 100%;
+  padding-top: 20px;
+`
 
-  ${mediaQuery.pc`
-    max-width: 303px;
-    min-height: 392px;
-  `}
+const NoticeElementOwner = css`
+  font-weight: 700;
+  font-size: 16px;
+  line-height: 16px;
+  display: flex;
+  align-items: center;
+  letter-spacing: 0.01em;
+  color: #ff5414;
 `
 
 const NoticeElementTitle = css`
-  width: 100%;
-  font-family: Pretendard;
-  font-size: 16px;
   font-weight: 700;
-  line-height: 24px;
-  letter-spacing: 0em;
-  text-align: left;
-  padding-top: 14px;
-
-  ${mediaQuery.laptop`
   font-size: 20px;
-  line-height: 33px;
-  `}
-
-  ${mediaQuery.pc`
-    font-size: 24px;
   line-height: 36px;
-  padding-top: 16px;
-`}
+  color: #111111;
+  padding-top: 17px;
 `
 const NoticeElementDate = css`
-  width: 100%;
-  font-family: Pretendard;
   font-size: 14px;
   font-weight: 400;
   line-height: 20px;
   letter-spacing: 0em;
-  text-align: left;
   color: #666666;
   padding-top: 10px;
-
-  ${mediaQuery.laptop`
-  font-size: 16px;
-  line-height: 20px;
-  `}
-
-  ${mediaQuery.pc`
-  font-size: 20px;
-  line-height: 30px;
-  padding-top: 14px;
-  `}
 `
