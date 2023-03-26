@@ -1,16 +1,14 @@
-import { flex, flexGap } from '@/styles/emotion'
+import { flex } from '@/styles/emotion'
 import styled from '@emotion/styled'
 import CommunityContainer from './Community'
 import BannerContainer from './Banner'
 import NoticeContainer from './Notice'
-import NavContainer from './Nav/NavContainer'
 import CriticConatiner from './Critic/CriticConatiner'
 
 const HomeContainer = () => {
   return (
     <PageContainer>
       <Wrapper>
-        <NavContainer />
         <BannerContainer />
         <CommunityContainer />
         <NoticeContainer />
@@ -21,7 +19,6 @@ const HomeContainer = () => {
 }
 
 const Wrapper = styled.div`
-  ${flexGap('120px')}
   width: 1280px;
 `
 

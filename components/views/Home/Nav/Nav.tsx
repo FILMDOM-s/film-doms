@@ -1,9 +1,11 @@
-import { useRouter } from 'next/router'
-import React from 'react'
+import Link from 'next/link'
 
 const Nav = ({ text, link }: { text: string; link: string }) => {
-  const router = useRouter()
-  return <div onClick={() => router.push(link)}>{text}</div>
+  return (
+    <Link href={link} passHref>
+      {text}
+    </Link>
+  )
 }
 
 export default Nav
