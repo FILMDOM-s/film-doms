@@ -22,8 +22,10 @@ Default.args = {
     .fill(0)
     .map((_, index) => ({
       id: index,
+      type: `이것은 movie타입입니다.`,
       image: getMockImage(`picture${index}`, SIZE),
       title: `이것은 사진${index + 1}입니다.`,
+      subtitle: `이것은 사진${index + 1}의 설명입니다.`,
     })),
 }
 
