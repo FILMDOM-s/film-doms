@@ -1,43 +1,36 @@
-import { css } from '@emotion/react'
+import styled from '@emotion/styled'
 import { ComponentMeta, ComponentStory } from '@storybook/react'
-import Square from './Square'
 import { mediaQuery } from '@/styles/emotion'
+import Tag from '../../Tag'
 
 export default {
   title: 'Common/Tag/Square',
-  component: Square,
-} as ComponentMeta<typeof Square>
+  component: Tag,
+} as ComponentMeta<typeof Tag>
 
-export const Default: ComponentStory<typeof Square> = args => (
-  <Square {...args}>영화</Square>
+export const Default: ComponentStory<typeof Tag> = args => (
+  <Tag {...args}>영화</Tag>
 )
 
-export const Orange: ComponentStory<typeof Square> = args => (
-  <Square {...args}>이벤트</Square>
+export const Orange: ComponentStory<typeof Tag> = args => (
+  <Tag {...args}>이벤트</Tag>
 )
 Orange.args = {
   color: 'orange',
 }
 
-export const List: ComponentStory<typeof Square> = args => (
-  <div
-    css={css`
-      display: flex;
-      flex-direction: column;
-      gap: 1rem;
-      ${mediaQuery.tablet`
-      flex-direction: row;
-    `}
-    `}
-  >
-    <Square {...args}>영화</Square>
-    <Square {...args}>OTT 시리즈</Square>
-    <Square {...args} color="orange">
+export const List: ComponentStory<typeof Tag> = args => (
+  <ListBox>
+    <Tag {...args}>영화</Tag>
+    <Tag shape="square" {...args}>
+      OTT 시리즈
+    </Tag>
+    <Tag {...args} color="orange">
       이벤트
-    </Square>
-    <Square {...args}>드라마</Square>
-    <Square {...args}>굿즈</Square>
-  </div>
+    </Tag>
+    <Tag {...args}>드라마</Tag>
+    <Tag {...args}>굿즈</Tag>
+  </ListBox>
 )
 List.argTypes = {
   color: {
@@ -45,4 +38,18 @@ List.argTypes = {
       disable: true,
     },
   },
+  shape: {
+    table: {
+      disable: true,
+    },
+  },
 }
+
+const ListBox = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  ${mediaQuery.tablet`
+    flex-direction: row;
+  `}
+`

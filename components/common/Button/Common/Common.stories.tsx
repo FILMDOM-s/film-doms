@@ -1,48 +1,34 @@
-import { css } from '@emotion/react'
 import styled from '@emotion/styled'
 import { ComponentMeta, ComponentStory } from '@storybook/react'
-import { ArrowRight } from '@svgs/common'
-import { flexCenter, mediaQuery } from '@/styles/emotion'
-import Common from './Common'
+import { ArrowRight, Instagram, Search } from '@svgs/common'
+import { mediaQuery } from '@/styles/emotion'
+import { Button } from '..'
 
 export default {
   title: 'Common/Button/Common',
-  component: Common,
-} as ComponentMeta<typeof Common>
+  component: Button,
+} as ComponentMeta<typeof Button>
 
-export const Default: ComponentStory<typeof Common> = args => (
-  <Common {...args}>More</Common>
+export const Default: ComponentStory<typeof Button> = args => (
+  <Button {...args}>More</Button>
 )
 
 export const List = () => (
-  <div
-    css={css`
-      display: flex;
-      flex-direction: column;
-      gap: 1rem;
-
-      ${mediaQuery.tablet`
-        flex-direction: row;
-      `}
-    `}
-  >
-    <Common>
-      <FlexBox>
-        More <ArrowRight />
-      </FlexBox>
-    </Common>
-    <Common>
-      <FlexBox>
-        <ArrowRight /> More
-      </FlexBox>
-    </Common>
-    <Common>
-      <FlexBox>자세히보기</FlexBox>
-    </Common>
-  </div>
+  <ListBox>
+    <Button rightIcon={<ArrowRight />}>More</Button>
+    <Button leftIcon={<ArrowRight />}>More</Button>
+    <Button leftIcon={<Instagram />} rightIcon={<Search />}>
+      자세히보기
+    </Button>
+  </ListBox>
 )
 
-const FlexBox = styled.div`
-  ${flexCenter}
-  gap: 8px;
+const ListBox = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+
+  ${mediaQuery.tablet`
+    flex-direction: row;
+  `}
 `
