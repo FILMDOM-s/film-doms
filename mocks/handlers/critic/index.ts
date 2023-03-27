@@ -9,9 +9,10 @@ export const getCritics = rest.get('/api/critic', (req, res, ctx) => {
         image:
           'https://imagedelivery.net/6qzLODAqs2g1LZbVYqtuQw/722098c6-21f9-41da-1fe7-37cd06a3c200/public',
         tag: 'Movie',
-        title: '콘텐츠 타이틀 이 영역은 최대 28자까지 보입니다.',
+        title:
+          '테스트테스트테스트테스트테스트테스트테스트테스트테스트테스트테스트테스트테스트테스트테스트테스트테스트테스트테스트테스트테스트테스트테스트테스트테스트테스트테스트테스트테스트테스트',
         description:
-          '콘텐츠 본문 폰트: 프리텐다드 16px (Medium) 이 영역은 최대 75자까지 보입니다.',
+          '테스트테스트테스트테스트테스트테스트테스트테스트테스트테스트테스트테스트테스트테스트테스트테스트테스트테스트테스트테스트테스트테스트테스트테스트테스트테스트테스트테스트테스트테스트',
         createAt: '2023.02.11',
         author: '글쓴이',
       },
