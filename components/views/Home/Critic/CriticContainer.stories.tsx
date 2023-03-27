@@ -1,3 +1,4 @@
+import styled from '@emotion/styled'
 import { ComponentMeta, ComponentStory } from '@storybook/react'
 import CriticConatiner from './CriticConatiner'
 
@@ -7,7 +8,12 @@ export default {
 } as ComponentMeta<typeof CriticConatiner>
 
 const Template: ComponentStory<typeof CriticConatiner> = () => (
-  <CriticConatiner />
+  <Container>
+    <CriticConatiner />
+  </Container>
 )
 
 export const Default = Template.bind({})
+const Container = styled.div`
+  width: 1280px;
+`
