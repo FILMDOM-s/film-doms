@@ -31,8 +31,9 @@ const Container = styled.div`
     line-height: 29px;
     text-align: center;
     text-transform: capitalize;
+    transition: 0.2s ease-in-out;
   }
-  > a:nth-child(2) {
+  > a:hover {
     color: #ff5414;
   }
 `
