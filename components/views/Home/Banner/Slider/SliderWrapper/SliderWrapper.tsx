@@ -24,7 +24,7 @@ function SliderWrapper({ banners }: { banners?: Banner[] }) {
       >
         {banners?.map(({ id, type,title, subtitle,image }: Banner) => (
           <SwiperSlide key={id}>
-            <Image src={image} alt={title} width={1280} height={440} />
+            <Image src={image} alt={title} width={1280} height={440} priority/>
             <TextArea>
               <TypeText>{type}</TypeText>
               <TitleText>{title}</TitleText>
