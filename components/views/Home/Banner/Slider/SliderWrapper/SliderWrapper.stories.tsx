@@ -1,6 +1,7 @@
 import { ComponentMeta, ComponentStory } from '@storybook/react'
 import { getMockImage } from '@/utils'
 import SliderWrapper from './SliderWrapper'
+import styled from '@emotion/styled'
 
 export default {
   component: SliderWrapper,
@@ -8,12 +9,16 @@ export default {
 } as ComponentMeta<typeof SliderWrapper>
 
 const Template: ComponentStory<typeof SliderWrapper> = args => (
-  <SliderWrapper {...args} />
+  <Wrapper><SliderWrapper {...args} /></Wrapper>
 )
 
+const Wrapper = styled.div`
+  width: 1280px;
+`
+
 const SIZE = {
-  width: 2880,
-  height: 760,
+  width: 1280,
+  height: 440,
 }
 
 export const Default = Template.bind({})
