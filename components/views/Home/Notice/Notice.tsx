@@ -1,9 +1,7 @@
-import { flexCenter, mediaQuery } from '@/styles/emotion'
-import { css } from '@emotion/react'
+import { flexCenter } from '@/styles/emotion'
 import Image from 'next/image'
-import * as Tag from '@components/common/Tag/Shape'
-import * as Button from '@components/common/Button'
 import styled from '@emotion/styled'
+import { Tag, TicketButton } from '@/components/common'
 
 const Notice = ({
   title,
@@ -27,12 +25,12 @@ const Notice = ({
       <Image width={360} height={400} src={image} alt="title" />
       <NoticeElementOwnerWrapper>
         <NoticeElementOwner>{owner}</NoticeElementOwner>
-        <Tag.Round>{classification}</Tag.Round>
+        <Tag shape='round'>{classification}</Tag>
       </NoticeElementOwnerWrapper>
       <NoticeElementTitle>{title}</NoticeElementTitle>
       <NoticeElementDateWrapper>
         <NoticeElementDate>{`${startAt} ~ ${endAt}`}</NoticeElementDate>
-        <Button.TicketButton>{'자세히 보기'}</Button.TicketButton>
+        <TicketButton>{'자세히 보기'}</TicketButton>
       </NoticeElementDateWrapper>
     </NoticeElement>
   )
