@@ -14,7 +14,7 @@ const NoticeContainer = () => {
         right={
           <Button
             rightIcon={<ArrowRight />}
-            onClick={() => push('/community/recent')}
+            onClick={() => push('/notice')}
           >
             More
           </Button>

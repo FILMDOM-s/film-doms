@@ -3,6 +3,7 @@ import { css } from '@emotion/react'
 import Image from 'next/image'
 import * as Tag from '@components/common/Tag/Shape'
 import * as Button from '@components/common/Button'
+import styled from '@emotion/styled'
 
 const Notice = ({
   title,
@@ -22,26 +23,24 @@ const Notice = ({
   endAt: string
 }) => {
   return (
-    <div css={NoticeElement} className="notice">
+    <NoticeElement>
       <Image width={360} height={400} src={image} alt="title" />
-      <div css={NoticeElementOwnerWrapper}>
-        <div css={NoticeElementOwner}>{owner}</div>
-        <div>
-          <Tag.Round>{classification}</Tag.Round>
-        </div>
-      </div>
-      <div css={NoticeElementTitle}>{title}</div>
-      <div css={NoticeElementDateWrapper}>
-        <div css={NoticeElementDate}>{`${startAt} ~ ${endAt}`}</div>
+      <NoticeElementOwnerWrapper>
+        <NoticeElementOwner>{owner}</NoticeElementOwner>
+        <Tag.Round>{classification}</Tag.Round>
+      </NoticeElementOwnerWrapper>
+      <NoticeElementTitle>{title}</NoticeElementTitle>
+      <NoticeElementDateWrapper>
+        <NoticeElementDate>{`${startAt} ~ ${endAt}`}</NoticeElementDate>
         <Button.TicketButton>{'자세히 보기'}</Button.TicketButton>
-      </div>
-    </div>
+      </NoticeElementDateWrapper>
+    </NoticeElement>
   )
 }
 
 export default Notice
 
-const NoticeElement = css`
+const NoticeElement = styled.div`
   flex-direction: column;
   font-family: 'Pretendard';
   font-style: normal;
@@ -50,7 +49,7 @@ const NoticeElement = css`
   justify-content: center;
 `
 
-const NoticeElementOwnerWrapper = css`
+const NoticeElementOwnerWrapper = styled.div`
   ${flexCenter}
   justify-content: flex-start;
   width: 100%;
@@ -58,14 +57,14 @@ const NoticeElementOwnerWrapper = css`
   gap: 16px;
 `
 
-const NoticeElementDateWrapper = css`
+const NoticeElementDateWrapper = styled.div`
   ${flexCenter}
   justify-content: space-between;
   width: 100%;
   padding-top: 20px;
 `
 
-const NoticeElementOwner = css`
+const NoticeElementOwner = styled.div`
   font-weight: 700;
   font-size: 16px;
   line-height: 16px;
@@ -75,14 +74,14 @@ const NoticeElementOwner = css`
   color: #ff5414;
 `
 
-const NoticeElementTitle = css`
+const NoticeElementTitle = styled.div`
   font-weight: 700;
   font-size: 20px;
   line-height: 36px;
   color: #111111;
   padding-top: 17px;
 `
-const NoticeElementDate = css`
+const NoticeElementDate = styled.div`
   font-size: 14px;
   font-weight: 400;
   line-height: 20px;
