@@ -16,23 +16,26 @@ const NavContainer = () => {
 const Container = styled.div`
   width: 100%;
   display: flex;
-  justify-content: center;
+  justify-content: flex-start;
   align-items: center;
-  gap: 30px;
-  padding-top: 15px;
-  padding-bottom: 15px;
-
-  ${mediaQuery.tablet`
-    gap: 70px;
-  `}
-
-  ${mediaQuery.laptop`
-    gap: 70px;
-  `}
-
-  ${mediaQuery.pc`
-    gap: 140px;
-  `}
+  gap: 80px;
+  color: #ffffff;
+  padding: 0px 96px;
+  > a {
+    color: #f7f7f5;
+    text-decoration: none;
+    font-family: 'Pretendard';
+    font-style: normal;
+    font-weight: 700;
+    font-size: 24px;
+    line-height: 29px;
+    text-align: center;
+    text-transform: capitalize;
+    transition: 0.2s ease-in-out;
+  }
+  > a:hover {
+    color: #ff5414;
+  }
 `
 
 export default NavContainer

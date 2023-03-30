@@ -1,91 +1,89 @@
-import { flexCenter, mediaQuery } from '@/styles/emotion'
-import { css } from '@emotion/react'
+import { flexCenter } from '@/styles/emotion'
 import Image from 'next/image'
+import styled from '@emotion/styled'
+import { Tag, TicketButton } from '@/components/common'
 
 const Notice = ({
   title,
+  owner,
+  type,
+  classification,
   image,
   startAt,
   endAt,
 }: {
   title: string
+  owner: string
+  type: string
+  classification: string
   image: string
   startAt: string
   endAt: string
 }) => {
   return (
-    <div css={NoticeElement} className="notice">
-      <Image width={303} height={392} src={image} alt="title" />
-      <div css={NoticeElementTitle}>{title}</div>
-      <div css={NoticeElementDate}>{`${startAt} ~ ${endAt}`}</div>
-    </div>
+    <NoticeElement>
+      <Image width={360} height={400} src={image} alt="title" />
+      <NoticeElementOwnerWrapper>
+        <NoticeElementOwner>{owner}</NoticeElementOwner>
+        <Tag shape='round'>{classification}</Tag>
+      </NoticeElementOwnerWrapper>
+      <NoticeElementTitle>{title}</NoticeElementTitle>
+      <NoticeElementDateWrapper>
+        <NoticeElementDate>{`${startAt} ~ ${endAt}`}</NoticeElementDate>
+        <TicketButton>{'자세히 보기'}</TicketButton>
+      </NoticeElementDateWrapper>
+    </NoticeElement>
   )
 }
 
 export default Notice
 
-const NoticeElement = css`
-  ${flexCenter}
+const NoticeElement = styled.div`
   flex-direction: column;
-  min-width: 161px;
-  min-height: 210px;
-
-  ${mediaQuery.tablet`
-    min-width: 161px
-    min-height: 210px;
-  `}
-
-  ${mediaQuery.laptop`
-    min-width: 211px;
-    min-height: 275px;
-  `}
-
-  ${mediaQuery.pc`
-    max-width: 303px;
-    min-height: 392px;
-  `}
+  font-family: 'Pretendard';
+  font-style: normal;
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
 `
 
-const NoticeElementTitle = css`
+const NoticeElementOwnerWrapper = styled.div`
+  ${flexCenter}
+  justify-content: flex-start;
   width: 100%;
-  font-family: Pretendard;
-  font-size: 16px;
+  padding-top: 20px;
+  gap: 16px;
+`
+
+const NoticeElementDateWrapper = styled.div`
+  ${flexCenter}
+  justify-content: space-between;
+  width: 100%;
+  padding-top: 20px;
+`
+
+const NoticeElementOwner = styled.div`
   font-weight: 700;
-  line-height: 24px;
-  letter-spacing: 0em;
-  text-align: left;
-  padding-top: 14px;
-
-  ${mediaQuery.laptop`
-  font-size: 20px;
-  line-height: 33px;
-  `}
-
-  ${mediaQuery.pc`
-    font-size: 24px;
-  line-height: 36px;
-  padding-top: 16px;
-`}
+  font-size: 16px;
+  line-height: 16px;
+  display: flex;
+  align-items: center;
+  letter-spacing: 0.01em;
+  color: #ff5414;
 `
-const NoticeElementDate = css`
-  width: 100%;
-  font-family: Pretendard;
+
+const NoticeElementTitle = styled.div`
+  font-weight: 700;
+  font-size: 20px;
+  line-height: 36px;
+  color: #111111;
+  padding-top: 17px;
+`
+const NoticeElementDate = styled.div`
   font-size: 14px;
   font-weight: 400;
   line-height: 20px;
   letter-spacing: 0em;
-  text-align: left;
   color: #666666;
   padding-top: 10px;
-
-  ${mediaQuery.laptop`
-  font-size: 16px;
-  line-height: 20px;
-  `}
-
-  ${mediaQuery.pc`
-  font-size: 20px;
-  line-height: 30px;
-  padding-top: 14px;
-  `}
 `

@@ -22,12 +22,17 @@
   background-color: #d9d9d9;
 }
 
+.swiper-pagination{
+  left : 80px !important;
+  bottom: 40px !important;
+  width: auto !important;
+}
+
 :root {
-  --swiper-theme-color: black !important;
+  --swiper-theme-color: white !important;
   --swiper-pagination-bullet-inactive-color: rgba(160, 160, 160, 1) !important;
-  --swiper-pagination-bullet-width: 10px !important;
-  --swiper-pagination-bullet-size: 10px !important;
-  --swiper-navigation-size: 20px !important;
+  --swiper-pagination-bullet-width: 8px !important;
+  --swiper-pagination-bullet-size: 8px !important;
 }
 
 .swiper-button-prev {
