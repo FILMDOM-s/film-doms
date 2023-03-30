@@ -1,6 +1,7 @@
 import { Tag } from '@/components/common'
 import { colors, typography } from '@/styles/emotion'
 import cutString from '@/utils/cutString'
+import dateFormat from '@/utils/dateFormat'
 import styled from '@emotion/styled'
 import Image from 'next/image'
 
@@ -33,7 +34,7 @@ const Critic = ({
         </ContentBodyHeader>
         <Title>{cutString(title, 28)}</Title>
         <Description>{cutString(description, 70)}</Description>
-        <Time>{createAt}</Time>
+        <Time>{dateFormat(createAt)}</Time>
       </ContentBody>
     </CriticBox>
   )
