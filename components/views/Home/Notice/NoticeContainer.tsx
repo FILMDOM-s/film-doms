@@ -1,12 +1,25 @@
-import { ResetErrorBoundary, Section } from '@/components/common'
+import { ArrowRight } from '@svgs/common'
+import { Button, ResetErrorBoundary, Section } from '@/components/common'
 import { css } from '@emotion/react'
+import { useRouter } from 'next/router'
 import React, { Suspense } from 'react'
 import Notices from './Notices'
 
 const NoticeContainer = () => {
+  const { push } = useRouter()
   return (
-    <Section>
-      <Section.Title>NOTICE</Section.Title>
+    <Section style={{"marginTop":"100px"}}>
+      <Section.Header
+        title="Notice"
+        right={
+          <Button
+            rightIcon={<ArrowRight />}
+            onClick={() => push('/notice')}
+          >
+            More
+          </Button>
+        }
+      />
       <Section.Body css={SectionBody}>
         <ResetErrorBoundary fallback={<div>에러...</div>}>
           <Suspense fallback={<div>로딩...</div>}>
@@ -21,9 +34,7 @@ const NoticeContainer = () => {
 export default NoticeContainer
 
 const SectionBody = css`
-  padding: 0 20px;
   display: flex;
   justify-content: center;
-  margin: 24px 0 36px 0;
-  
+  margin: 44px 0 36px 0;
 `

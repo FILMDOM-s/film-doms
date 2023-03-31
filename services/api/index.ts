@@ -2,7 +2,7 @@ import axios from 'axios'
 
 const getDomain = () => {
   if (process.env.NODE_ENV === 'development') {
-    return 'http://localhost:3000'
+    return '/'
   } else {
     return 'https://film-doms.vercel.app'
   }
@@ -13,7 +13,7 @@ const createApi = () => {
     baseURL: `${getDomain()}`,
   })
 
-  _api.interceptors.response.use((response) => {
+  _api.interceptors.response.use(response => {
     return response.data
   })
 

@@ -1,42 +1,43 @@
-import { ResetErrorBoundary, Section } from '@/components/common'
-import { mediaQuery } from '@/styles/emotion'
-import { css } from '@emotion/react'
-import React, { Suspense } from 'react'
+import { ArrowRight } from '@/assets/svgs/common'
+import { Button, ResetErrorBoundary, Section } from '@/components/common'
+import styled from '@emotion/styled'
+import { useRouter } from 'next/router'
+import { Suspense } from 'react'
 import Critics from './Critics'
 
 const CriticConatiner = () => {
+  const { push } = useRouter()
+
   return (
-    <Section>
-      <Section.Title>CRITIC</Section.Title>
-      <Section.Body css={SectionBody}>
+    <SectionWrapper>
+      <Section.Header
+        title="Critic"
+        right={
+          <Button
+            rightIcon={<ArrowRight />}
+            onClick={() => push('/community/critic')}
+          >
+            More
+          </Button>
+        }
+      />
+      <SectionBody>
         <ResetErrorBoundary fallback={<div>에러...</div>}>
           <Suspense fallback={<div>로딩...</div>}>
             <Critics />
           </Suspense>
         </ResetErrorBoundary>
-      </Section.Body>
-    </Section>
+      </SectionBody>
+    </SectionWrapper>
   )
 }
 
 export default CriticConatiner
 
-const SectionBody = css`
-  padding: 0 20px;
-  display: flex;
-  justify-content: center;
-  margin: 24px 0 36px 0;
+const SectionWrapper = styled(Section)`
+  gap: 44px;
+`
 
-  ${mediaQuery.tablet`{
-    padding: 0 40px;
-    margin: 32px 0 72px 0;
-  `}
-  ${mediaQuery.laptop`{
-    padding: 0 60px;
-    margin: 44px 0 80px 0;
-  `}
-  ${mediaQuery.pc`{
-    padding: 0 60px;
-    margin: 56px 0 150px 0;
-  `}
+const SectionBody = styled(Section.Body)`
+  margin-bottom: 188px;
 `

@@ -1,6 +1,5 @@
 import '@/styles/globals.css'
 import '@/styles/carousel.css'
-import '@/styles/side-nav.css'
 import { Session } from 'next-auth'
 import type { AppProps } from 'next/app'
 import { useCallback } from 'react'
@@ -8,11 +7,12 @@ import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import { SessionProvider } from 'next-auth/react'
 import { Toaster } from 'react-hot-toast'
 import * as gtag from 'lib/gtag'
-import { startWorker } from '@/mocks'
 import GlobalStyles from '@/styles/GlobalStyles'
 import { AppLayout } from '@views/Layout'
 import { AppScript, useStartWorker } from '@views/_App'
 import { useRouterChange } from '@/hooks'
+import { RecoilRoot } from 'recoil'
+import { Error, ResetErrorBoundary } from '@/components/common'
 
 export default function App({
   Component,
@@ -44,12 +44,16 @@ export default function App({
   return (
     <SessionProvider session={session}>
       <QueryClientProvider client={queryClient}>
-        <GlobalStyles />
-        <AppScript />
-        <AppLayout>
-          <Component {...pageProps} />
-          <Toaster />
-        </AppLayout>
+        <RecoilRoot>
+          <GlobalStyles />
+          <AppScript />
+          <ResetErrorBoundary fallback={<Error />}>
+            <AppLayout>
+              <Component {...pageProps} />
+              <Toaster />
+            </AppLayout>
+          </ResetErrorBoundary>
+        </RecoilRoot>
       </QueryClientProvider>
     </SessionProvider>
   )

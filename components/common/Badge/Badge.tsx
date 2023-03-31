@@ -7,7 +7,16 @@ interface Props extends Required<PropsWithChildren> {
 }
 
 const Badge = ({ children, theme = 'default' }: Props) => {
-  return <span css={Theme(theme)}>{children}</span>
+  return (
+    <span
+      css={css`
+        width: fit-content;
+        ${Theme(theme)}
+      `}
+    >
+      {children}
+    </span>
+  )
 }
 
 export default Badge
