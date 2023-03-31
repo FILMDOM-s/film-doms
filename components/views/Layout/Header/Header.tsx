@@ -1,41 +1,52 @@
 import { mediaQuery } from '@/styles/emotion'
 import styled from '@emotion/styled'
 import { logoEngBk } from '@images/common'
-import {
-  IconBrandInstagram,
-  IconUser,
-  IconSearch,
-  IconMenu2,
-} from '@tabler/icons-react'
+import { IconMenu2 } from '@tabler/icons-react'
 import Image from 'next/image'
 import { flexCenter } from '@/styles/emotion'
-import useResizeWindow from '@/hooks/useResizeWindow'
+import SideNav from '../SideNav'
+import { useState } from 'react'
+import { useResizeWindow } from '@/hooks'
+import * as Svgs from '@svgs/common'
+import NavContainer from '../../Home/Nav/NavContainer'
 
 const Header = () => {
   const windowWidth = useResizeWindow()
-  const responseFontSize = windowWidth <= 768 ? '28px' : '32px';
-  
+  const responseFontSize = windowWidth <= 768 ? '28px' : '32px'
+  const [showSideNav, setShowSideNav] = useState(false)
+
   return (
     <HeaderContainer>
       <HeaderInner>
-        <NavWrapper>
-          <IconMenu2 stroke={2} size={responseFontSize} />
-        </NavWrapper>
         <ImageWrapper>
-          <Image src={logoEngBk} alt="filmdoms-logo-eng" />
+          <Svgs.LogoWhite />
         </ImageWrapper>
-        <RightSide>
-          <RightSideWrapper>
-          <IconBrandInstagram
-            stroke={2}
-            size={responseFontSize}
-            id="instagram"
-          />
-          <IconUser stroke={2} id="user" size={responseFontSize} />
-          </RightSideWrapper>
-          <IconSearch stroke={2} id="search" size={responseFontSize} />
-        </RightSide>
+        <NavContainer/>
+        {/* <MenuWrapper
+          onClick={() => {
+            setShowSideNav(!showSideNav)
+          }}
+        >
+          <IconMenu2 stroke={2} color={"white"} size={responseFontSize} />
+        </MenuWrapper> */}
+        <RightSideWrapper>
+          <IconMutableWrapper>
+            <IconWrapper>
+              <Svgs.Instagram fill="#FFFFFF" />
+            </IconWrapper>
+            <IconWrapper>
+              <Svgs.Search fill="#FFFFFF" />
+            </IconWrapper>
+          </IconMutableWrapper>
+          <IconWrapper>
+            <Svgs.Person fill="#FFFFFF" />
+          </IconWrapper>
+        </RightSideWrapper>
       </HeaderInner>
+      <SideNav
+        isShow={showSideNav}
+        onClose={() => setShowSideNav(!showSideNav)}
+      />
     </HeaderContainer>
   )
 }
@@ -43,7 +54,8 @@ const Header = () => {
 export default Header
 
 const HeaderContainer = styled.header`
-  height: 80px;
+  height: 120px;
+  background-color: #111111;
   ${mediaQuery.pc`
     height:150px
   `};
@@ -51,41 +63,19 @@ const HeaderContainer = styled.header`
 `
 
 const HeaderInner = styled.div`
-  width: 100%;
+  width: 1280px;
   display: flex;
-  justify-content: center;
+  justify-content: space-between;
   items-center: center;
   position: relative;
-  max-width: 375px;
-  margin:0px 30px;
-
-  ${mediaQuery.tablet`
-    max-width: 688px;
-    margin:0px 40px;
-  `}
-
-  ${mediaQuery.laptop`
-    max-width:1019px;
-    margin:0px 40px;
-  `}
-
-  ${mediaQuery.pc`
-    max-width: 1323px;
-    margin:0px 58px;
-  `}
 `
 
 const ImageWrapper = styled.div`
   ${flexCenter}
-  width: 168px;
-  height: 23px;
-  ${mediaQuery.pc`
-    width: 336px;
-    height: 46px;
-  `};
+  padding: 0px 20px;
 `
 
-const NavWrapper = styled.nav`
+const MenuWrapper = styled.nav`
   position: absolute;
   left: 0;
   ${mediaQuery.laptop`
@@ -94,20 +84,21 @@ const NavWrapper = styled.nav`
   ${mediaQuery.pc`
     display: none;
   `};
+
+  &:hover {
+    cursor: pointer;
+  }
 `
 
-const RightSide = styled.div`
-  position: absolute;
-  right: 0;
+const RightSideWrapper = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 50px;
-  height: 100%;
+  gap: 40px;
+  padding: 0px 40px;
 `
 
-
-const RightSideWrapper = styled.div`
+const IconMutableWrapper = styled.div`
   display: none;
   ${mediaQuery.laptop`
     display: flex;
@@ -115,4 +106,14 @@ const RightSideWrapper = styled.div`
     items-center: center;
     gap: 40px;
   `};
+`
+
+const IconWrapper = styled.div`
+  ${flexCenter}
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  &:hover {
+    cursor: pointer;
+  }
 `

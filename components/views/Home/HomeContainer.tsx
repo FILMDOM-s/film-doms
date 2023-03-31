@@ -1,37 +1,30 @@
-import { flexGap, mediaQuery } from '@/styles/emotion'
+import { flex } from '@/styles/emotion'
 import styled from '@emotion/styled'
 import CommunityContainer from './Community'
 import BannerContainer from './Banner'
 import NoticeContainer from './Notice'
-import NavContainer from './Nav/NavContainer'
 import CriticConatiner from './Critic/CriticConatiner'
 
 const HomeContainer = () => {
   return (
     <PageContainer>
-      <NavContainer />
-      <BannerContainer />
-      <CommunityContainer />
-      <NoticeContainer />
-      <CriticConatiner />
+      <Wrapper>
+        <BannerContainer />
+        <CommunityContainer />
+        <NoticeContainer />
+        <CriticConatiner />
+      </Wrapper>
     </PageContainer>
   )
 }
 
+const Wrapper = styled.div`
+  width: 1280px;
+`
+
 const PageContainer = styled.div`
-  ${flexGap('64px')}
-
-  ${mediaQuery.tablet`
-    ${flexGap('72px')}
-  `}
-
-  ${mediaQuery.laptop`
-    ${flexGap('80px')}
-  `}
-
-  ${mediaQuery.pc`
-    ${flexGap('120px')}
-  `}
+  ${flex({ align: 'center', justify: 'center', direction: 'column' })})}
+  width: 100%;
 `
 
 export default HomeContainer

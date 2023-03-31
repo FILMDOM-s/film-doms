@@ -1,10 +1,10 @@
 import { css, SerializedStyles } from '@emotion/react'
 
-const breakpoints = {
+export const breakpoints = {
   mobile: 0,
   tablet: 768,
   laptop: 1024,
-  pc: 1440,
+  pc: 1920,
 }
 
 const addSemicolon = (str: string) => {
@@ -25,7 +25,7 @@ const isSerializedStyles = (value: unknown): value is SerializedStyles => {
 const createMediaQuery =
   (size: number) =>
   (strings: TemplateStringsArray, ...values: unknown[]) => {
-    const serializedValues = values.map((value) =>
+    const serializedValues = values.map(value =>
       isSerializedStyles(value) ? addSemicolon(value.styles) : value
     )
 

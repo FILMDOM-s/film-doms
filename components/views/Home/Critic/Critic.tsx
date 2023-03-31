@@ -1,22 +1,21 @@
-import { mediaQuery } from '@/styles/emotion'
-import { css } from '@emotion/react'
+import { Tag } from '@/components/common'
+import { colors, typography } from '@/styles/emotion'
+import cutString from '@/utils/cutString'
+import dateFormat from '@/utils/dateFormat'
+import styled from '@emotion/styled'
 import Image from 'next/image'
-import React from 'react'
 
-const Critic = ({ image, tag, title, createAt }: Critic) => {
+const Critic = ({
+  image,
+  author,
+  tag,
+  title,
+  description,
+  createAt,
+}: Critic) => {
   return (
-    <article css={CriticBox}>
-      <div className="flex flex-col">
-        <h3 css={Tag} className="lg:hidden">
-          {tag}
-        </h3>
-        <h2 css={Title}>{title}</h2>
-        <div className="flex justify-between items-center">
-          <time css={Time}>{createAt}</time>
-          {/* bookmark icon */}
-        </div>
-      </div>
-      <div css={ImageContainer}>
+    <CriticBox>
+      <ContentImage>
         <Image
           src={image}
           alt={'post image'}
@@ -25,110 +24,79 @@ const Critic = ({ image, tag, title, createAt }: Critic) => {
             (min-width: 768px) 50vw,
               33vw"
         />
-      </div>
-      <div className="hidden lg:flex lg:w-full lg:justify-start">
-        <h3 css={Tag}>{tag}</h3>
-      </div>
-    </article>
+      </ContentImage>
+      <ContentBody>
+        <ContentBodyHeader>
+          <Author>{author}</Author>
+          <Tag shape="round" color={tag === 'Editor' ? 'orange' : 'default'}>
+            {tag}
+          </Tag>
+        </ContentBodyHeader>
+        <Title>{cutString(title, 28)}</Title>
+        <Description>{cutString(description, 70)}</Description>
+        <Time>{dateFormat(createAt)}</Time>
+      </ContentBody>
+    </CriticBox>
   )
 }
 
 export default Critic
 
-const Tag = css`
-  width: 37px;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  font-size: 14px;
-  line-height: 20px;
-  font-weight: 700;
-  color: #222222;
-  margin-bottom: 8px;
-  ${mediaQuery.laptop`{
-    font-size: 16px;
-    width: 42px;
-    margin-bottom: 14px;
-  `}
-
-  ${mediaQuery.pc`{
-    font-size: 18px;
-    line-height: 27px;
-    margin-bottom: 16px;
-    width: 47px;
-  `}
-`
-
-const Title = css`
-  white-space: wrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  width: 100%;
-  font-weight: 400;
-  font-size: 16px;
-  line-height: 24px;
-  color: #222222;
-  margin-bottom: 10px;
-  display: -webkit-box;
-  -webkit-box-orient: vertical;
-  -webkit-line-clamp: 2;
-  ${mediaQuery.laptop`{
-    font-size: 18px;
-    line-height: 24px;
-    margin-bottom: 18px;
-  `}
-
-  ${mediaQuery.pc`{
-    width: 411px;
-    font-size: 22px;
-    line-height: 33px;
-    margin-bottom: 21px;
-  `}
-`
-
-const CriticBox = css`
-  display: flex;
-  justify-content: space-between;
-  align-items: flex-start;
-  border-bottom: 1px solid #eeeeee;
+const CriticBox = styled.article`
   height: 100%;
-  width: 100%;
-  ${mediaQuery.laptop`{
-    flex-direction: column-reverse;
-    border: none;
-  `}
+  width: 400px;
 `
 
-const ImageContainer = css`
-  min-width: 104px;
-  min-height: 104px;
+const ContentImage = styled.div`
   position: relative;
   object-fit: cover;
-  margin-left: 13px;
-  ${mediaQuery.laptop`{
-    margin: 0 0 20px 0;
-    min-width: 295px;
-    width: 100%;
-    height: 100%;
-    min-height: 166px;
-  `}
-  ${mediaQuery.pc`{
-    margin-bottom: 22px;
-    width: 416px;
-    height: 234px;
-  `}
+  width: 400px;
+  height: 240px;
 `
-const Time = css`
-  font-size: 14px;
-  line-height: 20px;
-  font-weight: 400;
+const ContentBody = styled.div`
+  padding: 16px 4px 0;
+  height: 208px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+`
 
-  ${mediaQuery.laptop`{
-    font-size: 16px;
-  `}
+const ContentBodyHeader = styled.div`
+  display: flex;
+  column-gap: 16px;
+  align-items: center;
+  height: 40px;
+`
 
-  ${mediaQuery.pc`{
-    font-size: 18px;
-    line-height: 27px;
-  `}
+const Author = styled.span`
+  ${typography.contentBodyBold};
+  line-height: 16px;
+  color: ${colors.primary.orange};
+  letter-spacing: 0.01em;
+`
+
+const Title = styled.div`
+  ${typography.contentTitle};
+  line-height: 36px;
+  height: 28px;
+  overflow: hidden;
+  text-overflow: clip;
+  white-space: wrap;
+  color: ${colors.primary.black};
+`
+const Description = styled.p`
+  line-height: 32px;
+  height: 76px;
+  text-overflow: clip;
+  overflow: hidden;
+  color: ${colors.grey[900]};
+  ${typography.contentBody};
+  padding: 4px 0;
+  opacity: 0.4;
+`
+
+const Time = styled.time`
+  line-height: 16px;
+  color: ${colors.grey[100]};
+  ${typography.contentBody};
 `

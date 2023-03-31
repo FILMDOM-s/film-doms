@@ -1,57 +1,46 @@
-import { useFetchRecents } from '@/services/recent'
-import { flexGap, flexCenter, mediaQuery } from '@/styles/emotion'
+import { useRouter } from 'next/router'
 import styled from '@emotion/styled'
+import { ArrowRight } from '@svgs/common'
+import { flexGap } from '@/styles/emotion'
+import { useFetchRecents } from '@/services/recent'
+import { Button, Section } from '@/components/common'
 import Recent from './Recent'
 
 const RecentContainer = () => {
+  const { push } = useRouter()
   const { data: recents } = useFetchRecents()
-  // 이 부분은 test용 입니다.
-  // 모바일에서 5개보다 적거나
-  // 태블릿이상에서 10개보다 적을 경우의 디자인이 없어서
-  // 임의로 10개 이상이라고 가정합니다.
-  const recentsMobile = [...recents, ...recents, ...recents].slice(0, 5)
-  const recentsOthers = [...recents, ...recents, ...recents].slice(5, 10)
 
   return (
-    <Center>
+    <Container>
+      <Section.Header
+        title="Recent"
+        right={
+          <Button
+            rightIcon={<ArrowRight />}
+            onClick={() => push('/community/recent')}
+          >
+            More
+          </Button>
+        }
+      />
       <Box>
-        {recentsMobile.map((recent, index) => {
-          return <Recent key={`recent-${recent.id}${index}`} {...recent} />
+        {recents.slice(0, 5).map(recent => {
+          return <Recent key={`recent-${recent.id}`} {...recent} />
         })}
       </Box>
-      <MobileHiddenBox>
-        {recentsOthers.map((recent, index) => {
-          return <Recent key={`recent-${recent.id}${index}`} {...recent} />
-        })}
-      </MobileHiddenBox>
-    </Center>
+    </Container>
   )
 }
 
-const MobileHiddenBox = styled.div`
-  display: none;
-
-  ${mediaQuery.tablet`
-    width: 50%;
-    ${flexGap('1.5rem')}
-  `}
-`
-
-const Box = styled.div`
-  width: 100%;
+const Box = styled.ul`
   ${flexGap('1.5rem')}
-
-  ${mediaQuery.tablet`
-    width: 50%;
-  `}
+  width: 100%;
 `
 
-const Center = styled.div`
+const Container = styled.div`
+  ${flexGap('32px')}
   width: 100%;
-
-  ${mediaQuery.tablet`
-    ${flexCenter}
-  `}
+  max-width: 600px;
 `
 
 export default RecentContainer
