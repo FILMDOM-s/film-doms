@@ -4,7 +4,7 @@ const getDomain = () => {
   if (process.env.NODE_ENV === 'development') {
     return '/'
   } else {
-    return 'https://film-doms.vercel.app'
+    return '/'
   }
 }
 
