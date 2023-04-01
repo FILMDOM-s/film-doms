@@ -16,7 +16,7 @@ export const getNotices = rest.get('/api/notice', (req, res, ctx) => {
       },
       {
         id: 2,
-        title: '대학생 서포터즈 \'구유대감\' 12기 모집',
+        title: '대학생 서포터즈 \'구유대감\' 12기 모집 안내 언제나 가득한 에너지로 뜨거운 사랑을 전하는 \'구유대감\'',
         owner: 'VIBRANT',
         type: 'notice',
         classification: '대외활동',
