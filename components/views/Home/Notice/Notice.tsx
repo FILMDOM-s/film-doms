@@ -25,11 +25,11 @@ const Notice = ({
       <Image width={360} height={400} src={image} alt="title" />
       <NoticeElementOwnerWrapper>
         <NoticeElementOwner>{owner}</NoticeElementOwner>
-        <Tag shape='round'>{classification}</Tag>
+        <Tag shape="round">{classification}</Tag>
       </NoticeElementOwnerWrapper>
-      <NoticeElementTitle>{title}</NoticeElementTitle>
+      <NoticeElementTitle>{title.length <= 50 ? title : title.substring(0,50) + '...'}</NoticeElementTitle>
       <NoticeElementDateWrapper>
-        <NoticeElementDate>{`${startAt} ~ ${endAt}`}</NoticeElementDate>
+        <NoticeElementDate>{`${startAt} ~ ${endAt.substring(5)}`}</NoticeElementDate>
         <TicketButton>{'자세히 보기'}</TicketButton>
       </NoticeElementDateWrapper>
     </NoticeElement>
@@ -56,10 +56,10 @@ const NoticeElementOwnerWrapper = styled.div`
 `
 
 const NoticeElementDateWrapper = styled.div`
-  ${flexCenter}
+  display: flex;
+  align-items: flex-end;
   justify-content: space-between;
   width: 100%;
-  padding-top: 20px;
 `
 
 const NoticeElementOwner = styled.div`
@@ -73,17 +73,17 @@ const NoticeElementOwner = styled.div`
 `
 
 const NoticeElementTitle = styled.div`
+height: 64px;
   font-weight: 700;
   font-size: 20px;
   line-height: 36px;
   color: #111111;
-  padding-top: 17px;
+  margin-top: 17px;
+  margin-bottom: 28px;
 `
 const NoticeElementDate = styled.div`
-  font-size: 14px;
-  font-weight: 400;
-  line-height: 20px;
-  letter-spacing: 0em;
-  color: #666666;
-  padding-top: 10px;
+  font-weight: 500;
+  font-size: 16px;
+  line-height: 16px;
+  color: #aaaaaa;
 `

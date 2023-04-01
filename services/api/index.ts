@@ -4,8 +4,6 @@ const getDomain = () => {
   if (process.env.NODE_ENV === 'development') {
     return '/'
   } else {
-    // * change domain when backend api server is ready
-    // ? 'https://www.filmdoms.com'
     return '/'
   }
 }
