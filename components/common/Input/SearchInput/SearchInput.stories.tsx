@@ -1,15 +1,15 @@
 import { FormEvent, useRef, useState } from 'react'
 import { type ComponentStory, type ComponentMeta } from '@storybook/react'
 import { flexGap } from '@/styles/emotion'
-import SearchBar from './SearchInput'
+import SearchInput from './SearchInput'
 
 export default {
-  title: 'Common/Input/SearchBar',
-  component: SearchBar,
-} as ComponentMeta<typeof SearchBar>
+  title: 'Common/Input/SearchInput',
+  component: SearchInput,
+} as ComponentMeta<typeof SearchInput>
 
-export const Default: ComponentStory<typeof SearchBar> = args => (
-  <SearchBar {...args} />
+export const Default: ComponentStory<typeof SearchInput> = args => (
+  <SearchInput {...args} />
 )
 
 export const WithRef = () => {
@@ -25,7 +25,7 @@ export const WithRef = () => {
   return (
     <div css={flexGap('1rem')}>
       <form onSubmit={onSubmit}>
-        <SearchBar ref={inputRef} />
+        <SearchInput ref={inputRef} />
       </form>
       <div>검색어: {keyword}</div>
     </div>
