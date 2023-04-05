@@ -3,9 +3,20 @@ import { typography, flexCenter } from '@/styles/emotion'
 import { type TagProps } from '../../type'
 import { FILL_COLOR_THEME, OUTLINE_COLOR_THEME } from './colors'
 
-const Square = ({ children, color, fill = 'true', onClick }: TagProps) => {
+const Square = ({
+  children,
+  color,
+  fill = 'true',
+  clickable = 'false',
+  onClick,
+}: TagProps) => {
   return (
-    <Box onClick={onClick} color={color} fill={fill} isClickable={!!onClick}>
+    <Box
+      onClick={onClick}
+      color={color}
+      fill={fill}
+      isClickable={clickable === 'true'}
+    >
       {children}
     </Box>
   )
