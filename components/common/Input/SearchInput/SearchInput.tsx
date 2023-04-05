@@ -5,7 +5,7 @@ import { colors, flex, flexCenter, typography } from '@/styles/emotion'
 
 interface Props extends HTMLAttributes<HTMLInputElement> {}
 
-const SearchBar = forwardRef<HTMLInputElement, Props>(
+const SearchInput = forwardRef<HTMLInputElement, Props>(
   ({ placeholder, ...props }, ref) => {
     return (
       <Box>
@@ -57,6 +57,6 @@ const Box = styled.div`
   height: 32px;
 `
 
-SearchBar.displayName = 'SearchBar'
+SearchInput.displayName = 'SearchInput'
 
-export default SearchBar
+export default SearchInput

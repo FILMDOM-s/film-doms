@@ -1,7 +1,7 @@
 import { FormEvent, useRef, useState } from 'react'
 import { type ComponentStory, type ComponentMeta } from '@storybook/react'
 import { flexGap } from '@/styles/emotion'
-import SearchBar from './SearchBar'
+import SearchBar from './SearchInput'
 
 export default {
   title: 'Common/Input/SearchBar',
