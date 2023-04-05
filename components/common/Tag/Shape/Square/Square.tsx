@@ -1,31 +1,28 @@
-import { css } from '@emotion/react'
 import styled from '@emotion/styled'
-import { TagProps } from '../../type'
-import { typography, colors, flexCenter } from '@/styles/emotion'
+import { typography, flexCenter } from '@/styles/emotion'
+import { type TagProps } from '../../type'
+import { FILL_COLOR_THEME, OUTLINE_COLOR_THEME } from './colors'
 
-const COLOR_THEME = {
-  orange: css`
-    background-color: ${colors.primary.orange};
-    color: ${colors.primary.white};
-  `,
-  default: css`
-    background-color: ${colors.primary.black};
-    color: ${colors.primary.white};
-  `,
+const Square = ({ children, color, fill = 'true', onClick }: TagProps) => {
+  return (
+    <Box onClick={onClick} color={color} fill={fill} isClickable={!!onClick}>
+      {children}
+    </Box>
+  )
 }
 
-const Square = ({ children, color = 'default' }: TagProps) => {
-  return <Box color={color}>{children}</Box>
-}
-
-const Box = styled.span<TagProps>`
-  ${({ color = 'default' }) => COLOR_THEME[color]}
+const Box = styled.span<TagProps & { isClickable: boolean }>`
   ${typography.tag}
   ${flexCenter}
 
+  ${({ fill = 'true', color = 'default' }) =>
+    fill === 'true' ? FILL_COLOR_THEME[color] : OUTLINE_COLOR_THEME[color]}
+
   width: fit-content;
-  padding: 8px;
+  border: 2px solid;
+  padding: 10px 16px;
   line-height: 14px;
+  ${({ isClickable }) => (isClickable ? 'cursor: pointer' : `cursor: default`)};
 `
 
 export default Square
