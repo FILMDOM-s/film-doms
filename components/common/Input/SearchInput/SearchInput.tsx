@@ -29,7 +29,6 @@ const Button = styled.button`
   height: 100%;
   border: 2px solid ${colors.primary.black};
   border-left: none;
-  padding-right: 10px;
 
   &:focus {
     outline: none;
@@ -45,7 +44,7 @@ const Input = styled.input`
   height: 100%;
   border: 2px solid ${colors.primary.black};
   border-right: none;
-  padding-left: 16px;
+  text-indent: 16px;
   ${typography.tag}
   color: ${colors.primary.black};
   outline: none;
@@ -53,7 +52,7 @@ const Input = styled.input`
 
 const Box = styled.div`
   ${flex({ justify: 'space-between', align: 'center' })}
-  width: 220px;
+  width: min-content;
   height: 32px;
 `
 
