@@ -65,7 +65,6 @@ export const WithRef = () => {
 
   const onClick = () => {
     if (selectRef.current) {
-      console.log(selectRef.current.selected)
       setOption(selectRef.current.selected)
     }
   }

@@ -30,11 +30,7 @@ const SearchSelect = forwardRef<SelectRef, Props>(({ options }, ref) => {
             <Select.OptionBox css={OptionBox(isOpen)}>
               {({ option }) => {
                 return (
-                  <Select.Option
-                    css={Option}
-                    onClick={o => console.log(o)}
-                    option={option}
-                  >
+                  <Select.Option css={Option} option={option}>
                     {({ isSelected }) => {
                       return (
                         <Label isSelected={isSelected}>{option.label}</Label>
@@ -80,7 +76,7 @@ const OptionBox = (isOpen: boolean) => css`
   left: 0;
   width: 100%;
   border: 2px solid ${colors.primary.black};
-  background-color: ${colors.primary.white};
+  background-color: #ffffff;
   z-index: 20;
   animation: ${
     isOpen
@@ -105,7 +101,7 @@ const SelectBox = css`
   ${flex({ justify: 'space-between', align: 'center' })}
   color: ${colors.primary.black};
   border: 2px solid ${colors.primary.black};
-  background-color: ${colors.primary.white};
+  background-color: #ffffff;
   padding: 0 8px;
   ${font({
     size: '14px',
