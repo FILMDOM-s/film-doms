@@ -6,6 +6,16 @@ import Tag from '../../Tag'
 export default {
   title: 'Common/Tag/Round',
   component: Tag,
+  argTypes: {
+    color: {
+      options: ['orange', 'white', 'black', 'default'],
+    },
+    shape: {
+      table: {
+        disable: true,
+      },
+    },
+  },
 } as ComponentMeta<typeof Tag>
 
 export const Default: ComponentStory<typeof Tag> = args => (
@@ -13,6 +23,9 @@ export const Default: ComponentStory<typeof Tag> = args => (
 )
 Default.args = {
   shape: 'round',
+  color: 'default',
+  fill: 'false',
+  clickable: 'false',
 }
 
 export const Orange: ComponentStory<typeof Tag> = args => (
@@ -50,11 +63,6 @@ export const List: ComponentStory<typeof Tag> = args => (
 )
 List.argTypes = {
   color: {
-    table: {
-      disable: true,
-    },
-  },
-  shape: {
     table: {
       disable: true,
     },
