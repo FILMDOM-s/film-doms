@@ -31,7 +31,7 @@ const ArticleContainer = ({ category }: Props) => {
             </Tab.List>
             <SearchForm
               pushUrl={({ keyword, option }) =>
-                `/search/${category}?keyword=${keyword}&option=${option}`
+                `/search/article/${category}?keyword=${keyword}&option=${option}`
               }
             />
           </TopBox>
