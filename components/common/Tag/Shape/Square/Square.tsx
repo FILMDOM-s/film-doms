@@ -40,7 +40,7 @@ const Box = ({
   width: fit-content;
   border-style: solid;
   border-width: 2px;
-  padding: 10px 16px;
+  padding: 8px 14px;
   line-height: 14px;
   ${isClickable && 'cursor: pointer;'}
 
