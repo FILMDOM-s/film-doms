@@ -15,6 +15,16 @@ const queryKeys = {
 
   critics: ['critics'],
   critic: (id: Critic['id']) => ['critic', id],
+
+  articleByCategory: (category: Article.Category, params: Article.Params) => [
+    'article',
+    category,
+    ...Object.values(params),
+  ],
+
+  tagsByCategory: (category: Article.Category) => ['tags', category],
+
+  articleNotice: ['articleNotice'],
 } as const
 
 export default queryKeys
