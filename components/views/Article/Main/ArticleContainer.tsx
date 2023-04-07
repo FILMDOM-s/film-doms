@@ -18,25 +18,27 @@ const ArticleContainer = ({ category }: Props) => {
   return (
     <Container>
       <Title>{CATEGORIES[category].title}</Title>
-      <Suspense fallback={<Loading />}>
-        <Tab.Group
-          css={TabGroup}
-          selected="전체"
-          onChange={() => setCurrentPage(1)}
-          clearDependency={category}
-        >
-          <TopBox>
-            <Tab.List css={TabList}>
+      <Tab.Group
+        css={TabGroup}
+        selected="전체"
+        onChange={() => setCurrentPage(1)}
+        clearDependency={category}
+      >
+        <TopBox>
+          <Tab.List css={TabList}>
+            <Suspense fallback={<TagListLoading />}>
               <TagList category={category} />
-            </Tab.List>
-            <SearchForm
-              pushUrl={({ keyword, option }) =>
-                `/search/article/${category}?keyword=${keyword}&option=${option}`
-              }
-            />
-          </TopBox>
-          <Tab.Views>
-            {({ selected }) => (
+            </Suspense>
+          </Tab.List>
+          <SearchForm
+            pushUrl={({ keyword, option }) =>
+              `/search/article/${category}?keyword=${keyword}&option=${option}`
+            }
+          />
+        </TopBox>
+        <Tab.Views>
+          {({ selected }) => (
+            <Suspense fallback={<BoardLoading />}>
               <BoardContainer
                 category={category}
                 params={{
@@ -46,10 +48,10 @@ const ArticleContainer = ({ category }: Props) => {
                 }}
                 onChangePage={page => setCurrentPage(page)}
               />
-            )}
-          </Tab.Views>
-        </Tab.Group>
-      </Suspense>
+            </Suspense>
+          )}
+        </Tab.Views>
+      </Tab.Group>
     </Container>
   )
 }
@@ -94,9 +96,14 @@ const Container = styled.div`
   width: 954px;
 `
 
-const Loading = styled.div`
+const BoardLoading = styled.div`
   width: 100%;
-  height: 1680px;
+  height: 1606px;
+`
+
+const TagListLoading = styled.div`
+  flex: 1;
+  height: 34px;
 `
 
 export default ArticleContainer
