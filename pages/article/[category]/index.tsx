@@ -3,6 +3,7 @@ import styled from '@emotion/styled'
 import { ArticleLayout } from '@views/Layout'
 import { ArticleMainViews } from '@views/Article'
 import { hasOwnProperty } from '@/utils'
+import { OpenGraph } from '@/components/common'
 import { CATEGORIES } from '@/constants/article'
 
 const ArticlePage = () => {
@@ -16,9 +17,11 @@ const ArticlePage = () => {
   }
 
   return (
-    <ArticleLayout right={<Box>인기게시글</Box>}>
-      <ArticleMainViews category={category} />
-    </ArticleLayout>
+    <OpenGraph title={CATEGORIES[category].title} path={`/article/${category}`}>
+      <ArticleLayout right={<Box>인기게시글</Box>}>
+        <ArticleMainViews category={category} />
+      </ArticleLayout>
+    </OpenGraph>
   )
 }
 
