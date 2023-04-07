@@ -1,8 +1,7 @@
-import { flexCenter } from '@/styles/emotion'
 import { css } from '@emotion/react'
-import { PropsWithChildren } from 'react'
+import { flexCenter } from '@/styles/emotion'
 
-interface Props extends Required<PropsWithChildren> {
+interface Props extends StrictPropsWithChildren {
   theme?: 'default'
 }
 

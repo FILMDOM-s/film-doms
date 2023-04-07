@@ -1,4 +1,4 @@
-import { ComponentMeta } from '@storybook/react'
+import { type ComponentMeta } from '@storybook/react'
 import { NOTICE_DATA, FILM_UNIVERSE_DATA } from '@/mocks/handlers/article/data'
 import ArticleBoard from './ArticleBoard'
 

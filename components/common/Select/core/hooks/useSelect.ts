@@ -1,6 +1,6 @@
 import { type KeyboardEvent, useState, useRef } from 'react'
 import { useOutsideClickEffect } from '@/hooks'
-import { Option } from '../type'
+import { type Option } from '../type'
 
 const useSelect = (options: Option[]) => {
   const ref = useRef<HTMLDivElement>(null)

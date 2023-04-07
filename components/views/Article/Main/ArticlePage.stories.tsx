@@ -1,4 +1,4 @@
-import { ComponentMeta } from '@storybook/react'
+import { type ComponentMeta } from '@storybook/react'
 import styled from '@emotion/styled'
 import ArticlePage from '@pages/article/[category]'
 import { AppLayout, ArticleLayout } from '../../Layout'

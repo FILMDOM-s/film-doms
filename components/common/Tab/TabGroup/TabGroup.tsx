@@ -1,10 +1,10 @@
-import { useCallback, useEffect, useState } from 'react'
+import { type ComponentProps, useCallback, useEffect, useState } from 'react'
 import { TabContext, type TabContextType } from '../context'
 
 interface Props
   extends StrictPropsWithChildren,
     Pick<TabContextType, 'selected'>,
-    Omit<React.ComponentProps<'div'>, 'children' | 'onChange'> {
+    Omit<ComponentProps<'div'>, 'children' | 'onChange'> {
   onChange?: (value: TabContextType['selected']) => void
   clearDependency?: unknown
 }

@@ -1,4 +1,4 @@
-import { FormEvent, useRef, useState } from 'react'
+import { type FormEvent, useRef, useState } from 'react'
 import { type ComponentStory, type ComponentMeta } from '@storybook/react'
 import { flexGap } from '@/styles/emotion'
 import SearchInput from './SearchInput'

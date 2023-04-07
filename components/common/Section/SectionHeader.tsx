@@ -1,5 +1,5 @@
+import { type ReactNode } from 'react'
 import styled from '@emotion/styled'
-import { ReactNode } from 'react'
 import { colors, flex, typography } from '@/styles/emotion'
 
 interface Props {
