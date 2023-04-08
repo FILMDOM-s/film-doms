@@ -130,7 +130,7 @@ const Tr = styled.tr`
   display: flex;
   width: 100%;
   height: 60px;
-  background-color: #eeeeee;
+  background-color: #f6eeeb;
   border-top: 1px solid ${colors.grey[100]};
 `
 
