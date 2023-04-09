@@ -14,7 +14,7 @@ const MovieReview = ({ id, category, title, comment }: Review) => {
         }}
         defaultRender={<Tag>{category}</Tag>}
       />
-      <Link href={`/community/movie/${id}`} css={LinkBox}>
+      <Link href={`/article/movie/${id}`} css={LinkBox}>
         <Title>{title}</Title>
         <RenderIf
           condition={comment.length > 0}

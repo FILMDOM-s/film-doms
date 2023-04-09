@@ -1,5 +1,5 @@
+import { type ComponentProps, type ReactNode } from 'react'
 import { css } from '@emotion/react'
-import { ComponentProps, ReactNode } from 'react'
 import SectionBody from './SectionBody'
 import SectionHeader from './SectionHeader'
 import SectionTitle from './SectionTitle'

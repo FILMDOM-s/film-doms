@@ -9,7 +9,7 @@ const Search = ({ width = '32', height = '32', fill = 'black' }: Props) => {
     <svg
       width={width}
       height={height}
-      viewBox={`0 0 ${width} ${height}`}
+      viewBox="0 0 32 32"
       fill="none"
       xmlns="http://www.w3.org/2000/svg"
     >
@@ -18,10 +18,10 @@ const Search = ({ width = '32', height = '32', fill = 'black' }: Props) => {
         maskUnits="userSpaceOnUse"
         x="0"
         y="0"
-        width={width}
-        height={height}
+        width="32"
+        height="32"
       >
-        <rect x="0.929688" width={width} height={height} fill="#D9D9D9" />
+        <rect x="0.929688" width="32" height="32" fill="#D9D9D9" />
       </mask>
       <g mask="url(#mask0_594_2224)">
         <path

@@ -5,7 +5,7 @@ import { useRouter } from 'next/router'
 import { Suspense } from 'react'
 import Critics from './Critics'
 
-const CriticConatiner = () => {
+const CriticContainer = () => {
   const { push } = useRouter()
 
   return (
@@ -32,7 +32,7 @@ const CriticConatiner = () => {
   )
 }
 
-export default CriticConatiner
+export default CriticContainer
 
 const SectionWrapper = styled(Section)`
   gap: 44px;

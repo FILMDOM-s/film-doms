@@ -1,9 +1,11 @@
+import { type ReactNode } from 'react'
+
 interface Props {
   value: string
   caseBy: {
-    [key: string]: React.ReactNode
+    [key: string]: ReactNode
   }
-  defaultRender?: React.ReactNode
+  defaultRender?: ReactNode
 }
 
 const SwitchCase = ({ value, caseBy, defaultRender }: Props) => {

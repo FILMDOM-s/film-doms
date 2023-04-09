@@ -1,9 +1,9 @@
+import { type ReactNode } from 'react'
 import { QueryErrorResetBoundary } from '@tanstack/react-query'
-import { PropsWithChildren } from 'react'
 import { ErrorBoundary } from 'react-error-boundary'
 
-interface Props extends Required<PropsWithChildren> {
-  fallback: React.ReactNode
+interface Props extends StrictPropsWithChildren {
+  fallback: ReactNode
 }
 
 const ResetErrorBoundary = ({ children, fallback }: Props) => {

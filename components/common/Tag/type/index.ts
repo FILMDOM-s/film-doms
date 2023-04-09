@@ -1,6 +1,15 @@
-import { HTMLAttributes } from 'react'
+type Color = 'default' | 'orange' | 'white' | 'black'
 
-export interface TagProps
-  extends Omit<HTMLAttributes<HTMLSpanElement>, 'color'> {
-  color?: 'default' | 'orange'
+export interface BaseProps {
+  color?: Color
+  fill?: 'true' | 'false'
+  clickable?: 'true' | 'false'
 }
+
+export type TagProps<T extends As> = OverRidableComponentProps<
+  BaseProps &
+    StrictPropsWithChildren & {
+      as?: T
+    },
+  T
+>

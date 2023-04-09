@@ -1,4 +1,4 @@
-import { HTMLAttributes } from 'react'
+import { type HTMLAttributes } from 'react'
 import styled from '@emotion/styled'
 import { colors } from '@/styles/emotion'
 
