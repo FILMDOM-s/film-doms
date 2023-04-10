@@ -25,6 +25,8 @@ const queryKeys = {
   tagsByCategory: (category: Article.Category) => ['tags', category],
 
   articleNotice: ['articleNotice'],
+
+  articlePopular: ['articlePopular'],
 } as const
 
 export default queryKeys
