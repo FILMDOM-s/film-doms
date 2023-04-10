@@ -5,6 +5,7 @@ import { ArticleMainViews } from '@views/Article'
 import { hasOwnProperty } from '@/utils'
 import { OpenGraph } from '@/components/common'
 import { CATEGORIES } from '@/constants/article'
+import ArticlePopularContainer from '@/components/views/Article/Popular/ArticlePopularContainer'
 
 const ArticlePage = () => {
   const { query } = useRouter()
@@ -18,22 +19,11 @@ const ArticlePage = () => {
 
   return (
     <OpenGraph title={CATEGORIES[category].title} path={`/article/${category}`}>
-      <ArticleLayout right={<Box>인기게시글</Box>}>
+      <ArticleLayout right={<ArticlePopularContainer />}>
         <ArticleMainViews category={category} />
       </ArticleLayout>
     </OpenGraph>
   )
 }
-
-// ! 임시로 만든 인기게시글 컴포넌트입니다.
-// ! right 자리에 만든 인기게시글 컴포넌트와 sticky 등을 포함한 wrapper box를 합성하여 넣으면 됩니다.
-const Box = styled.div`
-  width: 302px;
-  height: 400px;
-  border: 1px solid #000;
-  position: sticky;
-  top: 30%;
-  right: 0;
-`
 
 export default ArticlePage

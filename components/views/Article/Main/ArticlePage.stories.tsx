@@ -3,6 +3,7 @@ import styled from '@emotion/styled'
 import ArticlePage from '@pages/article/[category]'
 import { AppLayout, ArticleLayout } from '../../Layout'
 import ArticleContainer from './ArticleContainer'
+import ArticlePopularContainer from '../Popular/ArticlePopularContainer'
 
 export default {
   title: 'Page/Article',
@@ -10,7 +11,7 @@ export default {
   decorators: [
     Story => (
       <AppLayout>
-        <ArticleLayout right={<Box>인기게시글</Box>}>
+        <ArticleLayout right={<ArticlePopularContainer />}>
           <Story />
         </ArticleLayout>
       </AppLayout>
