@@ -9,7 +9,7 @@ export default function Index() {
   return (
     <div>
       <Head>
-        <OpenGraph/>
+        <OpenGraph />
       </Head>
       <main className="mx-auto">{noticeId}</main>
     </div>

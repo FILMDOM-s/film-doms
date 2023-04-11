@@ -9,7 +9,7 @@ import Notice from './Notice'
 
 const Notices = () => {
   const { data: notices } = useFetchNotices()
-  const scrollFadeIn = useScrollFadeIn(0.2, "20%")
+  const scrollFadeIn = useScrollFadeIn(0.2, '20%')
   return (
     <NoticeAlign {...scrollFadeIn}>
       {notices.map((notice: Notice) => (
@@ -18,7 +18,7 @@ const Notices = () => {
           key={notice.id}
           href={`/notice/${notice.id}`}
         >
-          <Notice {...notice}/>
+          <Notice {...notice} />
         </Link>
       ))}
     </NoticeAlign>

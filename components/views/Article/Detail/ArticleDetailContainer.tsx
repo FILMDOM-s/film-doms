@@ -1,4 +1,4 @@
-import {ChevronLeft} from '@/assets/svgs/common'
+import { ChevronLeft } from '@/assets/svgs/common'
 import { Loading } from '@/components/common'
 import { CATEGORIES } from '@/constants/article'
 import { colors, flexCenter, flexGap, typography } from '@/styles/emotion'

@@ -21,10 +21,10 @@ const Header = () => {
       <HeaderInner>
         <ImageWrapper>
           <Link href="/">
-          <Svgs.LogoWhite />
+            <Svgs.LogoWhite />
           </Link>
         </ImageWrapper>
-        <NavContainer/>
+        <NavContainer />
         {/* <MenuWrapper
           onClick={() => {
             setShowSideNav(!showSideNav)

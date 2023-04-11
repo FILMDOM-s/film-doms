@@ -16,7 +16,6 @@ const nextConfig = {
       'lh3.googleusercontent.com',
       'picsum.photos',
       'cdn.pixabay.com',
-      
     ],
   },
   eslint: {
@@ -27,10 +26,10 @@ const nextConfig = {
       config.resolve.fallback.fs = false
     }
     config.module.rules.push({
-			test: /\.svg$/,
-			use: ['@svgr/webpack'],
-		});
-		return config;
+      test: /\.svg$/,
+      use: ['@svgr/webpack'],
+    })
+    return config
   },
 }
 

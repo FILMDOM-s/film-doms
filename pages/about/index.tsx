@@ -13,9 +13,7 @@ export default function Index() {
   return (
     <div>
       <OpenGraph {...openGraphProps} />
-      <main className="mx-auto">
-        About
-      </main>
+      <main className="mx-auto">About</main>
     </div>
   )
 }

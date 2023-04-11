@@ -8,7 +8,11 @@ export default {
   title: 'Section/Banner',
 } as ComponentMeta<typeof BannerContainer>
 
-export const Default = () => <Wrapper><BannerContainer /></Wrapper>
+export const Default = () => (
+  <Wrapper>
+    <BannerContainer />
+  </Wrapper>
+)
 
 const Wrapper = styled.div`
   width: 1280px;

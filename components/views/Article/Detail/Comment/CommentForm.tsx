@@ -51,7 +51,7 @@ const TextArea = styled.textarea`
 
 const CommentHead = styled.div`
   ${typography.contentBodyBold};
-  color:${colors.primary.black};
+  color: ${colors.primary.black};
   width: 914px;
 `
 

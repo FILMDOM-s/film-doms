@@ -8,7 +8,7 @@ interface Props {
 const Loading = ({ width, height }: Props) => {
   return (
     <LoadingWrapper width={width} height={height}>
-      <FilmDomsLoading/>
+      <FilmDomsLoading />
     </LoadingWrapper>
   )
 }

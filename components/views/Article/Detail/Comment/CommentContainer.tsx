@@ -14,7 +14,7 @@ const CommentContainer = ({ articleId, category }: ArticleDetailProps) => {
       {comments.map(comment => {
         return <CommentItem key={comment.id} comment={comment} />
       })}
-      <CommentForm/>
+      <CommentForm />
     </Container>
   )
 }

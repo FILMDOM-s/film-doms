@@ -21,7 +21,9 @@ export default {
 } as ComponentMeta<typeof Notice>
 
 export const Default: ComponentStory<typeof Notice> = args => (
-  <NoticeWrapper><Notice {...args} /></NoticeWrapper>
+  <NoticeWrapper>
+    <Notice {...args} />
+  </NoticeWrapper>
 )
 
 Default.args = {

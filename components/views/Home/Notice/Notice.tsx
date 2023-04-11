@@ -27,9 +27,13 @@ const Notice = ({
         <NoticeElementOwner>{owner}</NoticeElementOwner>
         <Tag shape="round">{classification}</Tag>
       </NoticeElementOwnerWrapper>
-      <NoticeElementTitle>{title.length <= 50 ? title : title.substring(0,50) + '...'}</NoticeElementTitle>
+      <NoticeElementTitle>
+        {title.length <= 50 ? title : title.substring(0, 50) + '...'}
+      </NoticeElementTitle>
       <NoticeElementDateWrapper>
-        <NoticeElementDate>{`${startAt} ~ ${endAt.substring(5)}`}</NoticeElementDate>
+        <NoticeElementDate>{`${startAt} ~ ${endAt.substring(
+          5
+        )}`}</NoticeElementDate>
         <TicketButton>{'자세히 보기'}</TicketButton>
       </NoticeElementDateWrapper>
     </NoticeElement>
@@ -73,7 +77,7 @@ const NoticeElementOwner = styled.div`
 `
 
 const NoticeElementTitle = styled.div`
-height: 64px;
+  height: 64px;
   font-weight: 700;
   font-size: 20px;
   line-height: 36px;

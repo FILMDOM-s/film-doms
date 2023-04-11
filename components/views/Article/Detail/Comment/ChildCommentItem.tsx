@@ -82,7 +82,7 @@ const CommentButton = styled(Button)`
 `
 
 const ReplyBox = styled.div`
-    ${flexGap('10px', 'row')}
-    width: 100%;
-    item-align: flex-start;
+  ${flexGap('10px', 'row')}
+  width: 100%;
+  item-align: flex-start;
 `

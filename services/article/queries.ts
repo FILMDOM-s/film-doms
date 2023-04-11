@@ -19,5 +19,7 @@ export const useFetchArticleById = (
   id: Article.Item['id'],
   category: Article.Category
 ) => {
-  return useSuspendedQuery(queryKeys.article(id), () => getArticle(id, category))
+  return useSuspendedQuery(queryKeys.article(id), () =>
+    getArticle(id, category)
+  )
 }

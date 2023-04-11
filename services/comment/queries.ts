@@ -6,5 +6,7 @@ export const useFetchCommentsByArticle = (
   articleId: Article.Item['id'],
   category: Article.Category
 ) => {
-  return useSuspendedQuery(queryKeys.comments, () => getDetailComments(articleId, category))
+  return useSuspendedQuery(queryKeys.comments, () =>
+    getDetailComments(articleId, category)
+  )
 }

@@ -8,7 +8,9 @@ export default {
 } as ComponentMeta<typeof SideNavListItem>
 
 const Template: ComponentStory<typeof SideNavListItem> = args => (
-  <SideNavContainer><SideNavListItem {...args} /></SideNavContainer>
+  <SideNavContainer>
+    <SideNavListItem {...args} />
+  </SideNavContainer>
 )
 
 export const Default = Template.bind({})
