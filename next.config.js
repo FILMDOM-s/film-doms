@@ -15,6 +15,8 @@ const nextConfig = {
       'k.kakaocdn.net',
       'lh3.googleusercontent.com',
       'picsum.photos',
+      'cdn.pixabay.com',
+      
     ],
   },
   eslint: {
@@ -24,8 +26,11 @@ const nextConfig = {
     if (!isServer) {
       config.resolve.fallback.fs = false
     }
-
-    return config
+    config.module.rules.push({
+			test: /\.svg$/,
+			use: ['@svgr/webpack'],
+		});
+		return config;
   },
 }
 
