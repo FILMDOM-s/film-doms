@@ -27,5 +27,6 @@ export const FILM_UNIVERSE_DATA: Article.Item[] = Array.from(
     views: getRandomNum(0, 10000),
     likes: getRandomNum(0, 1500),
     category: 'filmUniverse',
+    content: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla vitae nis',
   })
 )
