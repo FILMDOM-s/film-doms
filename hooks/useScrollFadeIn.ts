@@ -1,6 +1,6 @@
 import { useEffect, useRef, useCallback } from 'react'
 
-const useScrollFadeIn = () => {
+const useScrollFadeIn = (threshold: number, transform: string ) => {
   const dom = useRef<HTMLDivElement>(null)
 
   const handleScroll = useCallback(([entry]: IntersectionObserverEntry[]) => {
@@ -21,7 +21,7 @@ const useScrollFadeIn = () => {
     const { current } = dom
 
     if (current) {
-      observer = new IntersectionObserver(handleScroll, { threshold: 0.7 })
+      observer = new IntersectionObserver(handleScroll, { threshold: threshold || 0.7 })
       observer.observe(current)
 
       return () => observer && observer.disconnect()
@@ -32,7 +32,7 @@ const useScrollFadeIn = () => {
     ref: dom,
     style: {
       opacity: 0,
-      transform: 'translate3d(0, 50%, 0)',
+      transform: `translate3d(0, ${transform || '50%'}, 0)`,
     },
   }
 }
