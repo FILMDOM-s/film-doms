@@ -19,6 +19,7 @@ declare module Article {
     views: number
     likes: number
     category: Category
+    content: string
   }
 
   type Response = {
