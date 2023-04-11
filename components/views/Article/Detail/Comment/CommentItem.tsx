@@ -12,7 +12,7 @@ import ChildCommentItem from './ChildCommentItem'
 const CommentItem = ({ comment }: { comment: Comment }) => {
   const [leaveReply, setLeaveReply] = useState<boolean>(false)
   const [replyToggle, setReplyToggle] = useState<boolean>(false)
-  
+
   return (
     <CommentItemContainer>
       <CommentProfileBox>
@@ -44,11 +44,21 @@ const CommentItem = ({ comment }: { comment: Comment }) => {
         </ButtonBox>
         {comment.childComments.length > 0 && (
           <>
-            <RelyToggleButton leftIcon={replyToggle ? <ChevronFillDown/> : <ChevronFillUp/>} onClick={() => setReplyToggle(!replyToggle)}>답글 {comment.childComments.length}개</RelyToggleButton>
+            <ReplyToggleButton
+              leftIcon={replyToggle ? <ChevronFillDown /> : <ChevronFillUp />}
+              onClick={() => setReplyToggle(!replyToggle)}
+            >
+              답글 {comment.childComments.length}개
+            </ReplyToggleButton>
             <ReplyBox open={replyToggle}>
               {comment.childComments.length > 0 &&
                 comment.childComments.map(childComment => {
-                  return <ChildCommentItem comment={childComment} />
+                  return (
+                    <ChildCommentItem
+                      key={childComment.id}
+                      comment={childComment}
+                    />
+                  )
                 })}
             </ReplyBox>
           </>
@@ -108,15 +118,15 @@ const CommentButton = styled(Button)`
   font-weight: 500;
 `
 
-const ReplyBox = styled.div<{open:boolean}>`
+const ReplyBox = styled.div<{ open: boolean }>`
   ${flexGap('10px', 'column')}
   item-align: flex-start;
-  height: ${({open})=>open?'auto':'0'};
-  display: ${({open})=>open?'block':'none'};
+  height: ${({ open }) => (open ? 'auto' : '0')};
+  display: ${({ open }) => (open ? 'block' : 'none')};
   transition: height 0.3s ease-in-out;
 `
 
-const RelyToggleButton = styled(Button)`
+const ReplyToggleButton = styled(Button)`
   background-color: white;
   ${typography.tag}
   padding: 5px 18px;
