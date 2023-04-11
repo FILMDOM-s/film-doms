@@ -13,3 +13,8 @@ export const getArticleByCategory = (
 export const getArticleNotice = () => {
   return api.get<null, Article.Notice[]>('/api/article/notice')
 }
+
+export const getArticle = (id: Article.Item['id'], category: Article.Category) => {
+  return api.get<null, Article.Item>(`/api/article/${category}/${id}`)
+}
+

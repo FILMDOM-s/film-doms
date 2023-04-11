@@ -25,6 +25,8 @@ const queryKeys = {
   tagsByCategory: (category: Article.Category) => ['tags', category],
 
   articleNotice: ['articleNotice'],
+
+  article: (id: Article.Item['id']) => ['article', id],
 } as const
 
 export default queryKeys
