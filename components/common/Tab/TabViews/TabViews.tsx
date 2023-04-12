@@ -1,10 +1,11 @@
+import { type ComponentProps, type ReactNode } from 'react'
 import { isFunction } from '@/utils'
-import { TabContextType, useTab } from '../context'
+import { type TabContextType, useTab } from '../context'
 
-interface Props extends Omit<React.ComponentProps<'div'>, 'children'> {
+interface Props extends Omit<ComponentProps<'div'>, 'children'> {
   children:
-    | (({ selected }: Pick<TabContextType, 'selected'>) => React.ReactNode)
-    | React.ReactNode
+    | (({ selected }: Pick<TabContextType, 'selected'>) => ReactNode)
+    | ReactNode
 }
 
 const TabViews = ({ children, ...rest }: Props) => {

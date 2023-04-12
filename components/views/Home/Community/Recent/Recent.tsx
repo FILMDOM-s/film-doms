@@ -14,7 +14,7 @@ const Recent = ({ id, category, title, comment }: Recent) => {
         }}
         defaultRender={<Tag>{category}</Tag>}
       />
-      <Link href={`/community/recent/${id}`} css={LinkBox}>
+      <Link href={`/article/recent/${id}`} css={LinkBox}>
         <Title>{title}</Title>
         <RenderIf
           condition={comment.length > 0}

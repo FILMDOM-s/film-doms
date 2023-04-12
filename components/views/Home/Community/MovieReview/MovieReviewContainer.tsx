@@ -17,7 +17,7 @@ const MovieReviewContainer = () => {
         right={
           <Button
             rightIcon={<ArrowRight />}
-            onClick={() => push('/community/movie')}
+            onClick={() => push('/article/movie')}
           >
             More
           </Button>

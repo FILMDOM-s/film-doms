@@ -9,6 +9,7 @@ import { useState } from 'react'
 import { useResizeWindow } from '@/hooks'
 import * as Svgs from '@svgs/common'
 import NavContainer from '../../Home/Nav/NavContainer'
+import Link from 'next/link'
 
 const Header = () => {
   const windowWidth = useResizeWindow()
@@ -19,9 +20,11 @@ const Header = () => {
     <HeaderContainer>
       <HeaderInner>
         <ImageWrapper>
-          <Svgs.LogoWhite />
+          <Link href="/">
+            <Svgs.LogoWhite />
+          </Link>
         </ImageWrapper>
-        <NavContainer/>
+        <NavContainer />
         {/* <MenuWrapper
           onClick={() => {
             setShowSideNav(!showSideNav)

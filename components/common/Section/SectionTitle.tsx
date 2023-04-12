@@ -1,8 +1,7 @@
 import styled from '@emotion/styled'
 import { flexCenter, mediaQuery } from '@/styles/emotion'
-import { PropsWithChildren } from 'react'
 
-interface Props extends Required<PropsWithChildren> {
+interface Props extends StrictPropsWithChildren {
   custom?: boolean
 }
 
