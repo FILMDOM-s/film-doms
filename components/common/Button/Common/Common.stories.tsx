@@ -1,5 +1,5 @@
 import styled from '@emotion/styled'
-import { ComponentMeta, ComponentStory } from '@storybook/react'
+import { type ComponentMeta, type ComponentStory } from '@storybook/react'
 import { ArrowRight, Instagram, Search } from '@svgs/common'
 import { mediaQuery } from '@/styles/emotion'
 import { Button } from '..'

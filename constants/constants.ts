@@ -1,7 +1,7 @@
 export const navItems = [
   { text: 'About', link: '/about' },
-  { text: 'Movie', link: '/movie' },
-  { text: 'Film Universe', link: '/film-universe' },
+  { text: 'Movie', link: '/article/movie' },
+  { text: 'Film Universe', link: '/article/filmUniverse' },
   { text: 'Critic', link: '/critic' },
 ]
 

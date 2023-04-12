@@ -1,6 +1,7 @@
+import { type PropsWithChildren } from 'react'
 import Head from 'next/head'
 
-interface Props {
+interface Props extends PropsWithChildren {
   type?: string
   title?: string
   description?: string
@@ -18,6 +19,7 @@ const OpenGraph = ({
   baseUrl = 'https://filmdoms.com',
   path = '',
   url,
+  children,
 }: Props) => {
   const _title = title ? `필름덤즈 | ${title}` : '필름덤즈'
   const _url = url ?? `${baseUrl}${path}`
@@ -25,14 +27,17 @@ const OpenGraph = ({
   const _image = image ?? 'https://filmdoms.com/images/og-image.png'
 
   return (
-    <Head>
-      <title>{_title}</title>
-      <meta property="og:type" content={type} />
-      <meta property="og:title" content={_title} />
-      <meta property="og:description" content={description} />
-      <meta property="og:url" content={_url} />
-      <meta property="og:image" content={_image} />
-    </Head>
+    <>
+      <Head>
+        <title>{_title}</title>
+        <meta property="og:type" content={type} />
+        <meta property="og:title" content={_title} />
+        <meta property="og:description" content={description} />
+        <meta property="og:url" content={_url} />
+        <meta property="og:image" content={_image} />
+      </Head>
+      {children}
+    </>
   )
 }
 

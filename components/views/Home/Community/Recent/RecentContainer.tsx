@@ -17,7 +17,7 @@ const RecentContainer = () => {
         right={
           <Button
             rightIcon={<ArrowRight />}
-            onClick={() => push('/community/recent')}
+            onClick={() => push('/article/recent')}
           >
             More
           </Button>

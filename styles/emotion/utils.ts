@@ -30,3 +30,24 @@ export const flex = ({
   justify-content: ${justify};
   flex-direction: ${direction};
 `
+
+export const rotate = (deg: number) => css`
+  transform: rotate(${deg}deg);
+`
+
+export const font = ({
+  size = '16px',
+  weight = '500',
+  lineHeight = '24px',
+  letterSpacing = '0.5px',
+}: {
+  size?: CSSProperties['fontSize']
+  weight?: CSSProperties['fontWeight']
+  lineHeight?: CSSProperties['lineHeight']
+  letterSpacing?: CSSProperties['letterSpacing']
+}) => css`
+  font-size: ${size};
+  font-weight: ${weight};
+  line-height: ${lineHeight};
+  letter-spacing: ${letterSpacing};
+`

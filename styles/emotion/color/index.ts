@@ -12,6 +12,7 @@ export const colors = {
   },
   grey: {
     '100': '#AAAAAA',
+    '600': '#666666',
     '900': '#444444',
   },
 } as const

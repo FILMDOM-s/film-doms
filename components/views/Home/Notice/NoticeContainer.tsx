@@ -8,14 +8,11 @@ import Notices from './Notices'
 const NoticeContainer = () => {
   const { push } = useRouter()
   return (
-    <Section style={{"marginTop":"100px"}}>
+    <Section style={{ marginTop: '100px' }}>
       <Section.Header
         title="Notice"
         right={
-          <Button
-            rightIcon={<ArrowRight />}
-            onClick={() => push('/notice')}
-          >
+          <Button rightIcon={<ArrowRight />} onClick={() => push('/notice')}>
             More
           </Button>
         }

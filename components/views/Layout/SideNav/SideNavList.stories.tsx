@@ -7,7 +7,11 @@ export default {
   title: 'Layout/Generic/SideNav/List',
 } as ComponentMeta<typeof SideNavList>
 
-export const Default = () => <SideNavContainer><SideNavList /></SideNavContainer>
+export const Default = () => (
+  <SideNavContainer>
+    <SideNavList />
+  </SideNavContainer>
+)
 
 const SideNavContainer = styled.div`
   width: 200px;

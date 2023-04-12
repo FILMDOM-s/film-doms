@@ -1,15 +1,15 @@
 import styled from '@emotion/styled'
 import { ComponentMeta, ComponentStory } from '@storybook/react'
-import CriticConatiner from './CriticConatiner'
+import CriticContainer from './CriticContainer'
 
 export default {
-  component: CriticConatiner,
+  component: CriticContainer,
   title: 'Section/Critic',
-} as ComponentMeta<typeof CriticConatiner>
+} as ComponentMeta<typeof CriticContainer>
 
-const Template: ComponentStory<typeof CriticConatiner> = () => (
+const Template: ComponentStory<typeof CriticContainer> = () => (
   <Container>
-    <CriticConatiner />
+    <CriticContainer />
   </Container>
 )
 

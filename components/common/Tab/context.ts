@@ -1,9 +1,8 @@
-import { useContext } from 'react'
-import { createContext } from 'react'
+import { useContext, createContext } from 'react'
 
 export type TabContextType = {
   selected: string
-  onChange: React.Dispatch<React.SetStateAction<string>>
+  onChange: (selected: TabContextType['selected']) => void
 }
 
 export const TabContext = createContext<TabContextType | null>(null)

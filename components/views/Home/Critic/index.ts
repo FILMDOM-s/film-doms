@@ -1,1 +1,1 @@
-export { default } from './CriticConatiner'
+export { default } from './CriticContainer'

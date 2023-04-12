@@ -1,34 +1,54 @@
 import { css } from '@emotion/react'
-import styled from '@emotion/styled'
-import { TagProps } from '../../type'
-import { typography, colors, flexCenter } from '@/styles/emotion'
+import { typography, flexCenter } from '@/styles/emotion'
+import { type TagProps, type BaseProps } from '../../type'
+import { FILL_COLOR_THEME, OUTLINE_COLOR_THEME } from './colors'
 
-const COLOR_THEME = {
-  orange: css`
-    border-color: ${colors.primary.orange};
-    color: ${colors.primary.orange};
-  `,
-  default: css`
-    border-color: ${colors.grey[100]};
-    color: ${colors.grey[100]};
-  `,
+const Round = <T extends As>({
+  color = 'default',
+  fill = 'false',
+  clickable = 'false',
+  as,
+  children,
+  ...props
+}: TagProps<T>) => {
+  const Element = as ?? 'span'
+
+  return (
+    <Element
+      css={Box({
+        fill,
+        color,
+        isClickable: clickable === 'true',
+      })}
+      {...props}
+    >
+      {children}
+    </Element>
+  )
 }
 
-const Round = ({ children, color = 'default' }: TagProps) => {
-  return <Box color={color}>{children}</Box>
-}
-
-const Box = styled.span<TagProps>`
-  ${({ color = 'default' }) => COLOR_THEME[color]}
+const Box = ({
+  fill,
+  color,
+  isClickable,
+}: Pick<Required<BaseProps>, 'fill' | 'color'> & {
+  isClickable: boolean
+}) => css`
   ${typography.tag}
   ${flexCenter}
-
+  ${fill === 'true' ? FILL_COLOR_THEME[color] : OUTLINE_COLOR_THEME[color]}
   width: fit-content;
   padding: 8px 14px;
-  border-radius: 14px;
-  border: 2px solid;
+  border-radius: 20px;
+  border-style: solid;
+  border-width: 2px;
   line-height: 14px;
   letter-spacing: 0.01em;
+  ${isClickable && 'cursor: pointer;'}
+
+  &:focus {
+    border-width: 3px;
+  }
 `
 
 export default Round

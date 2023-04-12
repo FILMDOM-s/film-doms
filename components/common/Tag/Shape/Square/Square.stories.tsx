@@ -1,16 +1,33 @@
 import styled from '@emotion/styled'
-import { ComponentMeta, ComponentStory } from '@storybook/react'
+import { type ComponentMeta, type ComponentStory } from '@storybook/react'
 import { mediaQuery } from '@/styles/emotion'
 import Tag from '../../Tag'
 
 export default {
   title: 'Common/Tag/Square',
   component: Tag,
+  argTypes: {
+    shape: {
+      table: {
+        disable: true,
+      },
+    },
+  },
 } as ComponentMeta<typeof Tag>
 
 export const Default: ComponentStory<typeof Tag> = args => (
   <Tag {...args}>영화</Tag>
 )
+Default.args = {
+  color: 'default',
+  fill: 'false',
+  clickable: 'false',
+}
+Default.argTypes = {
+  color: {
+    options: ['orange', 'white', 'black', 'default'],
+  },
+}
 
 export const Orange: ComponentStory<typeof Tag> = args => (
   <Tag {...args}>이벤트</Tag>
@@ -34,11 +51,6 @@ export const List: ComponentStory<typeof Tag> = args => (
 )
 List.argTypes = {
   color: {
-    table: {
-      disable: true,
-    },
-  },
-  shape: {
     table: {
       disable: true,
     },

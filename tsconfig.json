@@ -22,7 +22,8 @@
       "@views/*": ["components/views/*"],
       "@images/*": ["assets/images/*"],
       "@svgs/*": ["assets/svgs/*"],
-      "@storybook/*": [".storybook/*"]
+      "@storybook/*": [".storybook/*"],
+      "@pages/*": ["pages/*"]
     },
     "types": [
       "@emotion/react/types/css-prop",

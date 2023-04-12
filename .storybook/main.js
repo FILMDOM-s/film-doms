@@ -64,6 +64,19 @@ module.exports = {
       }),
     ]
 
+    // 기존 svg 규칙들을 제거합니다.
+    config.module.rules
+      .filter(rule => rule.test.test('.svg')) // svg 찾기
+      .forEach(rule => {
+        rule.exclude = /\.svg$/i
+      })
+
+    // svg를 component로 사용하기 위한 설정입니다.
+    config.module.rules.push({
+      test: /\.svg$/,
+      use: ['@svgr/webpack'],
+    })
+
     return config
   },
 }
