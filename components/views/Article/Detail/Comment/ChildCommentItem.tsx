@@ -5,9 +5,9 @@ import { dateDiff } from '@/utils/dateDiff'
 import styled from '@emotion/styled'
 import Image from 'next/image'
 
-const ChildCommentItem = ({ comment }: { comment: ChildComment }) => {
+const ChildCommentItem = ({ comment, borderBottom }: { comment: Comment.Child,borderBottom:boolean }) => {
   return (
-    <CommentItemContainer>
+    <CommentItemContainer borderBottom={borderBottom}>
       <CommentProfileBox>
         <Image
           src={comment.author.profile ?? defaultProfile}
@@ -34,11 +34,11 @@ const ChildCommentItem = ({ comment }: { comment: ChildComment }) => {
 
 export default ChildCommentItem
 
-const CommentItemContainer = styled.div`
+const CommentItemContainer = styled.div<{borderBottom:boolean}>`
   ${flexGap('10px', 'row')}
   width: 100%;
-  padding: 0 0 24px 0;
-  border-bottom: 1px solid #e9ecef;
+  padding: 24px 0;
+  border-bottom: ${({borderBottom}) => borderBottom ? `1px solid #e9ecef` : 'none'};
   item-align: flex-start;
 `
 
@@ -82,7 +82,7 @@ const CommentButton = styled(Button)`
 `
 
 const ReplyBox = styled.div`
-  ${flexGap('10px', 'row')}
-  width: 100%;
-  item-align: flex-start;
+    ${flexGap('10px', 'row')}
+    width: 100%;
+    item-align: flex-start;
 `

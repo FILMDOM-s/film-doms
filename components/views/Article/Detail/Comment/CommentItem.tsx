@@ -9,12 +9,12 @@ import Image from 'next/image'
 import { useState } from 'react'
 import ChildCommentItem from './ChildCommentItem'
 
-const CommentItem = ({ comment }: { comment: Comment }) => {
+const CommentItem = ({ comment,borderBottom }: { comment: Comment.Parent,borderBottom:boolean }) => {
   const [leaveReply, setLeaveReply] = useState<boolean>(false)
   const [replyToggle, setReplyToggle] = useState<boolean>(false)
-
+  
   return (
-    <CommentItemContainer>
+    <CommentItemContainer borderBottom={borderBottom}>
       <CommentProfileBox>
         <Image
           src={comment.author.profile ?? defaultProfile}
@@ -44,21 +44,11 @@ const CommentItem = ({ comment }: { comment: Comment }) => {
         </ButtonBox>
         {comment.childComments.length > 0 && (
           <>
-            <ReplyToggleButton
-              leftIcon={replyToggle ? <ChevronFillDown /> : <ChevronFillUp />}
-              onClick={() => setReplyToggle(!replyToggle)}
-            >
-              답글 {comment.childComments.length}개
-            </ReplyToggleButton>
+            <RelyToggleButton leftIcon={replyToggle ? <ChevronFillDown/> : <ChevronFillUp/>} onClick={() => setReplyToggle(!replyToggle)}>답글 {comment.childComments.length}개</RelyToggleButton>
             <ReplyBox open={replyToggle}>
               {comment.childComments.length > 0 &&
-                comment.childComments.map(childComment => {
-                  return (
-                    <ChildCommentItem
-                      key={childComment.id}
-                      comment={childComment}
-                    />
-                  )
+                comment.childComments.map((childComment,index) => {
+                  return <ChildCommentItem key={index} borderBottom={comment.childComments.length-1 !== index} comment={childComment} />
                 })}
             </ReplyBox>
           </>
@@ -70,11 +60,11 @@ const CommentItem = ({ comment }: { comment: Comment }) => {
 
 export default CommentItem
 
-const CommentItemContainer = styled.div`
+const CommentItemContainer = styled.div<{borderBottom:boolean}>`
   ${flexGap('10px', 'row')}
   width: 100%;
   padding: 0 0 24px 0;
-  border-bottom: 1px solid #e9ecef;
+  border-bottom: ${({borderBottom}) => borderBottom ? `1px solid #e9ecef` : 'none'};
   item-align: flex-start;
 `
 
@@ -118,15 +108,15 @@ const CommentButton = styled(Button)`
   font-weight: 500;
 `
 
-const ReplyBox = styled.div<{ open: boolean }>`
+const ReplyBox = styled.div<{open:boolean}>`
   ${flexGap('10px', 'column')}
   item-align: flex-start;
-  height: ${({ open }) => (open ? 'auto' : '0')};
-  display: ${({ open }) => (open ? 'block' : 'none')};
+  height: ${({open})=>open?'auto':'0'};
+  display: ${({open})=>open?'block':'none'};
   transition: height 0.3s ease-in-out;
 `
 
-const ReplyToggleButton = styled(Button)`
+const RelyToggleButton = styled(Button)`
   background-color: white;
   ${typography.tag}
   padding: 5px 18px;

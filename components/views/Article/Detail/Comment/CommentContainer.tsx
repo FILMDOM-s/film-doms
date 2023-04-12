@@ -7,14 +7,13 @@ import CommentItem from './CommentItem'
 
 const CommentContainer = ({ articleId, category }: ArticleDetailProps) => {
   const { data: comments } = useFetchCommentsByArticle(articleId, category)
-
   return (
     <Container>
       <CommentCount>{`댓글 ${comments.length}개`}</CommentCount>
-      {comments.map(comment => {
-        return <CommentItem key={comment.id} comment={comment} />
+      {comments.map((comment,index) => {
+        return <CommentItem key={index} borderBottom={comments.length-1 !== index} comment={comment}/>
       })}
-      <CommentForm />
+      <CommentForm/>
     </Container>
   )
 }
