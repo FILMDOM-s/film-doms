@@ -12,7 +12,7 @@ declare module Article {
     tag: Tag
     isContainImage: boolean
     title: string
-    comments: Comment['id'][]
+    comments: Comment.Parent['id'][]
     writer: User
     createAt: string
     updateAt: string
@@ -32,7 +32,7 @@ declare module Article {
     tag: Tag
     isContainImage: boolean
     title: string
-    comments: Comment['id'][]
+    comments: Comment.Parent['id'][]
     writer: User
     createAt: string
     updateAt: string
