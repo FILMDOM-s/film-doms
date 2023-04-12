@@ -1,9 +1,9 @@
 import { Thumb } from '@/assets/svgs/common'
 import { Button, Divider } from '@/components/common'
 import { useFetchArticleById } from '@/services/article'
+import { useFetchCommentsByArticle } from '@/services/comment'
 import { colors, flexGap, typography } from '@/styles/emotion'
 import styled from '@emotion/styled'
-import { useRef } from 'react'
 import { ProfileBar } from './ProfileBar'
 
 export type ArticleDetailProps = {
@@ -13,12 +13,12 @@ export type ArticleDetailProps = {
 
 export const ArticleDetail = ({ articleId, category }: ArticleDetailProps) => {
   const { data: article } = useFetchArticleById(articleId, category)
-  const thumbButton = useRef(null)
+  const { data: comments } = useFetchCommentsByArticle(articleId, category)
   return (
     <Container>
       <Category>{article && article.tag}</Category>
       <Title>{article && article.title}</Title>
-      <ProfileBar article={article} />
+      <ProfileBar article={article} count={comments.length}/>
       <Divider color={colors.grey[100]} size={1} />
       <Content>
         <TopContentGrid>
@@ -27,7 +27,7 @@ export const ArticleDetail = ({ articleId, category }: ArticleDetailProps) => {
         </TopContentGrid>
         {article && article.content}
         <BottomContentGrid>
-          <OrangeButton ref={thumbButton} leftIcon={<Thumb />}>
+          <OrangeButton leftIcon={<Thumb />}>
             {article.likes}
           </OrangeButton>
         </BottomContentGrid>

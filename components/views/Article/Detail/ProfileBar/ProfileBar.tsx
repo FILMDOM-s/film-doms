@@ -3,12 +3,14 @@ import { colors, flexCenter, flexGap, typography } from '@/styles/emotion'
 import Image from 'next/image'
 import { defaultProfile } from '@/assets/images/common'
 import { dateDiff } from '@/utils/dateDiff'
+import { getRoundString } from '@/utils/getRoundString'
 
 interface ProfileBarProps {
   article: Article.Item
+  count: number
 }
 
-const ProfileBar = ({ article }: ProfileBarProps) => {
+const ProfileBar = ({ article,count }: ProfileBarProps) => {
   return (
     article && (
       <Bar>
@@ -30,13 +32,13 @@ const ProfileBar = ({ article }: ProfileBarProps) => {
           </Li>
           <Li>{dateDiff(article.createAt)}</Li>
           <Li>
-            조회수<Span>{article.views}</Span>
+            조회수<Span>{getRoundString(article.views)}</Span>
           </Li>
           <Li>
-            추천수<Span>{article.likes}</Span>
+            추천수<Span>{getRoundString(article.likes)}</Span>
           </Li>
           <Li>
-            댓글<Span>{article.tag}</Span>
+            댓글<Span>{getRoundString(count)}</Span>
           </Li>
         </Ul>
       </Bar>
