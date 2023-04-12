@@ -26,6 +26,8 @@ const queryKeys = {
 
   articleNotice: ['articleNotice'],
 
+  articlePopular: ['articlePopular'],
+
   article: (id: Article.Item['id']) => ['article', id],
 } as const
 
