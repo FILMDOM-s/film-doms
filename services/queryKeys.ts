@@ -8,7 +8,7 @@ const queryKeys = {
   recent: (id: Recent['id']) => ['recent', id],
 
   comments: ['comments'],
-  comment: (id: Comment['id']) => ['comment', id],
+  comment: (id: Comment.Parent['id']) => ['comment', id],
 
   notices: ['notices'],
   notice: (id: Notice['id']) => ['notice', id],
