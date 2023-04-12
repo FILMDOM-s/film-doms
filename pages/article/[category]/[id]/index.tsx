@@ -7,6 +7,7 @@ import { CATEGORIES } from '@/constants/article'
 import { OpenGraph } from '@/components/common'
 import { useFetchArticleById } from '@/services/article'
 import { flexGap } from '@/styles/emotion'
+import ArticlePopularContainer from '@/components/views/Article/Popular/ArticlePopularContainer'
 
 const ArticleDetailPage = () => {
   const { query } = useRouter()
@@ -21,7 +22,7 @@ const ArticleDetailPage = () => {
 
   return (
     <OpenGraph title={'Article'} path={`/article/${category}/${id}`}>
-      <ArticleLayout right={<Box>인기게시글</Box>}>
+      <ArticleLayout right={<ArticlePopularContainer/>}>
         <ColumnGrid>
           <ArticleDetailViews articleId={id} category={category} />
           <ArticleMainViews category={category} />
