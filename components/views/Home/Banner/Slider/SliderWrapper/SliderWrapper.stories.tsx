@@ -9,7 +9,9 @@ export default {
 } as ComponentMeta<typeof SliderWrapper>
 
 const Template: ComponentStory<typeof SliderWrapper> = args => (
-  <Wrapper><SliderWrapper {...args} /></Wrapper>
+  <Wrapper>
+    <SliderWrapper {...args} />
+  </Wrapper>
 )
 
 const Wrapper = styled.div`

@@ -5,6 +5,7 @@ import * as critic from './critic'
 import * as notice from './notice'
 import * as article from './article'
 import * as tag from './tag'
+import * as comment from './comment'
 
 export const handlers = [
   ...Object.values(recent),
@@ -14,4 +15,5 @@ export const handlers = [
   ...Object.values(notice),
   ...Object.values(article),
   ...Object.values(tag),
+  ...Object.values(comment),
 ]

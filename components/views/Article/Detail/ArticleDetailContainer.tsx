@@ -1,7 +1,76 @@
-const ArticleDetailContainer = () => {
+import { ChevronLeft } from '@/assets/svgs/common'
+import { Loading } from '@/components/common'
+import { CATEGORIES } from '@/constants/article'
+import { colors, flexCenter, flexGap, typography } from '@/styles/emotion'
+import styled from '@emotion/styled'
+import Link from 'next/link'
+import { Suspense } from 'react'
+import { ArticleDetail } from './ArticleDetail'
+import { CommentContainerView } from './Comment'
+
+export type ArticleDetailContainerProps = {
+  articleId: Article.Item['id']
+  category: Article.Category
+}
+
+const ArticleDetailContainer = ({
+  articleId,
+  category,
+}: ArticleDetailContainerProps) => {
   // TODO: ArticleDetail
 
-  return <></>
+  return (
+    <Container>
+      <Title>
+        <ChevronWrapper>
+          <Link href={`/article/${category}`}>
+            <ChevronLeft width="10px" height="16px" />
+          </Link>
+        </ChevronWrapper>
+        {CATEGORIES[category].title}
+      </Title>
+      <ArticleSection>
+        <Suspense fallback={<Loading />}>
+          <ArticleDetail articleId={articleId} category={category} />
+        </Suspense>
+      </ArticleSection>
+      <CommentSection>
+        <Suspense fallback={<Loading />}>
+          <CommentContainerView articleId={articleId} category={category} />
+        </Suspense>
+      </CommentSection>
+    </Container>
+  )
 }
 
 export default ArticleDetailContainer
+
+const Container = styled.div`
+  ${flexGap('40px')}
+  width: 954px;
+  align-items: flex-end;
+`
+
+const Title = styled.div`
+  display: flex;
+  align-items: center;
+  width: 954px;
+  ${typography.h5}
+  color: ${colors.primary.black};
+`
+
+const ArticleSection = styled.section`
+  ${flexGap('40px')}
+  width: 914px;
+`
+
+const CommentSection = styled.section`
+  ${flexGap('40px')}
+  width: 914px;
+`
+
+const ChevronWrapper = styled.div`
+  ${flexCenter}
+  padding: 0 19px 0 9px;
+  cursor: pointer;
+`
