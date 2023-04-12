@@ -5,6 +5,7 @@ import { ArticleMainViews } from '@views/Article'
 import { hasOwnProperty } from '@/utils'
 import { OpenGraph } from '@/components/common'
 import { CATEGORIES } from '@/constants/article'
+import ArticlePopularContainer from '@/components/views/Article/Popular/ArticlePopularContainer'
 
 const ArticlePage = () => {
   const { query } = useRouter()
@@ -18,7 +19,7 @@ const ArticlePage = () => {
 
   return (
     <OpenGraph title={CATEGORIES[category].title} path={`/article/${category}`}>
-      <ArticleLayout right={<Box>인기게시글</Box>}>
+      <ArticleLayout right={<ArticlePopularContainer />}>
         <ArticleMainViews category={category} />
       </ArticleLayout>
     </OpenGraph>
