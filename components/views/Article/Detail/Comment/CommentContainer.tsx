@@ -10,10 +10,16 @@ const CommentContainer = ({ articleId, category }: ArticleDetailProps) => {
   return (
     <Container>
       <CommentCount>{`댓글 ${comments.length}개`}</CommentCount>
-      {comments.map((comment,index) => {
-        return <CommentItem key={index} borderBottom={comments.length-1 !== index} comment={comment}/>
+      {comments.map((comment, index) => {
+        return (
+          <CommentItem
+            key={index}
+            borderBottom={comments.length - 1 !== index}
+            comment={comment}
+          />
+        )
       })}
-      <CommentForm/>
+      <CommentForm />
     </Container>
   )
 }

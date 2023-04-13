@@ -1,8 +1,5 @@
 import { mediaQuery } from '@/styles/emotion'
 import styled from '@emotion/styled'
-import { logoEngBk } from '@images/common'
-import { IconMenu2 } from '@tabler/icons-react'
-import Image from 'next/image'
 import { flexCenter } from '@/styles/emotion'
 import SideNav from '../SideNav'
 import { useState } from 'react'
