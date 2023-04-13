@@ -36,6 +36,7 @@ export default CriticContainer
 
 const SectionWrapper = styled(Section)`
   gap: 44px;
+  margin-top: 104px;
 `
 
 const SectionBody = styled(Section.Body)`
