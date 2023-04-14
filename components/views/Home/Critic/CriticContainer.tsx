@@ -1,5 +1,10 @@
 import { ArrowRight } from '@/assets/svgs/common'
-import { Button, ResetErrorBoundary, Section } from '@/components/common'
+import {
+  Button,
+  Loading,
+  ResetErrorBoundary,
+  Section,
+} from '@/components/common'
 import styled from '@emotion/styled'
 import { useRouter } from 'next/router'
 import { Suspense } from 'react'
@@ -23,7 +28,7 @@ const CriticContainer = () => {
       />
       <SectionBody>
         <ResetErrorBoundary fallback={<div>에러...</div>}>
-          <Suspense fallback={<div>로딩...</div>}>
+          <Suspense fallback={<Loading width="100%" height="960px" />}>
             <Critics />
           </Suspense>
         </ResetErrorBoundary>

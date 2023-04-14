@@ -1,7 +1,7 @@
-import { useQuery } from '@tanstack/react-query'
+import { useSuspendedQuery } from '@/hooks'
 import queryKeys from '../queryKeys'
 import { getBanners } from './apis'
 
 export const useFetchBanners = () => {
-  return useQuery(queryKeys.banner, getBanners)
+  return useSuspendedQuery(queryKeys.banner, getBanners)
 }

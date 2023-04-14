@@ -1,19 +1,40 @@
 import styled from '@emotion/styled'
 import FilmDomsLoading from '@svgs/common/FilmDomsLoading.svg'
+import RenderIf from '../RenderIf'
 interface Props {
   width?: string
   height?: string
+  empty?: boolean
+  iconSize?: 'sm' | 'md' | 'lg'
 }
 
-const Loading = ({ width, height }: Props) => {
+const size = {
+  sm: '2rem',
+  md: '4rem',
+  lg: '8rem',
+}
+
+const Loading = ({ width, height, empty = false, iconSize = 'md' }: Props) => {
   return (
     <LoadingWrapper width={width} height={height}>
-      <FilmDomsLoading />
+      <RenderIf
+        condition={!empty}
+        render={
+          <IconBox iconSize={iconSize}>
+            <FilmDomsLoading />
+          </IconBox>
+        }
+      />
     </LoadingWrapper>
   )
 }
 
 export default Loading
+
+const IconBox = styled.div<Required<Pick<Props, 'iconSize'>>>`
+  width: ${({ iconSize }) => size[iconSize]};
+  height: ${({ iconSize }) => size[iconSize]};
+`
 
 export const LoadingWrapper = styled.div<{
   width?: string
