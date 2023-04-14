@@ -18,7 +18,7 @@ export const ArticleDetail = ({ articleId, category }: ArticleDetailProps) => {
     <Container>
       <Category>{article && article.tag}</Category>
       <Title>{article && article.title}</Title>
-      <ProfileBar article={article} count={comments.length}/>
+      <ProfileBar article={article} count={comments.length} />
       <Divider color={colors.grey[100]} size={1} />
       <Content>
         <TopContentGrid>
@@ -27,9 +27,7 @@ export const ArticleDetail = ({ articleId, category }: ArticleDetailProps) => {
         </TopContentGrid>
         {article && article.content}
         <BottomContentGrid>
-          <OrangeButton leftIcon={<Thumb />}>
-            {article.likes}
-          </OrangeButton>
+          <OrangeButton leftIcon={<Thumb />}>{article.likes}</OrangeButton>
         </BottomContentGrid>
       </Content>
       <Divider color={colors.grey[100]} size={1} />

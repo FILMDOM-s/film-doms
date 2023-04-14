@@ -38,4 +38,6 @@ const commentItem: Comment.Parent = {
   likes: 10,
 }
 
-export const Default = () => <CommentItem comment={commentItem} borderBottom={false} />
+export const Default = () => (
+  <CommentItem comment={commentItem} borderBottom={false} />
+)

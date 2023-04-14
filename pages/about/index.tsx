@@ -1,5 +1,4 @@
 import { OpenGraph } from '@/components/common'
-import Head from 'next/head'
 
 const openGraphProps = {
   title: 'ABOUT',

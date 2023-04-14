@@ -6,7 +6,7 @@ import 'swiper/css/pagination'
 import 'swiper/css/scrollbar'
 import 'swiper/css/autoplay'
 import Image from 'next/image'
-import { flexCenter, mediaQuery } from '@/styles/emotion'
+import { flexCenter } from '@/styles/emotion'
 import styled from '@emotion/styled'
 
 function SliderWrapper({ banners }: { banners: Banner[] }) {
