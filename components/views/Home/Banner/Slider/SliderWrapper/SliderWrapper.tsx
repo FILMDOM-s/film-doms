@@ -21,6 +21,10 @@ function SliderWrapper({ banners }: { banners?: Banner[] }) {
         height={440}
         pagination={{ clickable: true }}
         style={{ position: 'relative' }}
+        autoplay={{
+          delay: 3000,
+          disableOnInteraction: false,
+        }}
       >
         {banners?.map(({ id, type, title, subtitle, image }: Banner) => (
           <SwiperSlide key={id}>
