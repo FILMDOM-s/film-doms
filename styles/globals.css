@@ -33,3 +33,45 @@
 
   color: #000000;
 }
+
+.color-3{
+ stroke:#A0B8FF;
+  transform: translate3d(2px, 2px, 0);
+   stroke-width: 6px;
+}
+
+.color-1{
+ stroke:#67C05F;
+ stroke-width: 6px;
+}
+
+.color-2{stroke:#F7F7F5;
+       transform: translate3d(2px, 2px, 0);
+  stroke-width:6px;
+  z-index:9999;
+}
+
+/* Main SVG */
+
+.letters {
+ left: 50%;
+ transform:translateX(-50%);
+ position: relative;
+ stroke-miterlimit:3;
+ fill:none;
+ top: 20px;
+ display: block;
+ min-height: 400px;
+ max-height: 70vh;
+ margin: 0 auto;
+ position: absolute;
+ transition: all 0.5s ease;
+}
+
+/* Letter path */
+
+.letter__layer {
+  fill: none;
+  transition: all 0.1s ease;
+}
+
