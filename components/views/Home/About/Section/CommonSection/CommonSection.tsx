@@ -1,6 +1,6 @@
+import { SwitchCase } from '@/components/common'
 import { useScrollFadeIn } from '@/hooks'
 import styled from '@emotion/styled'
-import Image from 'next/image'
 import { ReactNode } from 'react'
 
 export type CommonContainerProps = {
@@ -18,41 +18,26 @@ const CommonSection = ({
   imageUrl,
   imagePosition,
 }: CommonContainerProps) => {
-    const scrollFadeIn = useScrollFadeIn(0.2, '20%')
+  const scrollFadeIn = useScrollFadeIn(0.2, '20%')
   return (
     <CommonContainerSection className="common-section">
-      {imagePosition === 'left' ? (
-        <>
-          <CommonImageContainer>{imageUrl}</CommonImageContainer>
-          <CommonTextContainer {...scrollFadeIn}>
-            <CommonTitle>{title}</CommonTitle>
-            <CommonSubtitle>{subTitle}</CommonSubtitle>
-            <CommonDescription>
-              {description.split('|').map((line, index) => (
-                <span key={index}>
-                  {line}
-                  <br />
-                </span>
-              ))}
-            </CommonDescription>
-          </CommonTextContainer>
-        </>
-      ) : (
-        <>
-          <CommonTextContainer {...scrollFadeIn}>
-            <CommonTitle>{title}</CommonTitle>
-            <CommonSubtitle>{subTitle}</CommonSubtitle>
-            <CommonDescription>
-              {description.split('|').map((line, index) => (
-                <span key={index}>
-                  {line}
-                  <br />
-                </span>
-              ))}
-            </CommonDescription>
-          </CommonTextContainer>
-          <CommonImageContainer>{imageUrl}</CommonImageContainer>
-        </>
+      {imagePosition === 'left' && (
+        <CommonImageContainer>{imageUrl}</CommonImageContainer>
+      )}
+      <CommonTextContainer {...scrollFadeIn}>
+        <CommonTitle>{title}</CommonTitle>
+        <CommonSubtitle>{subTitle}</CommonSubtitle>
+        <CommonDescription>
+          {description.split('|').map((line, index) => (
+            <span key={index}>
+              {line}
+              <br />
+            </span>
+          ))}
+        </CommonDescription>
+      </CommonTextContainer>
+      {imagePosition === 'right' && (
+        <CommonImageContainer>{imageUrl}</CommonImageContainer>
       )}
     </CommonContainerSection>
   )
