@@ -1,5 +1,5 @@
 import { OpenGraph } from '@/components/common'
-import Head from 'next/head'
+import { About } from '@/components/views/About'
 
 const openGraphProps = {
   title: 'ABOUT',
@@ -11,9 +11,8 @@ const openGraphProps = {
 
 export default function Index() {
   return (
-    <div>
-      <OpenGraph {...openGraphProps} />
-      <main className="mx-auto">About</main>
-    </div>
+    <OpenGraph {...openGraphProps}>
+      <About />
+    </OpenGraph>
   )
 }

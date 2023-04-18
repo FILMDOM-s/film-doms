@@ -23,7 +23,7 @@ const article: Article.Item = {
   views: 10000,
   likes: 100,
   category: 'movie',
-  comments:[]
+  comments: [],
 }
 
-export const Default = () => <ProfileBar article={article} count={2}/>
+export const Default = () => <ProfileBar article={article} count={2} />

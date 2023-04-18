@@ -1,6 +1,7 @@
 #!/usr/bin/env sh
 . "$(dirname -- "$0")/_/husky.sh"
 
+
 yarn lint-staged --no-stash
 
 # 여기는 lint-staged 설정입니다.

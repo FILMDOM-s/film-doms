@@ -23,13 +23,3 @@
 .nav-red-font:hover {
   color: black;
 }
-
-.title {
-  font-style: normal;
-  font-weight: 700;
-  font-size: 28px;
-  line-height: 42px;
-  /* identical to box height, or 150% */
-
-  color: #000000;
-}

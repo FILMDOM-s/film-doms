@@ -3,12 +3,14 @@ import styled from '@emotion/styled'
 import { flex } from '@/styles/emotion'
 import Header from '../Header'
 import Footer from '../Footer'
+import { useRouter } from 'next/router'
 
 const AppLayout = ({ children }: PropsWithChildren) => {
+  const router  = useRouter()
   return (
     <>
       <Header />
-      <Main>
+      <Main backgroundColor={router.pathname == '/about' ? '#111111' :'white'}>
         <Container>{children}</Container>
       </Main>
       <Footer />
@@ -21,9 +23,10 @@ const Container = styled.div`
   max-width: 1280px;
 `
 
-const Main = styled.main`
+const Main = styled.main<{backgroundColor:string}>`
   width: 100%;
   ${flex({ direction: 'column', align: 'center' })}
+  background-color: ${({ backgroundColor }) => backgroundColor};
 `
 
 export default AppLayout

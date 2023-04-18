@@ -1,5 +1,6 @@
 import '@/styles/globals.css'
-import '@/styles/carousel.css'
+import '@/styles/anime.css';
+import '@/styles/carousel.css';
 import { Session } from 'next-auth'
 import type { AppProps } from 'next/app'
 import { useCallback } from 'react'
