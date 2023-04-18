@@ -1,7 +1,6 @@
 import styled from '@emotion/styled'
 import { IconX } from '@tabler/icons-react'
 import SideNavList from './SideNavList'
-import { Dispatch, SetStateAction } from 'react'
 import { css } from '@emotion/react'
 
 const SideNav = ({

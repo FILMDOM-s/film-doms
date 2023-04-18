@@ -1,5 +1,5 @@
 import styled from '@emotion/styled'
-import { colors, flexCenter, flexGap, typography } from '@/styles/emotion'
+import { colors, flexCenter, typography } from '@/styles/emotion'
 import Image from 'next/image'
 import { defaultProfile } from '@/assets/images/common'
 import { dateDiff } from '@/utils/dateDiff'
@@ -10,7 +10,7 @@ interface ProfileBarProps {
   count: number
 }
 
-const ProfileBar = ({ article,count }: ProfileBarProps) => {
+const ProfileBar = ({ article, count }: ProfileBarProps) => {
   return (
     article && (
       <Bar>

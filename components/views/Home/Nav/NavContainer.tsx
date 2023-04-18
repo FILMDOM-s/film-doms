@@ -1,5 +1,4 @@
 import { navItems } from '@/constants/constants'
-import { mediaQuery } from '@/styles/emotion'
 import styled from '@emotion/styled'
 import Nav from './Nav'
 
