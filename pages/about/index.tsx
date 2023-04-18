@@ -1,6 +1,5 @@
 import { OpenGraph } from '@/components/common'
-import { About } from '@/components/views/Home/About'
-
+import { About } from '@/components/views/About'
 const openGraphProps = {
   title: 'ABOUT',
   url: 'https://film-doms.vercel.app/',
