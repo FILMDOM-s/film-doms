@@ -1,5 +1,10 @@
 import { ArrowRight } from '@svgs/common'
-import { Button, ResetErrorBoundary, Section } from '@/components/common'
+import {
+  Button,
+  Loading,
+  ResetErrorBoundary,
+  Section,
+} from '@/components/common'
 import { css } from '@emotion/react'
 import { useRouter } from 'next/router'
 import React, { Suspense } from 'react'
@@ -19,7 +24,7 @@ const NoticeContainer = () => {
       />
       <Section.Body css={SectionBody}>
         <ResetErrorBoundary fallback={<div>에러...</div>}>
-          <Suspense fallback={<div>로딩...</div>}>
+          <Suspense fallback={<Loading width="100%" height="611px" />}>
             <Notices />
           </Suspense>
         </ResetErrorBoundary>

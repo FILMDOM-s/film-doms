@@ -1,5 +1,4 @@
 import { ComponentMeta, ComponentStory } from '@storybook/react'
-import { getMockImage } from '@/utils'
 import Critic from './Critic'
 
 export default {

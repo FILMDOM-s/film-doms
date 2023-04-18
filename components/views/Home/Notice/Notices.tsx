@@ -1,10 +1,7 @@
 import { useScrollFadeIn } from '@/hooks'
 import { useFetchNotices } from '@/services/notice'
-import { mediaQuery } from '@/styles/emotion'
-import { css } from '@emotion/react'
 import styled from '@emotion/styled'
 import Link from 'next/link'
-import React from 'react'
 import Notice from './Notice'
 
 const Notices = () => {

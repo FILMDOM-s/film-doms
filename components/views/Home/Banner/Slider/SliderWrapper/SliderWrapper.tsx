@@ -6,10 +6,10 @@ import 'swiper/css/pagination'
 import 'swiper/css/scrollbar'
 import 'swiper/css/autoplay'
 import Image from 'next/image'
-import { flexCenter, mediaQuery } from '@/styles/emotion'
+import { flexCenter } from '@/styles/emotion'
 import styled from '@emotion/styled'
 
-function SliderWrapper({ banners }: { banners?: Banner[] }) {
+function SliderWrapper({ banners }: { banners: Banner[] }) {
   return (
     <SliderOutsideAlign>
       <Swiper
@@ -26,7 +26,7 @@ function SliderWrapper({ banners }: { banners?: Banner[] }) {
           disableOnInteraction: false,
         }}
       >
-        {banners?.map(({ id, type, title, subtitle, image }: Banner) => (
+        {banners.map(({ id, type, title, subtitle, image }: Banner) => (
           <SwiperSlide key={id}>
             <Image src={image} alt={title} width={1280} height={440} priority />
             <TextArea>

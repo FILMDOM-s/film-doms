@@ -8,7 +8,7 @@ import RecentContainer from './Recent'
 const CommunityContainer = () => {
   return (
     <Section>
-      <Suspense fallback={<Loading />}>
+      <Suspense fallback={<Loading width="1280px" height="392px" />}>
         <RecentContainer />
         <MovieReviewContainer />
       </Suspense>
