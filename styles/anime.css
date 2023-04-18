@@ -1,0 +1,37 @@
+.color-3 {
+  stroke: #a0b8ff;
+  transform: translate3d(2px, 2px, 0);
+  stroke-width: 6px;
+}
+
+.color-1 {
+  stroke: #67c05f;
+  stroke-width: 6px;
+}
+
+.color-2 {
+  stroke: #f7f7f5;
+  transform: translate3d(2px, 2px, 0);
+  stroke-width: 6px;
+  z-index: 9999;
+}
+
+.letters {
+  left: 50%;
+  transform: translateX(-50%);
+  position: relative;
+  stroke-miterlimit: 3;
+  fill: none;
+  top: 20px;
+  display: block;
+  min-height: 400px;
+  max-height: 70vh;
+  margin: 0 auto;
+  position: absolute;
+  transition: all 0.5s ease;
+}
+
+.letter__layer {
+  fill: none;
+  transition: all 0.1s ease;
+}
