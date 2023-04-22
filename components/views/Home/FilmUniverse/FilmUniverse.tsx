@@ -3,10 +3,9 @@ import Image from 'next/image'
 import styled from '@emotion/styled'
 import { Tag, TicketButton } from '@/components/common'
 
-const Notice = ({
+const FilmUniverse = ({
   title,
   owner,
-  type,
   classification,
   image,
   startAt,
@@ -14,35 +13,34 @@ const Notice = ({
 }: {
   title: string
   owner: string
-  type: string
   classification: string
   image: string
   startAt: string
   endAt: string
 }) => {
   return (
-    <NoticeElement>
+    <FilmUniverseElement>
       <Image width={360} height={400} src={image} alt="title" />
-      <NoticeElementOwnerWrapper>
-        <NoticeElementOwner>{owner}</NoticeElementOwner>
+      <FilmUniverseElementOwnerWrapper>
+        <FilmUniverseElementOwner>{owner}</FilmUniverseElementOwner>
         <Tag shape="round">{classification}</Tag>
-      </NoticeElementOwnerWrapper>
-      <NoticeElementTitle>
+      </FilmUniverseElementOwnerWrapper>
+      <FilmUniverseElementTitle>
         {title.length <= 50 ? title : title.substring(0, 50) + '...'}
-      </NoticeElementTitle>
-      <NoticeElementDateWrapper>
-        <NoticeElementDate>{`${startAt} ~ ${endAt.substring(
+      </FilmUniverseElementTitle>
+      <FilmUniverseElementDateWrapper>
+        <FilmUniverseElementDate>{`${startAt} ~ ${endAt.substring(
           5
-        )}`}</NoticeElementDate>
+        )}`}</FilmUniverseElementDate>
         <TicketButton>{'자세히 보기'}</TicketButton>
-      </NoticeElementDateWrapper>
-    </NoticeElement>
+      </FilmUniverseElementDateWrapper>
+    </FilmUniverseElement>
   )
 }
 
-export default Notice
+export default FilmUniverse
 
-const NoticeElement = styled.div`
+const FilmUniverseElement = styled.div`
   flex-direction: column;
   font-family: 'Pretendard';
   font-style: normal;
@@ -51,7 +49,7 @@ const NoticeElement = styled.div`
   justify-content: center;
 `
 
-const NoticeElementOwnerWrapper = styled.div`
+const FilmUniverseElementOwnerWrapper = styled.div`
   ${flexCenter}
   justify-content: flex-start;
   width: 100%;
@@ -59,14 +57,14 @@ const NoticeElementOwnerWrapper = styled.div`
   gap: 16px;
 `
 
-const NoticeElementDateWrapper = styled.div`
+const FilmUniverseElementDateWrapper = styled.div`
   display: flex;
   align-items: flex-end;
   justify-content: space-between;
   width: 100%;
 `
 
-const NoticeElementOwner = styled.div`
+const FilmUniverseElementOwner = styled.div`
   font-weight: 700;
   font-size: 16px;
   line-height: 16px;
@@ -76,7 +74,7 @@ const NoticeElementOwner = styled.div`
   color: #ff5414;
 `
 
-const NoticeElementTitle = styled.div`
+const FilmUniverseElementTitle = styled.div`
   height: 64px;
   font-weight: 700;
   font-size: 20px;
@@ -85,7 +83,7 @@ const NoticeElementTitle = styled.div`
   margin-top: 17px;
   margin-bottom: 28px;
 `
-const NoticeElementDate = styled.div`
+const FilmUniverseElementDate = styled.div`
   font-weight: 500;
   font-size: 16px;
   line-height: 16px;

@@ -7,15 +7,16 @@ import {
 } from '@/components/common'
 import { css } from '@emotion/react'
 import { useRouter } from 'next/router'
-import React, { Suspense } from 'react'
-import Notices from './Notices'
+import { Suspense } from 'react'
+import FilmUniverseList from './FilmUniverseList'
 
-const NoticeContainer = () => {
+const FilmUniverseContainer = () => {
   const { push } = useRouter()
+
   return (
     <Section style={{ marginTop: '100px' }}>
       <Section.Header
-        title="Notice"
+        title="Film Universe"
         right={
           <Button rightIcon={<ArrowRight />} onClick={() => push('/notice')}>
             More
@@ -25,7 +26,7 @@ const NoticeContainer = () => {
       <Section.Body css={SectionBody}>
         <ResetErrorBoundary fallback={<div>에러...</div>}>
           <Suspense fallback={<Loading width="100%" height="611px" />}>
-            <Notices />
+            <FilmUniverseList />
           </Suspense>
         </ResetErrorBoundary>
       </Section.Body>
@@ -33,7 +34,7 @@ const NoticeContainer = () => {
   )
 }
 
-export default NoticeContainer
+export default FilmUniverseContainer
 
 const SectionBody = css`
   display: flex;
