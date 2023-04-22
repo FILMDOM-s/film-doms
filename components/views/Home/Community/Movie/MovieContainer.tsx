@@ -2,13 +2,13 @@ import { useRouter } from 'next/router'
 import styled from '@emotion/styled'
 import { ArrowRight } from '@svgs/common'
 import { flexGap } from '@/styles/emotion'
-import { useFetchReviews } from '@/services/review'
+import { useFetchMovieList } from '@/services/main'
 import { Button, Section } from '@/components/common'
-import MovieReview from './MovieReview'
+import Movie from './Movie'
 
-const MovieReviewContainer = () => {
+const MovieContainer = () => {
   const { push } = useRouter()
-  const { data: MovieReviews } = useFetchReviews()
+  const { data: MovieList } = useFetchMovieList()
 
   return (
     <Container>
@@ -24,13 +24,8 @@ const MovieReviewContainer = () => {
         }
       />
       <Box>
-        {MovieReviews.slice(0, 5).map(movieReview => {
-          return (
-            <MovieReview
-              key={`MovieReview-${movieReview.id}`}
-              {...movieReview}
-            />
-          )
+        {MovieList.map(movie => {
+          return <Movie key={`Movie-${movie.id}`} {...movie} />
         })}
       </Box>
     </Container>
@@ -48,4 +43,4 @@ const Container = styled.div`
   max-width: 600px;
 `
 
-export default MovieReviewContainer
+export default MovieContainer

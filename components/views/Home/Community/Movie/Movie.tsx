@@ -4,21 +4,21 @@ import { css } from '@emotion/react'
 import { colors, flex, flexCenter, typography } from '@/styles/emotion'
 import { RenderIf, SwitchCase, Tag } from '@/components/common'
 
-const MovieReview = ({ id, category, title, comment }: Review) => {
+const Movie = ({ id, tag, title, commentCount }: Main.Movie) => {
   return (
     <Container>
       <SwitchCase
-        value={category}
+        value={tag}
         caseBy={{
-          이벤트: <Tag color="orange">{category}</Tag>,
+          이벤트: <Tag color="orange">{tag}</Tag>,
         }}
-        defaultRender={<Tag>{category}</Tag>}
+        defaultRender={<Tag>{tag}</Tag>}
       />
       <Link href={`/article/movie/${id}`} css={LinkBox}>
         <Title>{title}</Title>
         <RenderIf
-          condition={comment.length > 0}
-          render={<CommentCount>{comment.length}</CommentCount>}
+          condition={commentCount > 0}
+          render={<CommentCount>{commentCount}</CommentCount>}
         />
       </Link>
     </Container>
@@ -52,4 +52,4 @@ const Container = styled.li`
   gap: 16px;
 `
 
-export default MovieReview
+export default Movie
