@@ -5,9 +5,9 @@ import {
   useFetchArticleMainContentByCategory,
 } from '@/services/article'
 import { flex, flexCenter, flexGap, font } from '@/styles/emotion'
-import ArticleBoard from './ArticleBoard'
-import Pagination from './Pagination'
+import { Pagination } from '@/components/common'
 import { camelToSnake } from '@/utils'
+import ArticleBoard from './ArticleBoard'
 
 interface Props {
   category: string
