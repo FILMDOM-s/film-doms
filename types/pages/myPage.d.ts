@@ -1,21 +1,16 @@
 declare module User {
   type InterestMovie = string
 
-  type InterestMovieDTO = {
-    resultCode: string
-    result: InterestMovie[]
-  }
-
   type Info = {
-    id: string
+    id: number
     email: string
     nickname: string
-    password: string
     createdAt: string
     profileImage: {
-      id: string
+      id: number
       uuidFileName: string
     }
+    interestMovieList: InterestMovie[]
   }
 
   type InfoDTO = {
@@ -30,9 +25,10 @@ declare module User {
     }
 
     type Article = {
-      id: string
+      id: number
       tag: string
       title: string
+      commentCount: number
       createdAt: string
       views: number
       likes: number
@@ -50,7 +46,7 @@ declare module User {
     }
 
     type Comment = {
-      id: string
+      id: number
       content: string
       childrenCommentCount: number
       createdAt: string
