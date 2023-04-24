@@ -17,9 +17,7 @@ const ProfileSection = ({ profileImage, nickname }: Props) => {
         <Image
           src={getImageSrcByUuid(profileImage) ?? defaultUserProfile}
           alt={`profile-${nickname}`}
-          width={100}
-          height={100}
-          style={{ borderRadius: '50%' }}
+          fill
         />
         <ProfileEditBox>
           <ProfileEdit />
@@ -49,7 +47,12 @@ const ProfileEditBox = styled.button`
 
 const ProfileImageBox = styled.div`
   position: relative;
-  width: max-content;
+  width: 100px;
+  height: 100px;
+
+  & > img {
+    border-radius: 50%;
+  }
 `
 
 const Container = styled.div`
