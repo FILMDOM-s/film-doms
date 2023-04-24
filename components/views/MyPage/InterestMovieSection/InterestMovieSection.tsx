@@ -1,6 +1,6 @@
 import styled from '@emotion/styled'
-import { Divider, Tag } from '@/components/common'
 import { colors, flexGap, font } from '@/styles/emotion'
+import { Divider, Tag } from '@/components/common'
 
 interface Props {
   interestMovieList: User.InterestMovie[]
