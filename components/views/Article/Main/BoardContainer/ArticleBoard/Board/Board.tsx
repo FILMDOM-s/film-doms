@@ -5,7 +5,7 @@ import { defaultProfile } from '@images/common'
 import { ImageIcon } from '@svgs/common'
 import { colors, flex, flexCenter, font } from '@/styles/emotion'
 import { RenderIf } from '@/components/common'
-import cutString, { getImageSrcByUuid, snakeToCamel } from '@/utils'
+import { cutString, getImageSrcByUuid, snakeToCamel } from '@/utils'
 import { Date, Likes, Tag, Title, Views, Writer } from '../styles'
 import { convertKilo, convertCommentCount } from '../utils'
 

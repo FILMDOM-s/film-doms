@@ -1,6 +1,6 @@
 import { Tag } from '@/components/common'
 import { colors, typography } from '@/styles/emotion'
-import cutString from '@/utils/cutString'
+import { cutString } from '@/utils'
 import styled from '@emotion/styled'
 import Image from 'next/image'
 
