@@ -142,7 +142,7 @@ declare module Article {
     tag: string
     isContainImage: boolean
     title: string
-    comments: Comment.Parent['id'][]
+    comments: number[]
     writer: User
     createAt: string
     updateAt: string
