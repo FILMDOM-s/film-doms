@@ -1,9 +1,9 @@
 import { useState } from 'react'
-import { useFetchUserActivityComment } from '@/services/myPage'
-import { Pagination } from '@/components/common'
 import styled from '@emotion/styled'
+import { useFetchUserActivityComment } from '@/services/myPage'
 import { colors, flex, flexCenter, flexGap, font } from '@/styles/emotion'
-import cutString from '@/utils/cutString'
+import { cutString } from '@/utils'
+import { Pagination } from '@/components/common'
 
 const CommentContainer = () => {
   const [currentPage, setCurrentPage] = useState(1)
@@ -24,7 +24,7 @@ const CommentContainer = () => {
             {activityCommentList.content.map(comment => {
               return (
                 <Tr key={comment.id}>
-                  <Td color={colors.primary.black} as="button">
+                  <Td color={colors.primary.black} role="button">
                     {cutString(comment.content, 65)}
                     {'  '}
                     <CommentCount>{comment.childrenCommentCount}</CommentCount>

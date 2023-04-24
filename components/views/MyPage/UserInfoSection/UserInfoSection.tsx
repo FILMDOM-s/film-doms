@@ -29,14 +29,18 @@ const UserInfoSection = ({
             <Label>닉네임</Label>
             <Content>{nickname}</Content>
             <OptionBox>
-              <Button>중복체크</Button>
+              <Button as="div" role="button">
+                중복체크
+              </Button>
             </OptionBox>
           </Tr>
           <Tr>
             <Label>비밀번호</Label>
             <Content>{'*'.repeat(10)}</Content>
             <OptionBox>
-              <Button>변경</Button>
+              <Button as="div" role="button">
+                변경
+              </Button>
             </OptionBox>
           </Tr>
           <Tr>
@@ -76,6 +80,7 @@ const Button = styled.button`
   width: max-content;
   padding: 6px 12px;
   border: 2px solid ${colors.sub.red};
+  cursor: pointer;
 `
 
 const OptionBox = styled.td`

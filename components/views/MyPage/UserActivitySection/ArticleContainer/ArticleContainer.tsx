@@ -2,9 +2,9 @@ import { useState } from 'react'
 import styled from '@emotion/styled'
 import { ImageIcon } from '@svgs/common'
 import { useFetchUserActivityArticle } from '@/services/myPage'
-import { Pagination, RenderIf } from '@/components/common'
 import { colors, flex, flexCenter, flexGap, font } from '@/styles/emotion'
-import cutString from '@/utils/cutString'
+import { cutString } from '@/utils'
+import { Pagination, RenderIf } from '@/components/common'
 
 const ArticleContainer = () => {
   const [currentPage, setCurrentPage] = useState(1)
@@ -43,16 +43,17 @@ const ArticleContainer = () => {
                     width="40%"
                     color={colors.primary.black}
                     justify="flex-start"
-                    as="button"
                   >
-                    <RenderIf
-                      condition={article.containImage}
-                      render={<ImageIcon width="15" height="15" />}
-                    />
-                    {article.containImage
-                      ? cutString(article.title, 22)
-                      : cutString(article.title, 24)}
-                    <CommentCount>{article.commentCount}</CommentCount>
+                    <Content role="button">
+                      <RenderIf
+                        condition={article.containImage}
+                        render={<ImageIcon width="15" height="15" />}
+                      />
+                      {article.containImage
+                        ? cutString(article.title, 22)
+                        : cutString(article.title, 24)}
+                      <CommentCount>{article.commentCount}</CommentCount>
+                    </Content>
                   </Td>
                   <Td width="20%" color="#888888">
                     {article.createdAt}
@@ -81,6 +82,12 @@ const ArticleContainer = () => {
   )
 }
 
+const Content = styled.div`
+  ${flex({ justify: 'flex-start', align: 'center' })}
+  gap: 8px;
+  cursor: pointer;
+`
+
 const PaginationBox = styled.div`
   ${flexCenter}
 `
@@ -106,12 +113,13 @@ const Td = styled.td<{
   color: string
   width: string
   justify?: 'center' | 'flex-start'
+  clickable?: boolean
 }>`
   ${font({ size: '16px', weight: '500', lineHeight: '24px' })}
   ${({ justify = 'center' }) => flex({ justify, align: 'center' })}
-  gap: 10px;
   color: ${({ color }) => color};
   width: ${({ width }) => width};
+  cursor: ${({ clickable }) => (clickable ? 'pointer' : 'default')};
 `
 
 const TBodyTr = styled.tr`
