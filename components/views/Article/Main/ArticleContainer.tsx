@@ -9,7 +9,7 @@ import TagList from './TagList'
 import BoardContainer from './BoardContainer'
 
 interface Props {
-  category: Article.Category
+  category: string
 }
 
 const ArticleContainer = ({ category }: Props) => {
@@ -43,7 +43,7 @@ const ArticleContainer = ({ category }: Props) => {
                 category={category}
                 params={{
                   page: currentPage,
-                  limit: 22,
+                  size: 22,
                   ...(selected !== '전체' && { tag: selected }),
                 }}
                 onChangePage={page => setCurrentPage(page)}
