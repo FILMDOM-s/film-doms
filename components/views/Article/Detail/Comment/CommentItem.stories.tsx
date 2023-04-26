@@ -6,10 +6,11 @@ export default {
   title: 'Article/Detail/Comment/CommentItem',
 } as ComponentMeta<typeof CommentItem>
 
-const commentItem: { likes: number } & Article.Comment = {
+const commentItem: Article.Comment = {
   id: 1,
   content: '제가 이번에 관상 2번을 봤는데요. 정말 재밌었어요.',
   status: 'ACTIVE',
+  likes: 10,
   createdAt: 1682056868343,
   updatedAt: 1682056868343,
   author: {
@@ -25,6 +26,7 @@ const commentItem: { likes: number } & Article.Comment = {
       id: 3,
       content: '정말 재미있는 영화였어요 ㅎㅎ 😆',
       status: 'ACTIVE',
+      likes: 10,
       createdAt: 1682056868343,
       updatedAt: 1682056868343,
       author: {
@@ -39,7 +41,6 @@ const commentItem: { likes: number } & Article.Comment = {
     },
   ],
   managerComment: false,
-  likes: 10,
 }
 
 export const Default = () => (

@@ -41,19 +41,11 @@ export const getArticleCommentListByCategoryById = async (
   category: string,
   id: number
 ) => {
-  const {
-    result: { commentCount, comments },
-  } = await api.get<null, Article.CommentDTO>(
+  const { result } = await api.get<null, Article.CommentDTO>(
     `/api/v1/article/${category}/${id}/comment`
   )
 
-  return {
-    commentCount,
-    comments: comments.map(comment => ({
-      ...comment,
-      likes: getRandomNum(0, 100),
-    })),
-  }
+  return result
 }
 
 export const getPopularArticleList = async () => {
