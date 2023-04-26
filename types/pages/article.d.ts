@@ -122,6 +122,7 @@ declare module Article {
     id: number
     content: string
     status: string
+    likes: number
     createdAt: number
     updatedAt: number
     author: Author
