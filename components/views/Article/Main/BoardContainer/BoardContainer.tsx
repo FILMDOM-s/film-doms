@@ -9,6 +9,7 @@ import { ArticleBoard, CriticBoard } from './ArticleBoard'
 import Pagination from './Pagination'
 import { camelToSnake } from '@/utils'
 import { SwitchCase } from '@/components/common'
+import { camelToSnake } from '@/utils'
 
 interface Props {
   category: string

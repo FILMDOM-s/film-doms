@@ -1,4 +1,4 @@
-import { getMockImage, getRandomNum } from '@/utils'
+import { getRandomNum } from '@/utils'
 
 const NICKNAME = [
   '작성자',

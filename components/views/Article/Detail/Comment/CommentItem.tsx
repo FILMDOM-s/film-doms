@@ -14,7 +14,7 @@ const CommentItem = ({
   comment,
   borderBottom,
 }: {
-  comment: { likes: number } & Article.Comment
+  comment: Article.Comment
   borderBottom: boolean
 }) => {
   const [leaveReply, setLeaveReply] = useState<boolean>(false)

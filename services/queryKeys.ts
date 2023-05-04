@@ -6,7 +6,6 @@ const queryKeys = {
     filmUniverseDTO: ['main', 'filmUniverseDTO'],
     criticDTO: ['main', 'criticDTO'],
   },
-
   article: {
     tagDTOByCategory: (category: string) => [
       'article',
@@ -31,6 +30,20 @@ const queryKeys = {
     ],
     noticeDTO: ['article', 'noticeDTO'],
     popularDTO: ['article', 'popularDTO'],
+  },
+  myPage: {
+    interestMovie: ['myPage', 'interestMovie'],
+    userInfo: ['myPage', 'userInfo'],
+    activityArticle: (params: User.Activity.Params) => [
+      'myPage',
+      'activityArticle',
+      params,
+    ],
+    activityComment: (params: User.Activity.Params) => [
+      'myPage',
+      'activityComment',
+      params,
+    ],
   },
 } as const
 
