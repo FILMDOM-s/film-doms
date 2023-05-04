@@ -5,9 +5,10 @@ import {
   useFetchArticleMainContentByCategory,
 } from '@/services/article'
 import { flex, flexCenter, flexGap, font } from '@/styles/emotion'
-import ArticleBoard from './ArticleBoard'
+import { ArticleBoard, CriticBoard } from './ArticleBoard'
 import Pagination from './Pagination'
 import { camelToSnake } from '@/utils'
+import { SwitchCase } from '@/components/common'
 
 interface Props {
   category: string
@@ -35,15 +36,34 @@ const BoardContainer = ({
 
   return (
     <Container>
-      <ArticleBoard
-        noticeItems={noticeList}
-        articleItems={articleList.content}
+      <SwitchCase
+        value={category}
+        caseBy={{
+          critic: (
+            <>
+              <CriticBoard criticItems={articleList.content} />
+              <ButtonBox>
+                <Button onClick={() => push(`/write/article/${category}`)}>
+                  게시글 작성하기
+                </Button>
+              </ButtonBox>
+            </>
+          ),
+        }}
+        defaultRender={
+          <>
+            <ArticleBoard
+              noticeItems={noticeList}
+              articleItems={articleList.content}
+            />
+            <ButtonBox>
+              <Button onClick={() => push(`/write/article/${category}`)}>
+                게시글 작성하기
+              </Button>
+            </ButtonBox>
+          </>
+        }
       />
-      <ButtonBox>
-        <Button onClick={() => push(`/write/article/${category}`)}>
-          게시글 작성하기
-        </Button>
-      </ButtonBox>
       <Box>
         <Pagination
           count={5}
