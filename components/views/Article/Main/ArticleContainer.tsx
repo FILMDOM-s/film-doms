@@ -3,7 +3,7 @@ import { css } from '@emotion/react'
 import styled from '@emotion/styled'
 import { colors, flex, flexGap, typography } from '@/styles/emotion'
 import { CATEGORIES } from '@/constants/article'
-import { Tab } from '@/components/common'
+import { RenderIf, SwitchCase, Tab } from '@/components/common'
 import SearchForm from './SearchForm'
 import TagList from './TagList'
 import BoardContainer from './BoardContainer'
@@ -16,7 +16,7 @@ const ArticleContainer = ({ category }: Props) => {
   const [currentPage, setCurrentPage] = useState(1)
 
   return (
-    <Container>
+    <Container category={category}>
       <Title>{CATEGORIES[category].title}</Title>
       <Tab.Group
         css={TabGroup}
@@ -30,9 +30,14 @@ const ArticleContainer = ({ category }: Props) => {
               <TagList category={category} />
             </Suspense>
           </Tab.List>
-          <SearchForm
-            pushUrl={({ keyword, option }) =>
-              `/search/article/${category}?keyword=${keyword}&option=${option}`
+          <RenderIf
+            condition={category !== 'critic'}
+            render={
+              <SearchForm
+                pushUrl={({ keyword, option }) =>
+                  `/search/article/${category}?keyword=${keyword}&option=${option}`
+                }
+              />
             }
           />
         </TopBox>
@@ -43,7 +48,7 @@ const ArticleContainer = ({ category }: Props) => {
                 category={category}
                 params={{
                   page: currentPage,
-                  size: 22,
+                  size: category === 'critic' ? 6 : 22,
                   ...(selected !== '전체' && { tag: selected }),
                 }}
                 onChangePage={page => setCurrentPage(page)}
@@ -91,9 +96,9 @@ const Title = styled.h1`
   color: ${colors.primary.black};
 `
 
-const Container = styled.div`
+const Container = styled.div<{ category: string }>`
   ${flexGap('40px')}
-  width: 954px;
+  width: ${({ category }) => (category === 'critic' ? '100%' : '954px')};
 `
 
 const BoardLoading = styled.div`

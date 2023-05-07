@@ -7,4 +7,8 @@ export const CATEGORIES: Record<string, { title: string; value: string }> = {
     title: 'Film Universe',
     value: 'filmUniverse',
   },
+  critic: {
+    title: 'Critic',
+    value: 'critic',
+  },
 }

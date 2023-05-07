@@ -8,19 +8,24 @@ interface Props extends PropsWithChildren {
 
 const ArticleLayout = ({ children, right = null }: Props) => {
   return (
-    <Container>
+    <Container right={right}>
       {children}
       {right}
     </Container>
   )
 }
 
-const Container = styled.div`
+const Container = styled.div<{ right?: ReactNode }>`
   width: 100%;
   position: relative;
-  ${flex({ justify: 'space-between' })}
+  ${props =>
+    props.right
+      ? flex({ justify: 'space-between' })
+      : flex({ justify: 'center' })}
   padding-top: 40px;
   padding-bottom: 150px;
+  margin: auto;
+  flex-direction: ${props => (props.right ? 'row' : 'column')};
 `
 
 export default ArticleLayout
