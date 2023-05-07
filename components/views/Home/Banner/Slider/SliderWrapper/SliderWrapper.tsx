@@ -44,6 +44,7 @@ function SliderWrapper({ banners }: { banners: Main.Banner[] }) {
 export default SliderWrapper
 
 const SliderOutsideAlign = styled.div`
+  width: 1280px;
   ${flexCenter}
   padding-top: 40px;
   padding-bottom: 32px;

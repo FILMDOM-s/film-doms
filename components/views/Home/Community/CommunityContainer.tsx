@@ -18,6 +18,8 @@ const CommunityContainer = () => {
 
 const Section = styled.div`
   ${flex({ justify: 'space-between' })}
+  width: 100%;
+  max-width: 1280px;
 `
 
 export default CommunityContainer
