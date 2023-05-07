@@ -6,21 +6,23 @@ import { useState } from 'react'
 import { FormError } from '@/components/common/FormError'
 import styled from '@emotion/styled'
 import api from '@/services/api'
+import { TERMS_OF_SERVICE } from '@/constants/auth/terms'
+import { EMAIL_REGEX, PASSWORD_REGEX } from '@/constants/auth/regex'
 
 export type CreateUserFormType = {
   username: string
   email: string
-  nickname: string
   password: string
   passwordAgain: string
   agreeCheckbox: string
+  hashtag: string[]
 }
 
 export default function SignUp() {
   const router = useRouter()
-  const [_, setUsernameVerification] = useState(false)
   const [emailVerification, setEmailVerification] = useState(false)
-
+  const [value, setValue] = useState<string>('')
+  const [hashtags, setHashtags] = useState<string[]>([])
   const { mutate: addUser } = useMutation<
     unknown,
     unknown,
@@ -58,14 +60,13 @@ export default function SignUp() {
     mode: 'onChange',
   })
   const onSubmit = async () => {
-    const {
-      username,
-      email,
-      password,
-      passwordAgain,
-      agreeCheckbox,
-      nickname,
-    } = getValues()
+    const { username, email, password, passwordAgain, agreeCheckbox } =
+      getValues()
+
+    if (!agreeCheckbox) {
+      alert('약관에 동의해주세요.')
+      return
+    }
 
     if (!emailVerification) {
       alert('이메일 인증을 완료해주세요.')
@@ -76,38 +77,12 @@ export default function SignUp() {
       alert('비밀번호가 일치하지 않습니다.')
       return
     }
-
-    if (!agreeCheckbox) {
-      alert('약관에 동의해주세요.')
-      return
-    }
     addUser({
       username: username,
       email: email,
       password: password,
-      nickname: nickname,
+      hashtag: [],
     })
-  }
-
-  const handleUsernameVerification = async () => {
-    const { username } = getValues()
-    const res = await api.get(
-      `/api/v1/account/check/username?username=${username}`,
-      {
-        method: 'GET',
-      }
-    )
-
-    if (res) {
-      alert('이미 있는 유저명입니다.')
-      return
-    } else {
-      setUsernameVerification(true)
-      toast.success('사용해도 좋은 유저명입니다.', {
-        icon: '👏',
-        position: 'top-right',
-      })
-    }
   }
 
   const handleEmailVerification = async () => {
@@ -128,45 +103,62 @@ export default function SignUp() {
     }
   }
 
+  const handleRemoveHashtag = (hashtagToRemove: string) => {
+    setHashtags(hashtags =>
+      hashtags.filter(hashtag => hashtag !== hashtagToRemove)
+    )
+  }
+
+  const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setValue(event.target.value)
+  }
+
+  const handleInputKeyDown = (event: React.KeyboardEvent<HTMLInputElement>) => {
+    event.stopPropagation()
+    if (event.key === 'Enter' && value !== '') {
+      if (!hashtags.find(hashtag => hashtag === value)) {
+        setHashtags(hashtags => [...hashtags, value])
+        setValue('')
+      }
+    }
+  }
+
   return (
     <Container>
+      <InputLabel>관심영화</InputLabel>
+      <TagInput
+        value={value}
+        onChange={handleInputChange}
+        onKeyDown={handleInputKeyDown}
+        placeholder="Hashtag"
+      />
+      <TagContainer>
+        {hashtags.map((hashtag, index) => (
+          <TagSpan key={index}>
+            #{hashtag}
+            <TagRemoveButton onClick={() => handleRemoveHashtag(hashtag)}>
+              X
+            </TagRemoveButton>
+          </TagSpan>
+        ))}
+      </TagContainer>
       <SignUpForm onSubmit={handleSubmit(onSubmit)}>
-        <InputLabel>📒 유저명</InputLabel>
-        <ButtonContainer>
-          <SignUpInput
-            {...register('username', {
-              required: '유저명을 입력하세요',
-              pattern: /^[가-힣|]+$/,
-            })}
-            name="name"
-            type="text"
-            placeholder="Username"
-            required
-            autoComplete="true"
+        <TermsTextArea name="termsOfService" defaultValue={TERMS_OF_SERVICE} />
+        <label className="ml-2 mt-4 text-sm text-darkGray flex items-center">
+          <input
+            {...register('agreeCheckbox')}
+            name="agreeCheckbox"
+            type="checkbox"
+            className="mr-2 mt-0.5"
           />
-          <CommonButton
-            color="black"
-            onClick={() => {
-              handleUsernameVerification()
-            }}
-            type="button"
-          >
-            중복 확인
-          </CommonButton>
-        </ButtonContainer>
-        {errors.username?.type === 'pattern' && (
-          <FormError errorMessage="한글만 입력하세요." />
-        )}
-        {errors.username?.message && (
-          <FormError errorMessage={errors.username?.message} />
-        )}
-        <InputLabel>📨 이메일</InputLabel>
+          Film Dom&#39;s 이용을 위한 개인정보 제공 및 수집에 동의합니다.
+        </label>
+        <InputLabel>이메일</InputLabel>
         <ButtonContainer>
           <SignUpInput
             {...register('email', {
               required: '이메일을 입력해주세요',
-              pattern:
-                /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/,
+              pattern: EMAIL_REGEX,
             })}
             name="email"
             type="email"
@@ -175,13 +167,14 @@ export default function SignUp() {
             autoComplete="true"
           />
           <CommonButton
+            style={{ marginLeft: '10px' }}
             color="black"
             onClick={() => {
               handleEmailVerification()
             }}
             type="button"
           >
-            중복 확인
+            인증하기
           </CommonButton>
         </ButtonContainer>
         {(errors.email?.type === 'pattern' && (
@@ -190,30 +183,11 @@ export default function SignUp() {
           (errors.email?.message && (
             <FormError errorMessage={errors.email?.message} />
           ))}
-        <InputLabel>🌈 닉네임</InputLabel>
-        <SignUpInput
-          {...register('nickname', {
-            required: '닉네임을 입력해주세요',
-            pattern: /^[a-zA-Z0-9ㄱ-ㅎ|ㅏ-ㅣ|가-힣|]+$/,
-          })}
-          name="nickname"
-          type="nickname"
-          required
-          placeholder="Nickname"
-          autoComplete="true"
-        />
-        {errors.nickname?.type === 'pattern' && (
-          <FormError errorMessage="대소문자, 한글, 숫자를 입력해주세요" />
-        )}
-        {errors.nickname?.message && (
-          <FormError errorMessage={errors.nickname?.message} />
-        )}
-        <InputLabel>⚙️ 비밀번호</InputLabel>
+        <InputLabel>비밀번호</InputLabel>
         <SignUpInput
           {...register('password', {
             required: '비밀번호를 입력해주세요',
-            pattern:
-              /^(?=.*[a-zA-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,14}$/,
+            pattern: PASSWORD_REGEX,
           })}
           name="password"
           type="password"
@@ -227,12 +201,11 @@ export default function SignUp() {
         {errors.password?.message && (
           <FormError errorMessage={errors.password?.message} />
         )}
-        <InputLabel>⚙️ 비밀번호 재입력</InputLabel>
+        <InputLabel>비밀번호 재입력</InputLabel>
         <SignUpInput
           {...register('passwordAgain', {
             required: '비밀번호를 재입력해주세요',
-            pattern:
-              /^(?=.*[a-zA-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,14}$/,
+            pattern: PASSWORD_REGEX,
           })}
           name="passwordAgain"
           type="password"
@@ -247,19 +220,28 @@ export default function SignUp() {
           (errors.passwordAgain?.message && (
             <FormError errorMessage={errors.passwordAgain?.message} />
           ))}
-        <InputLabel>⚙️ 비밀번호 재입력</InputLabel>
-        <label className="ml-2 mt-4 text-sm text-darkGray flex items-center">
-          <input
-            {...register('agreeCheckbox')}
-            name="agreeCheckbox"
-            type="checkbox"
-            className="mr-2 mt-0.5"
-          />
-          Film Dom&#39;s 이용을 위한 개인정보 제공 및 수집에 동의합니다.
-        </label>
+        <InputLabel>닉네임</InputLabel>
+        <SignUpInput
+          {...register('username', {
+            required: '유저명을 입력하세요',
+            pattern: /^[가-힣|]+$/,
+          })}
+          name="name"
+          type="text"
+          placeholder="Username"
+          required
+          autoComplete="true"
+        />
+        {errors.username?.type === 'pattern' && (
+          <FormError errorMessage="한글만 입력하세요." />
+        )}
+        {errors.username?.message && (
+          <FormError errorMessage={errors.username?.message} />
+        )}
         <CommonButton
           color="black"
           type="submit"
+          disabled={!watch('agreeCheckbox')}
           onSubmit={handleSubmit(onSubmit)}
         >
           계정 생성
@@ -274,8 +256,7 @@ const Container = styled.div`
   flex-direction: column;
   align-items: center;
   justify-content: flex-start;
-  height: 100vh;
-  padding-top: 5rem;
+  padding: 2rem 0;
 `
 
 const ButtonContainer = styled.div`
@@ -289,6 +270,19 @@ const SignUpForm = styled.form`
   gap: 0.5rem;
   margin-top: 1rem;
   width: 380px;
+`
+
+const TermsTextArea = styled.textarea`
+  width: 100%;
+  height: 200px;
+  border-radius: 0.25rem;
+  border: 1px solid #d8d4d4;
+  padding: 0.5rem 1rem;
+  font-size: 1rem;
+  cursor: pointer;
+  outline: none;
+  transition: all 0.2s ease-in-out;
+  box-shadow: 0 0 0 0 rgba(0, 0, 0, 0.2);
 `
 
 const InputLabel = styled.div`
@@ -310,10 +304,24 @@ const SignUpInput = styled.input`
   box-shadow: 0 0 0 0 rgba(0, 0, 0, 0.2);
 `
 
+const TagInput = styled.input`
+  flex-grow: 1;
+  height: 40px;
+  border: 2px solid black;
+  padding: 0 1rem;
+  font-size: 1rem;
+  cursor: pointer;
+  outline: none;
+  transition: all 0.2s ease-in-out;
+  box-shadow: 0 0 0 0 rgba(0, 0, 0, 0.2);
+  width: 380px;
+`
+
 const CommonButton = styled.button<{ color: string }>`
+  flex-grow: 1;
   border-radius: 0.25rem;
   padding: 0.3rem 1rem;
-  margin-left: 0.5rem;
+  margin: 0.5rem 0;
   font-size: 1rem;
   cursor: pointer;
   transition: all 0.2s ease-in-out;
@@ -324,4 +332,27 @@ const CommonButton = styled.button<{ color: string }>`
     background-color: ${props => props.color};
     color: white;
   }
+`
+
+const TagContainer = styled.div`
+  display: flex;
+  align-items: center;
+  margin-top: 0.5rem;
+  gap: 0.5rem;
+`
+
+const TagSpan = styled.span`
+  font-size: 0.8rem;
+  color: white;
+  background-color: #ff5414;
+  padding: 0.5rem 0.7rem;
+  border-radius: 15px;
+`
+
+const TagRemoveButton = styled.button`
+  border: none;
+  background-color: transparent;
+  cursor: pointer;
+  outline: none;
+  margin-left: 0.5rem;
 `

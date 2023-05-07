@@ -7,12 +7,22 @@ import { useResizeWindow } from '@/hooks'
 import * as Svgs from '@svgs/common'
 import NavContainer from '../../Home/Nav/NavContainer'
 import Link from 'next/link'
+import { useModal } from '@/hooks/useModal'
+import Modal from '@/components/common/Modal'
+import { SignIn } from '../../Auth'
 
 const Header = () => {
   const windowWidth = useResizeWindow()
   const responseFontSize = windowWidth <= 768 ? '28px' : '32px'
   const [showSideNav, setShowSideNav] = useState(false)
 
+  const { openModal } = useModal()
+
+  const modalData = {
+    title: '로그인',
+    content: <SignIn />,
+    callback: () => alert('Modal Callback()'),
+  }
   return (
     <HeaderContainer>
       <HeaderInner>
@@ -43,12 +53,13 @@ const Header = () => {
             </IconWrapper>
           </IconMutableWrapper>
           <IconWrapper>
-            <Link passHref href={'/auth/signin'}>
+            <button onClick={() => openModal(modalData)}>
               <Svgs.Person fill="#FFFFFF" />
-            </Link>
+            </button>
           </IconWrapper>
         </RightSideWrapper>
       </HeaderInner>
+      <Modal />
       <SideNav
         isShow={showSideNav}
         onClose={() => setShowSideNav(!showSideNav)}
