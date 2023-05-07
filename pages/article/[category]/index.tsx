@@ -1,14 +1,25 @@
-import { useRouter } from 'next/router'
 import { ArticleLayout } from '@views/Layout'
-import { ArticleMainViews, SlideContainer } from '@views/Article'
 import { hasOwnProperty } from '@/utils'
 import { OpenGraph } from '@/components/common'
 import { CATEGORIES } from '@/constants/article'
 import ArticlePopularContainer from '@/components/views/Article/Popular/ArticlePopularContainer'
+import dynamic from 'next/dynamic'
+import { GetStaticPaths, GetStaticProps } from 'next'
 
-const ArticlePage = () => {
-  const { query } = useRouter()
-  const category = query.category as string
+type CategoryProps = {
+  category: string
+}
+
+const ArticlePage = ({ category }: CategoryProps) => {
+  const components: {
+    [key: string]: any
+  } = {
+    movie: dynamic(() => import('@views/Article/Main/ArticleContainer')),
+    filmUniverse: dynamic(() => import('@views/Article/Main/ArticleContainer')),
+    critic: dynamic(() => import('@views/Article/Main/CriticContainer')),
+  }
+  const Component = components[category]
+
   const isValidCategory = hasOwnProperty(CATEGORIES, category)
 
   if (!isValidCategory) {
@@ -19,13 +30,32 @@ const ArticlePage = () => {
   return (
     <OpenGraph title={CATEGORIES[category].title} path={`/article/${category}`}>
       <ArticleLayout
+        width={category !== 'critic' ? '1280px' : '100%'}
         right={category !== 'critic' ? <ArticlePopularContainer /> : null}
       >
-        {category === 'critic' && <SlideContainer />}
-        <ArticleMainViews category={category} />
+        <Component />
       </ArticleLayout>
     </OpenGraph>
   )
 }
 
 export default ArticlePage
+
+export const getStaticPaths: GetStaticPaths = async () => {
+  return {
+    paths: [
+      { params: { category: 'movie' } },
+      { params: { category: 'filmUniverse' } },
+      { params: { category: 'critic' } },
+    ],
+    fallback: false,
+  }
+}
+
+export const getStaticProps: GetStaticProps = async ({ params }) => {
+  return {
+    props: {
+      category: params && params.category,
+    },
+  }
+}

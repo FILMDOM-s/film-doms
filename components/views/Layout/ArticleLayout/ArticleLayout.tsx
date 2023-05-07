@@ -4,19 +4,20 @@ import { flex } from '@/styles/emotion'
 
 interface Props extends PropsWithChildren {
   right?: ReactNode
+  width?: string
 }
 
-const ArticleLayout = ({ children, right = null }: Props) => {
+const ArticleLayout = ({ children, right = null, width }: Props) => {
   return (
-    <Container right={right}>
+    <Container right={right} width={width}>
       {children}
       {right}
     </Container>
   )
 }
 
-const Container = styled.div<{ right?: ReactNode }>`
-  width: 100%;
+const Container = styled.div<{ right?: ReactNode; width?: string }>`
+  width: ${props => props.width || '100%'};
   position: relative;
   ${props =>
     props.right
