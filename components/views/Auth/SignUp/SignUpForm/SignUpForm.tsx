@@ -1,4 +1,9 @@
-import { type InputHTMLAttributes, type CSSProperties, useState } from 'react'
+import {
+  type InputHTMLAttributes,
+  type CSSProperties,
+  type FormEvent,
+  useState,
+} from 'react'
 import { useRouter } from 'next/router'
 import { useForm } from 'react-hook-form'
 import { toast } from 'react-hot-toast'
@@ -24,7 +29,7 @@ type CreateUserFormType = {
   passwordCheck: string
   nickname: string
   interestMovie: string
-  agreeCheckbox: string
+  termsOfService: boolean
 }
 
 const FLAG = true
@@ -57,11 +62,12 @@ const SignUpForm = () => {
     mode: 'onChange',
   })
 
-  const onSubmit = async () => {
-    const { nickname, email, password, passwordCheck, agreeCheckbox } =
+  const onSubmit = async (event: FormEvent<HTMLFormElement>) => {
+    event.preventDefault()
+    const { nickname, email, password, passwordCheck, termsOfService } =
       getValues()
 
-    if (!agreeCheckbox) {
+    if (termsOfService === false) {
       alert('약관에 동의해주세요.')
       return
     }
@@ -76,12 +82,12 @@ const SignUpForm = () => {
       return
     }
 
-    addUser({
-      nickname,
-      email: email,
-      password: password,
-      favoriteMovies: [],
-    })
+    // addUser({
+    //   nickname,
+    //   email: email,
+    //   password: password,
+    //   favoriteMovies: [],
+    // })
   }
 
   const handleEmailVerification = async () => {
@@ -126,7 +132,7 @@ const SignUpForm = () => {
   }
 
   return (
-    <Form>
+    <Form onSubmit={onSubmit}>
       <Box>
         <Divider color={colors.primary.orange} />
         <Group>
@@ -134,7 +140,6 @@ const SignUpForm = () => {
             <Label required>이메일</Label>
             <Input
               {...register('email', {
-                required: true,
                 pattern: {
                   value: EMAIL_REGEX,
                   message: ERROR_MESSAGE.EMAIL,
@@ -146,7 +151,7 @@ const SignUpForm = () => {
               required
             />
             <OptionBox>
-              <Button>이메일발송</Button>
+              <Button type="button">이메일발송</Button>
             </OptionBox>
           </InputBox>
           <RenderIf
@@ -164,7 +169,7 @@ const SignUpForm = () => {
           <InputBox>
             <Label />
             <Input width="sm" type="password" name="emailAuthCode" required />
-            <Button>인증번호 확인</Button>
+            <Button type="button">인증번호 확인</Button>
           </InputBox>
         </Group>
         <Divider color={colors.grey[100]} size={1} />
@@ -173,7 +178,6 @@ const SignUpForm = () => {
             <Label required>비밀번호</Label>
             <Input
               {...register('password', {
-                required: true,
                 pattern: {
                   value: PASSWORD_REGEX,
                   message: ERROR_MESSAGE.PASSWORD,
@@ -201,7 +205,6 @@ const SignUpForm = () => {
             <Label required>비밀번호확인</Label>
             <Input
               {...register('passwordCheck', {
-                required: true,
                 validate: handlePasswordCheckValidate,
               })}
               type="password"
@@ -232,7 +235,7 @@ const SignUpForm = () => {
               required
             />
             <OptionBox>
-              <Button>중복확인</Button>
+              <Button type="button">중복확인</Button>
             </OptionBox>
           </InputBox>
           <RenderIf
@@ -273,18 +276,18 @@ const SignUpForm = () => {
           <InputBox>
             <Label required>이용약관</Label>
             <Flex gap={'10px'}>
-              <Input type="checkbox" name="termsOfService" required />
+              <Input {...register('termsOfService')} type="checkbox" required />
               <Text>
                 Film Dom&#39;s 이용을 위한 개인정보 제공 및 수집에 동의합니다.
               </Text>
             </Flex>
             <OptionBox>
-              <MoreButton>자세히</MoreButton>
+              <MoreButton type="button">자세히</MoreButton>
             </OptionBox>
           </InputBox>
         </Group>
       </Box>
-      <SignUpButton>가입하기</SignUpButton>
+      <SignUpButton type="submit">가입하기</SignUpButton>
     </Form>
   )
 }
