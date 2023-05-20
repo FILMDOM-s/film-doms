@@ -19,12 +19,12 @@ import { getErrorMessage, isPatternError, isValidateError } from './utils'
 import { ERROR_MESSAGE } from './constants'
 
 type CreateUserFormType = {
-  nickname: string
   email: string
   password: string
   passwordCheck: string
+  nickname: string
+  interestMovie: string
   agreeCheckbox: string
-  hashtag: string[]
 }
 
 const FLAG = true
@@ -33,7 +33,6 @@ const SignUpForm = () => {
   const router = useRouter()
   const [emailVerification, setEmailVerification] = useState(false)
   const [value, setValue] = useState<string>('')
-  const [hashtags, setHashtags] = useState<string[]>([])
   const { mutate: checkEmailDuplicate } = useFetchCheckEmailDuplicate()
   const { mutate: addUser } = useCreateSignUpAccount({
     onError: () => {
@@ -107,24 +106,23 @@ const SignUpForm = () => {
     )
   }
 
-  const handleRemoveHashtag = (hashtagToRemove: string) => {
-    setHashtags(hashtags =>
-      hashtags.filter(hashtag => hashtag !== hashtagToRemove)
-    )
-  }
-
   const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setValue(event.target.value)
   }
 
-  const handleInputKeyDown = (event: React.KeyboardEvent<HTMLInputElement>) => {
-    event.stopPropagation()
-    if (event.key === 'Enter' && value !== '') {
-      if (!hashtags.find(hashtag => hashtag === value)) {
-        setHashtags(hashtags => [...hashtags, value])
-        setValue('')
-      }
-    }
+  const handleInterestMovieValidate = (
+    interestMovie: CreateUserFormType['interestMovie']
+  ) => {
+    const interestMovieList = interestMovie.split(',')
+
+    return interestMovieList.length <= 5
+  }
+
+  const handlePasswordCheckValidate = (
+    passwordCheck: CreateUserFormType['passwordCheck'],
+    { password }: CreateUserFormType
+  ) => {
+    return passwordCheck === password
   }
 
   return (
@@ -204,9 +202,7 @@ const SignUpForm = () => {
             <Input
               {...register('passwordCheck', {
                 required: true,
-                validate: (passwordCheck, { password }) => {
-                  return passwordCheck === password
-                },
+                validate: handlePasswordCheckValidate,
               })}
               type="password"
               name="passwordCheck"
@@ -254,13 +250,16 @@ const SignUpForm = () => {
           <InputBox>
             <Label>관심영화</Label>
             <Input
+              {...register('interestMovie', {
+                validate: handleInterestMovieValidate,
+              })}
               type="text"
               name="interestMovie"
               placeholder="좋아하는 영화 제목 최대 5가지를 기입해주세요."
             />
           </InputBox>
           <RenderIf
-            condition={FLAG}
+            condition={isValidateError(errors.interestMovie)}
             render={
               <Flex>
                 <Empty />
