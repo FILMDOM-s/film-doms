@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { type InputHTMLAttributes, type CSSProperties, useState } from 'react'
 import { useRouter } from 'next/router'
 import { useForm } from 'react-hook-form'
 import { toast } from 'react-hot-toast'
@@ -10,7 +10,7 @@ import {
 } from '@/services/auth'
 import styled from '@emotion/styled'
 import { colors, flex, flexCenter, font } from '@/styles/emotion'
-import { InputHTMLAttributes } from 'react'
+import { INPUT_WIDTH } from './style'
 
 type CreateUserFormType = {
   username: string
@@ -20,6 +20,8 @@ type CreateUserFormType = {
   agreeCheckbox: string
   hashtag: string[]
 }
+
+const FLAG = true
 
 const SignUpForm = () => {
   const router = useRouter()
@@ -157,10 +159,8 @@ const SignUpForm = () => {
         <Group>
           <InputBox>
             <Label />
-            <Input type="password" name="emailAuthCode" required />
-            <OptionBox>
-              <Button>인증번호 확인</Button>
-            </OptionBox>
+            <Input width="sm" type="password" name="emailAuthCode" required />
+            <Button>인증번호 확인</Button>
           </InputBox>
         </Group>
         <Divider color={colors.grey[100]} size={1} />
@@ -182,7 +182,7 @@ const SignUpForm = () => {
             <Input type="password" name="passwordCheck" required />
           </InputBox>
           <RenderIf
-            condition={false}
+            condition={FLAG}
             render={
               <Flex>
                 <Empty />
@@ -209,7 +209,7 @@ const SignUpForm = () => {
             </OptionBox>
           </InputBox>
           <RenderIf
-            condition={false}
+            condition={FLAG}
             render={
               <Flex>
                 <Empty />
@@ -229,7 +229,7 @@ const SignUpForm = () => {
             />
           </InputBox>
           <RenderIf
-            condition={false}
+            condition={FLAG}
             render={
               <Flex>
                 <Empty />
@@ -242,10 +242,12 @@ const SignUpForm = () => {
         <Group>
           <InputBox>
             <Label required>이용약관</Label>
-            <Input type="checkbox" name="termsOfService" required />
-            <Text>
-              Film Dom&#39;s 이용을 위한 개인정보 제공 및 수집에 동의합니다.
-            </Text>
+            <Flex gap={'10px'}>
+              <Input type="checkbox" name="termsOfService" required />
+              <Text>
+                Film Dom&#39;s 이용을 위한 개인정보 제공 및 수집에 동의합니다.
+              </Text>
+            </Flex>
             <OptionBox>
               <MoreButton>자세히</MoreButton>
             </OptionBox>
@@ -262,8 +264,9 @@ const Empty = styled.div`
   height: 10px;
 `
 
-const Flex = styled.div`
+const Flex = styled.div<{ gap?: CSSProperties['gap'] }>`
   display: flex;
+  gap: ${({ gap }) => gap};
 `
 
 const SignUpButton = styled.button`
@@ -303,15 +306,17 @@ const OptionBox = styled.div`
 
 const Input = styled.input<{
   type: InputHTMLAttributes<HTMLInputElement>['type']
+  width?: 'sm' | 'md' | 'lg'
 }>`
-  flex: 1;
-  margin-right: 2rem;
-  ${({ type }) =>
-    type === 'checkbox' &&
-    `
-    flex: 0;
-    margin-right: 11px;
-  `}
+  ${({ width = 'md' }) => `width: ${INPUT_WIDTH[width]}`}
+
+  ${({ type }) => {
+    if (type === 'checkbox') {
+      return `
+        flex: 0;
+      `
+    }
+  }}
 `
 
 const Label = styled.label<{ required?: boolean }>`
