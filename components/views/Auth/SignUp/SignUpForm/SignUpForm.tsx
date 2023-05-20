@@ -3,7 +3,11 @@ import { useRouter } from 'next/router'
 import { useForm } from 'react-hook-form'
 import { toast } from 'react-hot-toast'
 import { Divider, RenderIf } from '@/components/common'
-import { EMAIL_REGEX } from '@/constants/auth/regex'
+import {
+  EMAIL_REGEX,
+  NICKNAME_REGEX,
+  PASSWORD_REGEX,
+} from '@/constants/auth/regex'
 import {
   useCreateSignUpAccount,
   useFetchCheckEmailDuplicate,
@@ -11,12 +15,14 @@ import {
 import styled from '@emotion/styled'
 import { colors, flex, flexCenter, font } from '@/styles/emotion'
 import { INPUT_WIDTH } from './style'
+import { getErrorMessage, isPatternError, isValidateError } from './utils'
+import { ERROR_MESSAGE } from './constants'
 
 type CreateUserFormType = {
-  username: string
+  nickname: string
   email: string
   password: string
-  passwordAgain: string
+  passwordCheck: string
   agreeCheckbox: string
   hashtag: string[]
 }
@@ -53,7 +59,7 @@ const SignUpForm = () => {
   })
 
   const onSubmit = async () => {
-    const { username, email, password, passwordAgain, agreeCheckbox } =
+    const { nickname, email, password, passwordCheck, agreeCheckbox } =
       getValues()
 
     if (!agreeCheckbox) {
@@ -66,13 +72,13 @@ const SignUpForm = () => {
       return
     }
 
-    if (password !== passwordAgain) {
+    if (password !== passwordCheck) {
       alert('비밀번호가 일치하지 않습니다.')
       return
     }
 
     addUser({
-      nickname: username,
+      nickname,
       email: email,
       password: password,
       favoriteMovies: [],
@@ -133,7 +139,7 @@ const SignUpForm = () => {
                 required: true,
                 pattern: {
                   value: EMAIL_REGEX,
-                  message: '올바른 이메일 형식이 아니에요!',
+                  message: ERROR_MESSAGE.EMAIL,
                 },
               })}
               type="email"
@@ -146,11 +152,11 @@ const SignUpForm = () => {
             </OptionBox>
           </InputBox>
           <RenderIf
-            condition={errors.email?.type === 'pattern'}
+            condition={isPatternError(errors.email)}
             render={
               <Flex>
                 <Empty />
-                <ErrorText>{errors.email?.message}</ErrorText>
+                <ErrorText>{getErrorMessage(errors.email)}</ErrorText>
               </Flex>
             }
           />
@@ -168,25 +174,51 @@ const SignUpForm = () => {
           <InputBox>
             <Label required>비밀번호</Label>
             <Input
+              {...register('password', {
+                required: true,
+                pattern: {
+                  value: PASSWORD_REGEX,
+                  message: ERROR_MESSAGE.PASSWORD,
+                },
+              })}
               type="password"
               name="password"
               placeholder="비밀번호는 영문과 숫자를 포함해 8자리 이상으로 기입해주세요."
               required
             />
           </InputBox>
+          <RenderIf
+            condition={isPatternError(errors.password)}
+            render={
+              <Flex>
+                <Empty />
+                <ErrorText>{getErrorMessage(errors.password)}</ErrorText>
+              </Flex>
+            }
+          />
         </Group>
         <Divider color={colors.grey[100]} size={1} />
         <Group>
           <InputBox>
             <Label required>비밀번호확인</Label>
-            <Input type="password" name="passwordCheck" required />
+            <Input
+              {...register('passwordCheck', {
+                required: true,
+                validate: (passwordCheck, { password }) => {
+                  return passwordCheck === password
+                },
+              })}
+              type="password"
+              name="passwordCheck"
+              required
+            />
           </InputBox>
           <RenderIf
-            condition={FLAG}
+            condition={isValidateError(errors.passwordCheck)}
             render={
               <Flex>
                 <Empty />
-                <ErrorText>두개의 비밀번호가 서로 달라요.</ErrorText>
+                <ErrorText>{ERROR_MESSAGE.PASSWORD_CHECK}</ErrorText>
               </Flex>
             }
           />
@@ -196,12 +228,11 @@ const SignUpForm = () => {
           <InputBox>
             <Label required>닉네임</Label>
             <Input
+              {...register('nickname', {
+                pattern: NICKNAME_REGEX,
+              })}
               type="text"
-              name="nickname"
               placeholder="닉네임은 2자 이상으로 입력하세요."
-              pattern="[가-힣a-zA-Z]"
-              minLength={2}
-              maxLength={10}
               required
             />
             <OptionBox>
@@ -213,7 +244,7 @@ const SignUpForm = () => {
             render={
               <Flex>
                 <Empty />
-                <ErrorText>이미 존재하는 닉네임이에요.</ErrorText>
+                <ErrorText>{ERROR_MESSAGE.NICKNAME_EXIST}</ErrorText>
               </Flex>
             }
           />
@@ -233,7 +264,7 @@ const SignUpForm = () => {
             render={
               <Flex>
                 <Empty />
-                <ErrorText>관심영화의 수가 너무 많습니다.</ErrorText>
+                <ErrorText>{ERROR_MESSAGE.INTEREST_MOVIE}</ErrorText>
               </Flex>
             }
           />
