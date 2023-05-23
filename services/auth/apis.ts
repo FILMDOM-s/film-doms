@@ -35,3 +35,11 @@ export const getCheckEmailAuthCode = (
     Auth.EmailAuthCode.CheckRequest
   >('/api/v1/email/auth-code/verification', data)
 }
+
+export const getCheckNicknameDuplicate = ({
+  username,
+}: Auth.Nickname.CheckRequest) => {
+  return api.get<null, Auth.Nickname.CheckResponse>(
+    `/api/v1/account/check/nickname?username=${username}`
+  )
+}

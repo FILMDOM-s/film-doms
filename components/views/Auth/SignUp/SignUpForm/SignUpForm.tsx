@@ -19,6 +19,7 @@ import {
   useCreateSignUpAccount,
   useFetchCheckEmailAuthCode,
   useFetchCheckEmailDuplicate,
+  useFetchCheckNicknameDuplicate,
   useSendEmailAuthCode,
 } from '@/services/auth'
 import { colors, flex, flexCenter, font } from '@/styles/emotion'
@@ -46,11 +47,12 @@ const SignUpForm = () => {
     uuid: '',
     validEmail: false,
   }).current
-  const [emailVerification, setEmailVerification] = useState(false)
-  const [value, setValue] = useState<string>('')
+  const [nicknameDuplicate, setNicknameDuplicate] = useState(false)
+  const [value, setValue] = useState('')
   const { mutate: checkEmailDuplicate } = useFetchCheckEmailDuplicate()
   const { mutate: sendEmailAuthCode } = useSendEmailAuthCode()
   const { mutate: checkEmailAuthCode } = useFetchCheckEmailAuthCode()
+  const { mutate: checkNicknameDuplicate } = useFetchCheckNicknameDuplicate()
   const { mutate: addUser } = useCreateSignUpAccount({
     onError: () => {
       toast.error('회원가입에 실패했습니다.')
@@ -84,11 +86,6 @@ const SignUpForm = () => {
       return
     }
 
-    if (!emailVerification) {
-      alert('이메일 인증을 완료해주세요.')
-      return
-    }
-
     if (password !== passwordCheck) {
       alert('비밀번호가 일치하지 않습니다.')
       return
@@ -115,7 +112,7 @@ const SignUpForm = () => {
     checkEmailDuplicate(email, {
       onSuccess: ({ result: { duplicate } }) => {
         if (duplicate) {
-          alert('이미 가입된 이메일입니다.')
+          toast.error('이미 가입된 이메일입니다.')
           return
         }
 
@@ -161,6 +158,29 @@ const SignUpForm = () => {
             validateInfo.validEmail = true
             toast.success('인증이 완료되었습니다.')
           }
+        },
+      }
+    )
+  }
+
+  const handleNicknameCheck = () => {
+    const { nickname } = getValues()
+
+    checkNicknameDuplicate(
+      {
+        username: nickname,
+      },
+      {
+        onSuccess: ({ result: { duplicate } }) => {
+          if (duplicate) {
+            setNicknameDuplicate(duplicate)
+            toast.error('이미 사용중인 닉네임입니다.')
+            return
+          }
+
+          validateInfo.nickname = nickname
+
+          toast.success('사용가능한 닉네임입니다.')
         },
       }
     )
@@ -302,11 +322,17 @@ const SignUpForm = () => {
               required
             />
             <OptionBox>
-              <Button type="button">중복확인</Button>
+              <Button
+                type="button"
+                onClick={handleNicknameCheck}
+                disabled={!!errors.nickname?.type}
+              >
+                중복확인
+              </Button>
             </OptionBox>
           </InputBox>
           <RenderIf
-            condition={FLAG}
+            condition={nicknameDuplicate}
             render={
               <Flex>
                 <Empty />

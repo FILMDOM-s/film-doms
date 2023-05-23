@@ -3,6 +3,7 @@ import {
   createSignUpAccount,
   getCheckEmailAuthCode,
   getCheckEmailDuplicate,
+  getCheckNicknameDuplicate,
   sendEmailAuthCode,
 } from './apis'
 
@@ -26,4 +27,8 @@ export const useSendEmailAuthCode = () => {
 
 export const useFetchCheckEmailAuthCode = () => {
   return useMutation(getCheckEmailAuthCode)
+}
+
+export const useFetchCheckNicknameDuplicate = () => {
+  return useMutation(getCheckNicknameDuplicate)
 }

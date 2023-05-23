@@ -44,4 +44,17 @@ declare module Auth {
       }
     }
   }
+
+  declare module Nickname {
+    type CheckRequest = {
+      username: string
+    }
+
+    type CheckResponse = {
+      result: {
+        duplicate: boolean
+      }
+      resultCode: string
+    }
+  }
 }
