@@ -14,6 +14,22 @@ declare module Auth {
       email: string
     }
 
-    type CheckEmailDuplicateDTO = boolean
+    type CheckEmailDuplicateDTO = {
+      result: {
+        duplicate: boolean
+      }
+      resultCode: string
+    }
+  }
+
+  declare module EmailAuthCode {
+    type Request = {
+      email: string
+    }
+
+    type Response = {
+      resultCode: string
+      result: null
+    }
   }
 }

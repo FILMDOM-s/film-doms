@@ -5,6 +5,7 @@ import {
   useState,
 } from 'react'
 import { useRouter } from 'next/router'
+import styled from '@emotion/styled'
 import { useForm } from 'react-hook-form'
 import { toast } from 'react-hot-toast'
 import { Divider, RenderIf } from '@/components/common'
@@ -16,8 +17,8 @@ import {
 import {
   useCreateSignUpAccount,
   useFetchCheckEmailDuplicate,
+  useSendEmailAuthCode,
 } from '@/services/auth'
-import styled from '@emotion/styled'
 import { colors, flex, flexCenter, font } from '@/styles/emotion'
 import { INPUT_WIDTH } from './style'
 import { getErrorMessage, isPatternError, isValidateError } from './utils'
@@ -39,6 +40,7 @@ const SignUpForm = () => {
   const [emailVerification, setEmailVerification] = useState(false)
   const [value, setValue] = useState<string>('')
   const { mutate: checkEmailDuplicate } = useFetchCheckEmailDuplicate()
+  const { mutate: sendEmailAuthCode } = useSendEmailAuthCode()
   const { mutate: addUser } = useCreateSignUpAccount({
     onError: () => {
       toast.error('회원가입에 실패했습니다.')
@@ -90,26 +92,56 @@ const SignUpForm = () => {
     // })
   }
 
-  const handleEmailVerification = async () => {
+  const handleEmailDuplicateCheck = (
+    email: Auth.SignUp.CheckEmailDuplicateRequest['email']
+  ) => {
+    checkEmailDuplicate(email, {
+      onSuccess: isDuplicate => {
+        if (isDuplicate) {
+          alert('이미 가입된 이메일입니다.')
+          return
+        }
+
+        setEmailVerification(true)
+        toast.success('이메일 인증이 완료되었습니다.', {
+          icon: '👏',
+          position: 'top-right',
+        })
+      },
+    })
+  }
+
+  const isEmpty = (value: string) => value === ''
+
+  const handleEmailAuthCodeRequest = () => {
     const { email } = getValues()
 
-    checkEmailDuplicate(
-      { email },
-      {
-        onSuccess: response => {
-          if (response) {
-            alert('이미 가입된 이메일입니다.')
-            return
-          }
+    if (isEmpty(email)) {
+      toast.error('이메일을 입력해주세요.')
+      return
+    }
 
-          setEmailVerification(true)
-          toast.success('이메일 인증이 완료되었습니다.', {
-            icon: '👏',
-            position: 'top-right',
-          })
-        },
-      }
-    )
+    checkEmailDuplicate(email, {
+      onSuccess: ({ result: { duplicate } }) => {
+        if (duplicate) {
+          alert('이미 가입된 이메일입니다.')
+          return
+        }
+
+        setEmailVerification(true)
+
+        sendEmailAuthCode(email, {
+          onSuccess: ({ resultCode }) => {
+            if (resultCode === 'SUCCESS') {
+              toast.success('인증번호가 발송되었습니다.', {
+                icon: '😎',
+                position: 'top-right',
+              })
+            }
+          },
+        })
+      },
+    })
   }
 
   const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -151,7 +183,13 @@ const SignUpForm = () => {
               required
             />
             <OptionBox>
-              <Button type="button">이메일발송</Button>
+              <Button
+                type="button"
+                onClick={handleEmailAuthCodeRequest}
+                disabled={!!errors.email?.type}
+              >
+                이메일발송
+              </Button>
             </OptionBox>
           </InputBox>
           <RenderIf

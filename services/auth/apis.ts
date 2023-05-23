@@ -8,10 +8,20 @@ export const createSignUpAccount = (item: Auth.SignUp.Request) => {
   )
 }
 
-export const getCheckEmailDuplicate = ({
-  email,
-}: Auth.SignUp.CheckEmailDuplicateRequest) => {
+export const getCheckEmailDuplicate = (
+  email: Auth.SignUp.CheckEmailDuplicateRequest['email']
+) => {
   return api.get<null, Auth.SignUp.CheckEmailDuplicateDTO>(
     `/api/v1/account/check/email?email=${email}`
   )
+}
+
+export const sendEmailAuthCode = (
+  email: Auth.EmailAuthCode.Request['email']
+) => {
+  return api.post<
+    null,
+    Auth.EmailAuthCode.Response,
+    Auth.EmailAuthCode.Request
+  >(`/api/v1/email/auth-code`, { email })
 }

@@ -1,5 +1,9 @@
 import { type UseMutationOptions, useMutation } from '@tanstack/react-query'
-import { createSignUpAccount, getCheckEmailDuplicate } from './apis'
+import {
+  createSignUpAccount,
+  getCheckEmailDuplicate,
+  sendEmailAuthCode,
+} from './apis'
 
 export const useCreateSignUpAccount = (
   options?: UseMutationOptions<
@@ -13,4 +17,8 @@ export const useCreateSignUpAccount = (
 
 export const useFetchCheckEmailDuplicate = () => {
   return useMutation(getCheckEmailDuplicate)
+}
+
+export const useSendEmailAuthCode = () => {
+  return useMutation(sendEmailAuthCode)
 }
