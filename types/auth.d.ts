@@ -31,5 +31,17 @@ declare module Auth {
       resultCode: string
       result: null
     }
+
+    type CheckRequest = {
+      email: string
+      authCode: string
+    }
+
+    type CheckResponse = {
+      resultCode: string
+      result: {
+        uuid: string
+      }
+    }
   }
 }

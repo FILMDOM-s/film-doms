@@ -3,6 +3,7 @@ import {
   type CSSProperties,
   type FormEvent,
   useState,
+  useRef,
 } from 'react'
 import { useRouter } from 'next/router'
 import styled from '@emotion/styled'
@@ -16,6 +17,7 @@ import {
 } from '@/constants/auth/regex'
 import {
   useCreateSignUpAccount,
+  useFetchCheckEmailAuthCode,
   useFetchCheckEmailDuplicate,
   useSendEmailAuthCode,
 } from '@/services/auth'
@@ -26,6 +28,7 @@ import { ERROR_MESSAGE } from './constants'
 
 type CreateUserFormType = {
   email: string
+  emailAuthCode: string
   password: string
   passwordCheck: string
   nickname: string
@@ -37,10 +40,17 @@ const FLAG = true
 
 const SignUpForm = () => {
   const router = useRouter()
+  const validateInfo = useRef({
+    email: '',
+    nickname: '',
+    uuid: '',
+    validEmail: false,
+  }).current
   const [emailVerification, setEmailVerification] = useState(false)
   const [value, setValue] = useState<string>('')
   const { mutate: checkEmailDuplicate } = useFetchCheckEmailDuplicate()
   const { mutate: sendEmailAuthCode } = useSendEmailAuthCode()
+  const { mutate: checkEmailAuthCode } = useFetchCheckEmailAuthCode()
   const { mutate: addUser } = useCreateSignUpAccount({
     onError: () => {
       toast.error('회원가입에 실패했습니다.')
@@ -92,25 +102,6 @@ const SignUpForm = () => {
     // })
   }
 
-  const handleEmailDuplicateCheck = (
-    email: Auth.SignUp.CheckEmailDuplicateRequest['email']
-  ) => {
-    checkEmailDuplicate(email, {
-      onSuccess: isDuplicate => {
-        if (isDuplicate) {
-          alert('이미 가입된 이메일입니다.')
-          return
-        }
-
-        setEmailVerification(true)
-        toast.success('이메일 인증이 완료되었습니다.', {
-          icon: '👏',
-          position: 'top-right',
-        })
-      },
-    })
-  }
-
   const isEmpty = (value: string) => value === ''
 
   const handleEmailAuthCodeRequest = () => {
@@ -128,7 +119,7 @@ const SignUpForm = () => {
           return
         }
 
-        setEmailVerification(true)
+        validateInfo.email = email
 
         sendEmailAuthCode(email, {
           onSuccess: ({ resultCode }) => {
@@ -142,6 +133,37 @@ const SignUpForm = () => {
         })
       },
     })
+  }
+
+  const handleEmailAuthCodeCheck = () => {
+    const { emailAuthCode } = getValues()
+    const { email } = validateInfo
+
+    if (isEmpty(email)) {
+      toast.error('이메일을 재발송해주세요.')
+      return
+    }
+
+    if (isEmpty(emailAuthCode)) {
+      toast.error('인증번호를 입력해주세요.')
+      return
+    }
+
+    checkEmailAuthCode(
+      {
+        email,
+        authCode: emailAuthCode,
+      },
+      {
+        onSuccess: ({ result: { uuid }, resultCode }) => {
+          if (resultCode === 'SUCCESS') {
+            validateInfo.uuid = uuid
+            validateInfo.validEmail = true
+            toast.success('인증이 완료되었습니다.')
+          }
+        },
+      }
+    )
   }
 
   const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -206,8 +228,15 @@ const SignUpForm = () => {
         <Group>
           <InputBox>
             <Label />
-            <Input width="sm" type="password" name="emailAuthCode" required />
-            <Button type="button">인증번호 확인</Button>
+            <Input
+              width="sm"
+              {...register('emailAuthCode')}
+              type="password"
+              required
+            />
+            <Button type="button" onClick={handleEmailAuthCodeCheck}>
+              인증번호 확인
+            </Button>
           </InputBox>
         </Group>
         <Divider color={colors.grey[100]} size={1} />

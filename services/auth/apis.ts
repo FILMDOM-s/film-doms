@@ -25,3 +25,13 @@ export const sendEmailAuthCode = (
     Auth.EmailAuthCode.Request
   >(`/api/v1/email/auth-code`, { email })
 }
+
+export const getCheckEmailAuthCode = (
+  data: Auth.EmailAuthCode.CheckRequest
+) => {
+  return api.post<
+    null,
+    Auth.EmailAuthCode.CheckResponse,
+    Auth.EmailAuthCode.CheckRequest
+  >('/api/v1/email/auth-code/verification', data)
+}
