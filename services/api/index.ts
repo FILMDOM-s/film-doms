@@ -16,6 +16,9 @@ export const getDomain = (type: DomainType) => {
 const createApi = (type: DomainType) => {
   const _api = axios.create({
     baseURL: `${getDomain(type)}`,
+    headers: {
+      withCredentials: true,
+    },
   })
 
   _api.interceptors.response.use(response => {
