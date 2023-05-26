@@ -55,3 +55,11 @@ export const getPopularArticleList = async () => {
 
   return result
 }
+
+export const createArticle = (item: Article.ArticleCreateRequestDto) => {
+  return api.post<
+    null,
+    Article.ArticleCreateResponseDTO,
+    Article.ArticleCreateRequestDto
+  >('/api/v1/article', item)
+}

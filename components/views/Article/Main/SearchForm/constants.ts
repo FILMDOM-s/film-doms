@@ -8,3 +8,18 @@ export const SEARCH_OPTIONS = [
     label: '작성자',
   },
 ]
+
+export const EDITOR_OPTIONS = [
+  {
+    value: 'movie',
+    label: 'Movie',
+  },
+  {
+    value: 'film universe',
+    label: 'Film Universe',
+  },
+  {
+    value: 'critic',
+    label: 'Critic',
+  },
+]

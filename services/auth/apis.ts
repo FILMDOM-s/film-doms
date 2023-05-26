@@ -15,6 +15,20 @@ export const getCheckEmailDuplicate = (
   )
 }
 
+export const signInAccount = (item: Auth.SignIn.Request) => {
+  return api.post<null, Auth.SignIn.DTO, Auth.SignIn.Request>(
+    `/api/v1/account/login`,
+    item
+  )
+}
+
+export const findPassword = (item: Auth.FindPassword.Request) => {
+  return api.post<null, Auth.FindPassword.DTO, Auth.FindPassword.Request>(
+    `/api/v1/account/password`,
+    item
+  )
+}
+
 export const sendEmailAuthCode = (
   email: Auth.EmailAuthCode.Request['email']
 ) => {
