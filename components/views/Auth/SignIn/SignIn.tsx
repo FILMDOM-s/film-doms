@@ -1,12 +1,12 @@
 import styled from '@emotion/styled'
 import { useForm } from 'react-hook-form'
 import { FormError } from '@/components/common/FormError'
-import { useMutation } from '@tanstack/react-query'
 import { useRouter } from 'next/router'
 import toast from 'react-hot-toast'
 import { EMAIL_REGEX, PASSWORD_REGEX } from '@/constants/auth/regex'
 import { google } from '@/assets/images/common'
 import Image from 'next/image'
+import { useSignInAccount } from '@/services/auth'
 
 export type LoginFormType = {
   email: string
@@ -14,7 +14,6 @@ export type LoginFormType = {
 }
 function SignIn({ closeModal }: { closeModal: () => void }) {
   const router = useRouter()
-  //const queryClient = useQueryClient()
   const {
     register,
     getValues,
@@ -24,36 +23,34 @@ function SignIn({ closeModal }: { closeModal: () => void }) {
     mode: 'onChange',
   })
 
-  const { mutate: signIn } = useMutation<unknown, unknown, LoginFormType, any>(
-    item =>
-      fetch(`/api/v1/account/login`, {
-        method: 'POST',
-        body: JSON.stringify({ item }),
-      })
-        .then(res => res.json())
-        .then(data => data.items),
-    {
-      onSuccess: () => {
-        //queryClient.invalidateQueries('account')
-        toast('로그인 되었습니다.', {
+  const { mutate: signIn } = useSignInAccount({
+    onSuccess: ({ result, resultCode }) => {
+      if (resultCode === 'SUCCESS') {
+        toast('로그인 성공!', {
           icon: '👏',
           position: 'top-center',
         })
         router.push('/')
-      },
-      onError: () => {
-        toast.error('로그인에 실패했습니다.', {
+        closeModal()
+      } else {
+        toast.error(resultCode, {
           icon: '😥',
           position: 'top-center',
         })
-      },
-    }
-  )
+      }
+    },
+    onError: err => {
+      toast.error('로그인에 실패했습니다.', {
+        icon: '😥',
+        position: 'top-center',
+      })
+    },
+  })
 
   const onSubmit = async () => {
     try {
-      const { email, password } = getValues()
-      signIn({ email, password })
+      const item = getValues()
+      await signIn(item)
     } catch (err) {}
   }
   return (
@@ -64,7 +61,7 @@ function SignIn({ closeModal }: { closeModal: () => void }) {
             required: '이메일을 입력하세요',
             pattern: EMAIL_REGEX,
           })}
-          name="username"
+          name="email"
           type="text"
           placeholder="이메일"
           required
@@ -83,8 +80,8 @@ function SignIn({ closeModal }: { closeModal: () => void }) {
           })}
           name="password"
           type="password"
-          required
           placeholder="비밀번호"
+          required
           autoComplete="true"
         />
         {errors.password?.type === 'pattern' && (
@@ -98,9 +95,8 @@ function SignIn({ closeModal }: { closeModal: () => void }) {
             <LoginStatusCheck type={'checkbox'} />
             <LoginStatusText>로그인 상태유지</LoginStatusText>
           </LoginStatusContainer>
-          <PasswordLink>비밀번호 찾기</PasswordLink>
+          <PasswordLink href="/auth/help">비밀번호 찾기</PasswordLink>
         </LoginOptionContainer>
-
         <LoginButton onSubmit={handleSubmit(onSubmit)}>로그인</LoginButton>
       </LoginForm>
       <LineButton color="#222222" onClick={() => {}}>
