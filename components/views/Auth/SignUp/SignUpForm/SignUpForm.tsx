@@ -1,128 +1,234 @@
-import { type InputHTMLAttributes, type CSSProperties, useState } from 'react'
+import {
+  type InputHTMLAttributes,
+  type CSSProperties,
+  type FormEvent,
+  useState,
+  useRef,
+} from 'react'
 import { useRouter } from 'next/router'
+import styled from '@emotion/styled'
 import { useForm } from 'react-hook-form'
 import { toast } from 'react-hot-toast'
 import { Divider, RenderIf } from '@/components/common'
-import { EMAIL_REGEX } from '@/constants/auth/regex'
+import {
+  EMAIL_REGEX,
+  NICKNAME_REGEX,
+  PASSWORD_REGEX,
+} from '@/constants/auth/regex'
 import {
   useCreateSignUpAccount,
+  useFetchCheckEmailAuthCode,
   useFetchCheckEmailDuplicate,
+  useFetchCheckNicknameDuplicate,
+  useSendEmailAuthCode,
 } from '@/services/auth'
-import styled from '@emotion/styled'
 import { colors, flex, flexCenter, font } from '@/styles/emotion'
 import { INPUT_WIDTH } from './style'
+import { getErrorMessage, isPatternError, isValidateError } from './utils'
+import { ERROR_MESSAGE } from './constants'
 
 type CreateUserFormType = {
-  username: string
   email: string
+  emailAuthCode: string
   password: string
-  passwordAgain: string
-  agreeCheckbox: string
-  hashtag: string[]
+  passwordCheck: string
+  nickname: string
+  interestMovie: string
+  termsOfService: boolean
 }
-
-const FLAG = true
 
 const SignUpForm = () => {
   const router = useRouter()
-  const [emailVerification, setEmailVerification] = useState(false)
-  const [value, setValue] = useState<string>('')
-  const [hashtags, setHashtags] = useState<string[]>([])
+  const validateInfo = useRef({
+    email: '',
+    nickname: '',
+    uuid: '',
+    validEmail: false,
+  }).current
+  const [nicknameDuplicate, setNicknameDuplicate] = useState(false)
   const { mutate: checkEmailDuplicate } = useFetchCheckEmailDuplicate()
-  const { mutate: addUser } = useCreateSignUpAccount({
-    onError: () => {
-      toast.error('회원가입에 실패했습니다.')
-    },
-    onSuccess: () => {
-      toast.success('회원가입이 완료되었습니다.', {
-        icon: '👏',
-        position: 'top-right',
-      })
-      router.push('/auth/signin')
-    },
-  })
+  const { mutate: sendEmailAuthCode } = useSendEmailAuthCode()
+  const { mutate: checkEmailAuthCode } = useFetchCheckEmailAuthCode()
+  const { mutate: checkNicknameDuplicate } = useFetchCheckNicknameDuplicate()
+  const { mutate: createSignUpAccount } = useCreateSignUpAccount()
 
   const {
     register,
     getValues,
     formState: { errors },
-    handleSubmit,
-    watch,
   } = useForm<CreateUserFormType>({
     mode: 'onChange',
   })
 
-  const onSubmit = async () => {
-    const { username, email, password, passwordAgain, agreeCheckbox } =
+  const onSubmit = async (event: FormEvent<HTMLFormElement>) => {
+    event.preventDefault()
+    const { password, passwordCheck, termsOfService, interestMovie } =
       getValues()
 
-    if (!agreeCheckbox) {
-      alert('약관에 동의해주세요.')
+    if (termsOfService === false) {
+      toast.error('약관에 동의해주세요.')
       return
     }
 
-    if (!emailVerification) {
-      alert('이메일 인증을 완료해주세요.')
+    if (password !== passwordCheck) {
+      toast.error('비밀번호가 일치하지 않습니다.')
       return
     }
 
-    if (password !== passwordAgain) {
-      alert('비밀번호가 일치하지 않습니다.')
-      return
-    }
+    const { email, nickname, uuid } = validateInfo
 
-    addUser({
-      nickname: username,
-      email: email,
-      password: password,
-      favoriteMovies: [],
-    })
-  }
+    const favoriteMovies = interestMovie.split(',').map(movie => movie.trim())
 
-  const handleEmailVerification = async () => {
-    const { email } = getValues()
-
-    checkEmailDuplicate(
-      { email },
+    createSignUpAccount(
       {
-        onSuccess: response => {
-          if (response) {
-            alert('이미 가입된 이메일입니다.')
-            return
-          }
-
-          setEmailVerification(true)
-          toast.success('이메일 인증이 완료되었습니다.', {
+        email,
+        password,
+        nickname,
+        favoriteMovies,
+        emailAuthUuid: uuid,
+      },
+      {
+        onError: () => {
+          toast.error('회원가입에 실패했습니다.')
+        },
+        onSuccess: () => {
+          toast.success('회원가입이 완료되었습니다.', {
             icon: '👏',
             position: 'top-right',
           })
+          router.replace('/')
         },
       }
     )
   }
 
-  const handleRemoveHashtag = (hashtagToRemove: string) => {
-    setHashtags(hashtags =>
-      hashtags.filter(hashtag => hashtag !== hashtagToRemove)
+  const isEmpty = (value: string) => value === ''
+
+  const handleEmailAuthCodeRequest = () => {
+    const { email } = getValues()
+
+    if (isEmpty(email)) {
+      toast.error('이메일을 입력해주세요.')
+      return
+    }
+
+    checkEmailDuplicate(email, {
+      onSuccess: ({ result: { duplicate } }) => {
+        if (duplicate) {
+          toast.error('이미 가입된 이메일입니다.')
+          return
+        }
+
+        validateInfo.email = email
+
+        sendEmailAuthCode(email, {
+          onSuccess: ({ resultCode }) => {
+            if (resultCode === 'SUCCESS') {
+              toast.success('인증번호가 발송되었습니다.', {
+                icon: '😎',
+                position: 'top-right',
+              })
+            }
+          },
+        })
+      },
+    })
+  }
+
+  const handleEmailAuthCodeCheck = () => {
+    const { emailAuthCode } = getValues()
+    const { email } = validateInfo
+
+    if (isEmpty(email)) {
+      toast.error('이메일을 재발송해주세요.')
+      return
+    }
+
+    if (isEmpty(emailAuthCode)) {
+      toast.error('인증번호를 입력해주세요.')
+      return
+    }
+
+    checkEmailAuthCode(
+      {
+        email,
+        authCode: emailAuthCode,
+      },
+      {
+        onSuccess: ({ result: { uuid }, resultCode }) => {
+          if (resultCode === 'SUCCESS') {
+            validateInfo.uuid = uuid
+            validateInfo.validEmail = true
+            toast.success('인증이 완료되었습니다.')
+          }
+        },
+      }
     )
   }
 
-  const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setValue(event.target.value)
+  const handleNicknameCheck = () => {
+    const { nickname } = getValues()
+
+    checkNicknameDuplicate(
+      {
+        nickname,
+      },
+      {
+        onSuccess: ({ result: { duplicate } }) => {
+          if (duplicate) {
+            setNicknameDuplicate(duplicate)
+            toast.error('이미 사용중인 닉네임입니다.')
+            return
+          }
+
+          setNicknameDuplicate(false)
+
+          validateInfo.nickname = nickname
+
+          toast.success('사용가능한 닉네임입니다.')
+        },
+      }
+    )
   }
 
-  const handleInputKeyDown = (event: React.KeyboardEvent<HTMLInputElement>) => {
-    event.stopPropagation()
-    if (event.key === 'Enter' && value !== '') {
-      if (!hashtags.find(hashtag => hashtag === value)) {
-        setHashtags(hashtags => [...hashtags, value])
-        setValue('')
-      }
-    }
+  const handleInterestMovieValidate = (
+    interestMovie: CreateUserFormType['interestMovie']
+  ) => {
+    const interestMovieList = interestMovie.split(',')
+
+    return interestMovieList.length <= 5
+  }
+
+  const handlePasswordCheckValidate = (
+    passwordCheck: CreateUserFormType['passwordCheck'],
+    { password }: CreateUserFormType
+  ) => {
+    return passwordCheck === password
+  }
+
+  const isValidateInput = () => {
+    const { termsOfService } = getValues()
+    const { uuid, validEmail, nickname } = validateInfo
+
+    const isErrorInput = !!(
+      errors.email ||
+      errors.password ||
+      errors.passwordCheck ||
+      errors.nickname
+    )
+
+    return (
+      validEmail &&
+      !!uuid &&
+      !!nickname &&
+      termsOfService &&
+      !nicknameDuplicate &&
+      !isErrorInput
+    )
   }
 
   return (
-    <Form>
+    <Form onSubmit={onSubmit}>
       <Box>
         <Divider color={colors.primary.orange} />
         <Group>
@@ -130,10 +236,9 @@ const SignUpForm = () => {
             <Label required>이메일</Label>
             <Input
               {...register('email', {
-                required: true,
                 pattern: {
                   value: EMAIL_REGEX,
-                  message: '올바른 이메일 형식이 아니에요!',
+                  message: ERROR_MESSAGE.EMAIL,
                 },
               })}
               type="email"
@@ -142,15 +247,21 @@ const SignUpForm = () => {
               required
             />
             <OptionBox>
-              <Button>이메일발송</Button>
+              <Button
+                type="button"
+                onClick={handleEmailAuthCodeRequest}
+                disabled={!!errors.email?.type}
+              >
+                이메일발송
+              </Button>
             </OptionBox>
           </InputBox>
           <RenderIf
-            condition={errors.email?.type === 'pattern'}
+            condition={isPatternError(errors.email)}
             render={
               <Flex>
                 <Empty />
-                <ErrorText>{errors.email?.message}</ErrorText>
+                <ErrorText>{getErrorMessage(errors.email)}</ErrorText>
               </Flex>
             }
           />
@@ -159,8 +270,15 @@ const SignUpForm = () => {
         <Group>
           <InputBox>
             <Label />
-            <Input width="sm" type="password" name="emailAuthCode" required />
-            <Button>인증번호 확인</Button>
+            <Input
+              width="sm"
+              {...register('emailAuthCode')}
+              type="password"
+              required
+            />
+            <Button type="button" onClick={handleEmailAuthCodeCheck}>
+              인증번호 확인
+            </Button>
           </InputBox>
         </Group>
         <Divider color={colors.grey[100]} size={1} />
@@ -168,25 +286,47 @@ const SignUpForm = () => {
           <InputBox>
             <Label required>비밀번호</Label>
             <Input
+              {...register('password', {
+                pattern: {
+                  value: PASSWORD_REGEX,
+                  message: ERROR_MESSAGE.PASSWORD,
+                },
+              })}
               type="password"
               name="password"
               placeholder="비밀번호는 영문과 숫자를 포함해 8자리 이상으로 기입해주세요."
               required
             />
           </InputBox>
+          <RenderIf
+            condition={isPatternError(errors.password)}
+            render={
+              <Flex>
+                <Empty />
+                <ErrorText>{getErrorMessage(errors.password)}</ErrorText>
+              </Flex>
+            }
+          />
         </Group>
         <Divider color={colors.grey[100]} size={1} />
         <Group>
           <InputBox>
             <Label required>비밀번호확인</Label>
-            <Input type="password" name="passwordCheck" required />
+            <Input
+              {...register('passwordCheck', {
+                validate: handlePasswordCheckValidate,
+              })}
+              type="password"
+              name="passwordCheck"
+              required
+            />
           </InputBox>
           <RenderIf
-            condition={FLAG}
+            condition={isValidateError(errors.passwordCheck)}
             render={
               <Flex>
                 <Empty />
-                <ErrorText>두개의 비밀번호가 서로 달라요.</ErrorText>
+                <ErrorText>{ERROR_MESSAGE.PASSWORD_CHECK}</ErrorText>
               </Flex>
             }
           />
@@ -196,24 +336,29 @@ const SignUpForm = () => {
           <InputBox>
             <Label required>닉네임</Label>
             <Input
+              {...register('nickname', {
+                pattern: NICKNAME_REGEX,
+              })}
               type="text"
-              name="nickname"
               placeholder="닉네임은 2자 이상으로 입력하세요."
-              pattern="[가-힣a-zA-Z]"
-              minLength={2}
-              maxLength={10}
               required
             />
             <OptionBox>
-              <Button>중복확인</Button>
+              <Button
+                type="button"
+                onClick={handleNicknameCheck}
+                disabled={!!errors.nickname?.type}
+              >
+                중복확인
+              </Button>
             </OptionBox>
           </InputBox>
           <RenderIf
-            condition={FLAG}
+            condition={nicknameDuplicate}
             render={
               <Flex>
                 <Empty />
-                <ErrorText>이미 존재하는 닉네임이에요.</ErrorText>
+                <ErrorText>{ERROR_MESSAGE.NICKNAME_EXIST}</ErrorText>
               </Flex>
             }
           />
@@ -223,17 +368,20 @@ const SignUpForm = () => {
           <InputBox>
             <Label>관심영화</Label>
             <Input
+              {...register('interestMovie', {
+                validate: handleInterestMovieValidate,
+              })}
               type="text"
               name="interestMovie"
               placeholder="좋아하는 영화 제목 최대 5가지를 기입해주세요."
             />
           </InputBox>
           <RenderIf
-            condition={FLAG}
+            condition={isValidateError(errors.interestMovie)}
             render={
               <Flex>
                 <Empty />
-                <ErrorText>관심영화의 수가 너무 많습니다.</ErrorText>
+                <ErrorText>{ERROR_MESSAGE.INTEREST_MOVIE}</ErrorText>
               </Flex>
             }
           />
@@ -243,18 +391,20 @@ const SignUpForm = () => {
           <InputBox>
             <Label required>이용약관</Label>
             <Flex gap={'10px'}>
-              <Input type="checkbox" name="termsOfService" required />
+              <Input {...register('termsOfService')} type="checkbox" required />
               <Text>
                 Film Dom&#39;s 이용을 위한 개인정보 제공 및 수집에 동의합니다.
               </Text>
             </Flex>
             <OptionBox>
-              <MoreButton>자세히</MoreButton>
+              <MoreButton type="button">자세히</MoreButton>
             </OptionBox>
           </InputBox>
         </Group>
       </Box>
-      <SignUpButton>가입하기</SignUpButton>
+      <SignUpButton type="submit" disabled={!isValidateInput()}>
+        가입하기
+      </SignUpButton>
     </Form>
   )
 }

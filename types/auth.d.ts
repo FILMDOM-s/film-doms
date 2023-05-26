@@ -5,16 +5,77 @@ declare module Auth {
       password: string
       nickname: string
       favoriteMovies: string[]
+      emailAuthUuid: string
     }
 
-    // TODO: 백엔드 DTO 완료 시, 수정
-    type DTO = {}
+    type Response = {
+      resultCode: string
+      result: {
+        accessToken: string
+      }
+    }
 
     type CheckEmailDuplicateRequest = {
       email: string
     }
 
-    type CheckEmailDuplicateDTO = boolean
+    type CheckEmailDuplicateDTO = {
+      result: {
+        duplicate: boolean
+      }
+      resultCode: string
+    }
+  }
+
+  declare module EmailAuthCode {
+    type Request = {
+      email: string
+    }
+
+    type Response = {
+      resultCode: string
+      result: null
+    }
+
+    type CheckRequest = {
+      email: string
+      authCode: string
+    }
+
+    type CheckResponse = {
+      resultCode: string
+      result: {
+        uuid: string
+      }
+    }
+  }
+
+  declare module Nickname {
+    type CheckRequest = {
+      nickname: string
+    }
+
+    type CheckResponse = {
+      result: {
+        duplicate: boolean
+      }
+      resultCode: string
+    }
+  }
+
+  declare module Token {
+    type Response = {
+      resultCode: string
+      result: {
+        accessToken: string
+      }
+    }
+  }
+
+  declare module SignOut {
+    type Request = {
+      password: string
+    }
   }
 
   declare module SignIn {
