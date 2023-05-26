@@ -167,4 +167,41 @@ declare module Article {
     resultCode: string
     result: Popular[]
   }
+
+  type ArticleCreateRequestDto = {
+    title: string
+    category: string
+    tag: string
+    content: string
+    containsImage: string
+    mainImageId: string
+  }
+
+  type ArticleCreateResponseContent = {
+    id: number
+    category: string
+  }
+
+  type ArticleCreateResponseDTO = {
+    resultCode: string
+    result: ArticleCreateResponseContent
+  }
+
+  type FilmUniverseCreateRequestDto = {
+    title: string
+    category: string
+    tag: string
+    content: string
+    containsImage: string
+    mainImageId: string
+  }
+
+  type CriticCreateRequestDto = {
+    title: string
+    category: string
+    tag: string
+    content: string
+    containsImage: string
+    mainImageId: string
+  }
 }

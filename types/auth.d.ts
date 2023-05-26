@@ -16,4 +16,26 @@ declare module Auth {
 
     type CheckEmailDuplicateDTO = boolean
   }
+
+  declare module SignIn {
+    type Request = {
+      email: string
+      password: string
+    }
+
+    type DTO = {
+      result: {
+        accessToken: string
+      }
+      resultCode
+    }
+  }
+
+  declare module FindPassword {
+    type Request = {
+      email: string
+    }
+
+    type DTO = {}
+  }
 }
