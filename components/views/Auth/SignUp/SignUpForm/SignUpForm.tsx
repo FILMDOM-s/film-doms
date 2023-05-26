@@ -37,8 +37,6 @@ type CreateUserFormType = {
   termsOfService: boolean
 }
 
-const FLAG = true
-
 const SignUpForm = () => {
   const router = useRouter()
   const validateInfo = useRef({
@@ -48,55 +46,60 @@ const SignUpForm = () => {
     validEmail: false,
   }).current
   const [nicknameDuplicate, setNicknameDuplicate] = useState(false)
-  const [value, setValue] = useState('')
   const { mutate: checkEmailDuplicate } = useFetchCheckEmailDuplicate()
   const { mutate: sendEmailAuthCode } = useSendEmailAuthCode()
   const { mutate: checkEmailAuthCode } = useFetchCheckEmailAuthCode()
   const { mutate: checkNicknameDuplicate } = useFetchCheckNicknameDuplicate()
-  const { mutate: addUser } = useCreateSignUpAccount({
-    onError: () => {
-      toast.error('회원가입에 실패했습니다.')
-    },
-    onSuccess: () => {
-      toast.success('회원가입이 완료되었습니다.', {
-        icon: '👏',
-        position: 'top-right',
-      })
-      router.push('/auth/signin')
-    },
-  })
+  const { mutate: createSignUpAccount } = useCreateSignUpAccount()
 
   const {
     register,
     getValues,
     formState: { errors },
-    handleSubmit,
-    watch,
   } = useForm<CreateUserFormType>({
     mode: 'onChange',
   })
 
   const onSubmit = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault()
-    const { nickname, email, password, passwordCheck, termsOfService } =
+    const { password, passwordCheck, termsOfService, interestMovie } =
       getValues()
 
     if (termsOfService === false) {
-      alert('약관에 동의해주세요.')
+      toast.error('약관에 동의해주세요.')
       return
     }
 
     if (password !== passwordCheck) {
-      alert('비밀번호가 일치하지 않습니다.')
+      toast.error('비밀번호가 일치하지 않습니다.')
       return
     }
 
-    // addUser({
-    //   nickname,
-    //   email: email,
-    //   password: password,
-    //   favoriteMovies: [],
-    // })
+    const { email, nickname, uuid } = validateInfo
+
+    const favoriteMovies = interestMovie.split(',').map(movie => movie.trim())
+
+    createSignUpAccount(
+      {
+        email,
+        password,
+        nickname,
+        favoriteMovies,
+        emailAuthUuid: uuid,
+      },
+      {
+        onError: () => {
+          toast.error('회원가입에 실패했습니다.')
+        },
+        onSuccess: () => {
+          toast.success('회원가입이 완료되었습니다.', {
+            icon: '👏',
+            position: 'top-right',
+          })
+          router.replace('/')
+        },
+      }
+    )
   }
 
   const isEmpty = (value: string) => value === ''
@@ -168,7 +171,7 @@ const SignUpForm = () => {
 
     checkNicknameDuplicate(
       {
-        username: nickname,
+        nickname,
       },
       {
         onSuccess: ({ result: { duplicate } }) => {
@@ -178,16 +181,14 @@ const SignUpForm = () => {
             return
           }
 
+          setNicknameDuplicate(false)
+
           validateInfo.nickname = nickname
 
           toast.success('사용가능한 닉네임입니다.')
         },
       }
     )
-  }
-
-  const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setValue(event.target.value)
   }
 
   const handleInterestMovieValidate = (
@@ -203,6 +204,27 @@ const SignUpForm = () => {
     { password }: CreateUserFormType
   ) => {
     return passwordCheck === password
+  }
+
+  const isValidateInput = () => {
+    const { termsOfService } = getValues()
+    const { uuid, validEmail, nickname } = validateInfo
+
+    const isErrorInput = !!(
+      errors.email ||
+      errors.password ||
+      errors.passwordCheck ||
+      errors.nickname
+    )
+
+    return (
+      validEmail &&
+      !!uuid &&
+      !!nickname &&
+      termsOfService &&
+      !nicknameDuplicate &&
+      !isErrorInput
+    )
   }
 
   return (
@@ -380,7 +402,9 @@ const SignUpForm = () => {
           </InputBox>
         </Group>
       </Box>
-      <SignUpButton type="submit">가입하기</SignUpButton>
+      <SignUpButton type="submit" disabled={!isValidateInput()}>
+        가입하기
+      </SignUpButton>
     </Form>
   )
 }
