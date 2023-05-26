@@ -1,8 +1,7 @@
 import api from '../api'
 
-// TODO: SignUpDTO 완성되면 수정
 export const createSignUpAccount = (item: Auth.SignUp.Request) => {
-  return api.post<null, Auth.SignUp.DTO, Auth.SignUp.Request>(
+  return api.post<null, Auth.SignUp.Response, Auth.SignUp.Request>(
     '/api/v1/account',
     item
   )
@@ -37,9 +36,15 @@ export const getCheckEmailAuthCode = (
 }
 
 export const getCheckNicknameDuplicate = ({
-  username,
+  nickname,
 }: Auth.Nickname.CheckRequest) => {
   return api.get<null, Auth.Nickname.CheckResponse>(
-    `/api/v1/account/check/nickname?username=${username}`
+    `/api/v1/account/check/nickname?nickname=${nickname}`
+  )
+}
+
+export const getAccessToken = () => {
+  return api.post<null, Auth.Token.Response, null>(
+    '/api/v1/account/refresh-token'
   )
 }
