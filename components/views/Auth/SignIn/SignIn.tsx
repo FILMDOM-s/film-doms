@@ -97,7 +97,7 @@ function SignIn({ closeModal }: { closeModal: () => void }) {
           </LoginStatusContainer>
           <PasswordLink href="/auth/help">비밀번호 찾기</PasswordLink>
         </LoginOptionContainer>
-        <LoginButton onSubmit={handleSubmit(onSubmit)}>로그인</LoginButton>
+        <LoginButton type="submit">로그인</LoginButton>
       </LoginForm>
       <LineButton color="#222222" onClick={() => {}}>
         <Image src={google} width="24" height="24" alt="" />
