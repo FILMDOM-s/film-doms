@@ -5,8 +5,6 @@ import PasswordFinder from './Password'
 const Help = () => {
   return (
     <Container>
-      {/* 기존 ID -> Email로 변경 */}
-      {/* <EmailFinder /> */}
       <PasswordFinder />
     </Container>
   )
@@ -20,6 +18,6 @@ const Container = styled.div`
   display: flex;
   flex-direction: row;
   align-items: flex-start;
-  justify-content: space-between;
+  justify-content: center;
   padding: 40px;
 `
