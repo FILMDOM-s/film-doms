@@ -31,6 +31,7 @@ declare module Article {
     views: number
     likes: number
     commentCount: number
+    mainImage: string
     containImage: boolean
   }
 
@@ -173,7 +174,7 @@ declare module Article {
     category: string
     tag: string
     content: string
-    containsImage: string
+    containsImage: boolean
     mainImageId: string
   }
 

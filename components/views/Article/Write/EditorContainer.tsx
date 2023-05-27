@@ -4,10 +4,7 @@ import { colors, flexCenter, flexGap, typography } from '@/styles/emotion'
 import styled from '@emotion/styled'
 import Link from 'next/link'
 import Editor from '@/components/common/Editor'
-import { type SelectRef } from '@/components/common/Select/core'
-import { SearchSelect } from '@/components/common'
-import { EDITOR_OPTIONS } from '../Main/SearchForm/constants'
-import { useRef, useState } from 'react'
+import { useState } from 'react'
 import File from './File'
 import LabeledCheckbox from './Check'
 import { useForm } from 'react-hook-form'
@@ -21,22 +18,25 @@ export type EditorContainerProps = {
 
 export type ArticleProps = {
   title: string
-  category: string
-  tag: string
-  content: string
-  containsImage: string
-  mainImageId: string
+  openAllowed: boolean
+  commentsAllowed: boolean
+  shareAllowed: boolean
+  startAt: string
+  endAt: string
+  files: File[]
 }
 
 const EditorContainer = ({ category }: EditorContainerProps) => {
   const router = useRouter()
-  const searchOptionRef = useRef<SelectRef>(null)
   const [content, setContent] = useState('')
+  const { register, handleSubmit, getValues } = useForm<ArticleProps>({
+    mode: 'onChange',
+  })
 
   const { mutate: createArticle } = useCreateArticle({
     onSuccess: ({ result, resultCode }) => {
       if (resultCode === 'SUCCESS') {
-        toast('로그인 성공!', {
+        toast('등록 완료!', {
           icon: '👏',
           position: 'top-center',
         })
@@ -49,21 +49,23 @@ const EditorContainer = ({ category }: EditorContainerProps) => {
       }
     },
     onError: err => {
-      toast.error('로그인에 실패했습니다.', {
+      toast.error('등록 실패!', {
         icon: '😥',
         position: 'top-center',
       })
     },
   })
 
-  const onSubmit = async () => {
+  const onSubmit = async (e: any) => {
+    const { title, files, openAllowed, commentsAllowed, shareAllowed } =
+      getValues()
     try {
       await createArticle({
-        title: 'title',
-        category: 'category',
+        title: title,
+        category: category,
         tag: 'tag',
-        content: 'content',
-        containsImage: 'containsImage',
+        content: content,
+        containsImage: !!files,
         mainImageId: 'mainImageId',
       })
     } catch (err) {}
@@ -79,26 +81,56 @@ const EditorContainer = ({ category }: EditorContainerProps) => {
         </ChevronWrapper>
         {CATEGORIES[category].title}
       </Title>
-      <EditorForm onSubmit={onSubmit}>
+      <EditorForm onSubmit={handleSubmit(onSubmit)}>
         <Header>
-          <SearchSelect options={EDITOR_OPTIONS} ref={searchOptionRef} />
-          <TitleInput placeholder="제목" name="title" type="text" />
+          <TitleInput
+            {...register('title')}
+            placeholder="제목"
+            name="title"
+            type="text"
+          />
         </Header>
         <Editor content={content} setContent={setContent} />
-        <File />
+        <File register={register} />
         <Checks>
-          <LabeledCheckbox label={'공개'} />
-          <LabeledCheckbox label={'댓글 허용'} />
-          <LabeledCheckbox label={'퍼가기 금지'} />
+          <LabeledCheckbox
+            label={'공개'}
+            register={register}
+            name={'openAllowed'}
+          />
+          <LabeledCheckbox
+            label={'댓글 허용'}
+            register={register}
+            name={'commentsAllowed'}
+          />
+          <LabeledCheckbox
+            label={'퍼가기 금지'}
+            register={register}
+            name={'shareAllowed'}
+          />
         </Checks>
+        {category === 'filmUniverse' && (
+          <Period>
+            <div>게시 기간</div>
+            <DateContainer>
+              <DateInput
+                type={'date'}
+                {...register('startAt')}
+                name="startAt"
+              />
+              <span>~</span>
+              <DateInput type={'date'} {...register('endAt')} name="endAt" />
+            </DateContainer>
+          </Period>
+        )}
         <Buttons>
-          <Button theme={'#111111'} type="button">
+          <Button theme={'#111111'} type="button" disabled>
             임시 저장
           </Button>
-          <Button theme={'#111111'} type="button">
+          <Button theme={'#111111'} type="button" disabled>
             임시 저장 불러오기
           </Button>
-          <Button theme={'#111111'} type="button">
+          <Button theme={'#111111'} type="button" disabled>
             미리보기
           </Button>
           <Button theme={'#FF5414'} type="submit">
@@ -132,7 +164,7 @@ const TitleInput = styled.input`
   color: ${colors.primary.black};
   border: 2px solid ${colors.primary.black};
   outline: none;
-  padding: 0 20px;
+  padding: 6px 20px;
 `
 
 const Header = styled.div`
@@ -140,7 +172,7 @@ const Header = styled.div`
   width: 914px;
 `
 
-const EditorForm = styled.section`
+const EditorForm = styled.form`
   ${flexGap('20px')}
   width: 914px;
 `
@@ -153,7 +185,6 @@ const ChevronWrapper = styled.div`
 const Checks = styled.div`
   ${flexGap('20px', 'row')}
   width: 100%;
-  margin-bottom: 20px;
 `
 
 const Buttons = styled.div`
@@ -175,4 +206,23 @@ const Button = styled.button<{ theme: string }>`
     background-color: ${({ theme }) => theme};
     color: ${colors.primary.white};
   }
+`
+
+const Period = styled.div`
+  ${flexGap('20px', 'row')}
+  width: 100%;
+  border: 2px solid #e5e5e5;
+  border-radius: 5px;
+  padding: 10px;
+`
+
+const DateInput = styled.input`
+  width: 100%;
+  border: none;
+  outline: none;
+  background-color: transparent;
+`
+
+const DateContainer = styled.div`
+  ${flexGap('20px', 'row')}
 `

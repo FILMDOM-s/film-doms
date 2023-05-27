@@ -9,13 +9,13 @@ export const SEARCH_OPTIONS = [
   },
 ]
 
-export const EDITOR_OPTIONS = [
+export const CATEGORY_OPTIONS = [
   {
     value: 'movie',
     label: 'Movie',
   },
   {
-    value: 'film universe',
+    value: 'film-universe',
     label: 'Film Universe',
   },
   {

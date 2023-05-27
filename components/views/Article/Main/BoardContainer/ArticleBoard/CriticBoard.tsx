@@ -19,7 +19,7 @@ const CriticBoard = ({ criticItems }: Props) => {
           <Critic
             {...critic}
             createAt={critic.createdAt}
-            image={getImageSrcByUuid(critic.author.profileImage.uuidFileName)}
+            image={getImageSrcByUuid(critic.mainImage)}
             author={critic.author.nickname}
             description={critic.title}
           />

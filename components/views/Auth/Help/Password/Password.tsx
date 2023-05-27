@@ -1,5 +1,5 @@
 import { Divider } from '@/components/common'
-import { colors } from '@/styles/emotion'
+import { colors, font } from '@/styles/emotion'
 import styled from '@emotion/styled'
 import Header from '../Header'
 
@@ -13,7 +13,7 @@ type FindPasswordProps = {
 }
 
 const Password = () => {
-  const { mutate: signIn } = useFindPassword({
+  const { mutate: findPassword } = useFindPassword({
     onSuccess: () => {
       toast('비밀번호를 전송했습니다!', {
         icon: '👏',
@@ -38,10 +38,10 @@ const Password = () => {
   })
   const onSubmit = () => {
     const { email } = getValues()
-    signIn({ email })
+    findPassword({ email })
   }
   return (
-    <Container>
+    <Form onSubmit={handleSubmit(onSubmit)}>
       <Divider limit="56px" size={4} color={colors.primary.orange} />
       <Header title="PW 찾기" />
       <Divider color={colors.primary.orange} />
@@ -58,15 +58,15 @@ const Password = () => {
         placeholder="가입한 이메일 주소를 입력해주세요."
         required
       />
-      {errors.email && <p>{errors.email.message}</p>}
-      <Button onSubmit={handleSubmit(onSubmit)}>비밀번호 전송</Button>
-    </Container>
+      {errors.email && <ErrorText>{errors.email.message}</ErrorText>}
+      <Button type="submit">비밀번호 전송</Button>
+    </Form>
   )
 }
 
 export default Password
 
-const Container = styled.div`
+const Form = styled.form`
   width: 50%;
   display: flex;
   flex-direction: column;
@@ -82,6 +82,7 @@ const Input = styled.input`
   border: 1px solid #e5e5e5;
   border-radius: 4px;
   padding: 0 16px;
+  outline: none;
 `
 
 const Button = styled.button`
@@ -93,4 +94,9 @@ const Button = styled.button`
   background-color: #ff5414;
   color: #f7f7f5;
   margin-top: 32px;
+`
+
+const ErrorText = styled.span`
+  ${font({})}
+  color: ${colors.primary.orange};
 `

@@ -1,10 +1,10 @@
 import { flexGap } from '@/styles/emotion'
 import styled from '@emotion/styled'
 
-const File = () => {
+const File = ({ register }: { register: any }) => {
   return (
     <Container>
-      <FileInput type={'file'} />
+      <FileInput type={'file'} {...register('files')} multiple name="files" />
     </Container>
   )
 }
