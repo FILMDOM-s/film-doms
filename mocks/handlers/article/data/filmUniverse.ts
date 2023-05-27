@@ -26,6 +26,7 @@ export const FILM_UNIVERSE_DATA: Article.MainContent[] = Array.from(
     views: getRandomNum(0, 10000),
     likes: getRandomNum(0, 1500),
     commentCount: getRandomNum(0, 150),
+    mainImage: 'https://picsum.photos/seed/picsum/200/300',
     containImage: getRandomNum(0, 1) === 1,
   })
 )
