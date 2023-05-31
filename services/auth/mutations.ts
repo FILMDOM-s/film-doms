@@ -32,7 +32,13 @@ export const useSignInAccount = (
   return useMutation(signInAccount, options)
 }
 
-export const useFindPassword = () => {
+export const useFindPassword = (
+  options?: UseMutationOptions<
+    Awaited<ReturnType<typeof signInAccount>>,
+    unknown,
+    Parameters<typeof signInAccount>[0]
+  >
+) => {
   return useMutation(findPassword)
 }
 
