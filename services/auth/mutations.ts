@@ -1,5 +1,3 @@
-
-import axios from 'axios'
 import { type UseMutationOptions, useMutation } from '@tanstack/react-query'
 import {
   createSignUpAccount,
@@ -9,13 +7,13 @@ import {
   sendEmailAuthCode,
   signInAccount,
   findPassword,
-
 } from './apis'
+import api from '../api'
 
 export const useCreateSignUpAccount = () => {
   return useMutation(createSignUpAccount, {
     onSuccess: ({ result: { accessToken } }) => {
-      axios.defaults.headers.common['Authorization'] = `Bearer ${accessToken}`
+      api.defaults.headers.common['Authorization'] = `Bearer ${accessToken}`
     },
   })
 }
@@ -54,5 +52,4 @@ export const useFetchCheckEmailAuthCode = () => {
 
 export const useFetchCheckNicknameDuplicate = () => {
   return useMutation(getCheckNicknameDuplicate)
-
 }

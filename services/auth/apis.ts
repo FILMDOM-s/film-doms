@@ -3,7 +3,10 @@ import api from '../api'
 export const createSignUpAccount = (item: Auth.SignUp.Request) => {
   return api.post<null, Auth.SignUp.Response, Auth.SignUp.Request>(
     '/api/v1/account',
-    item
+    item,
+    {
+      withCredentials: true,
+    }
   )
 }
 

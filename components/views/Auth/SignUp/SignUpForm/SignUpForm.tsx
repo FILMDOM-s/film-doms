@@ -3,7 +3,6 @@ import {
   type CSSProperties,
   type FormEvent,
   useState,
-  useRef,
 } from 'react'
 import { useRouter } from 'next/router'
 import styled from '@emotion/styled'
@@ -39,13 +38,13 @@ type CreateUserFormType = {
 
 const SignUpForm = () => {
   const router = useRouter()
-  const validateInfo = useRef({
+  const [serverInput, setServerInput] = useState({
     email: '',
     nickname: '',
     uuid: '',
     validEmail: false,
-  }).current
-  const [nicknameDuplicate, setNicknameDuplicate] = useState(false)
+    nicknameDuplicate: false,
+  })
   const { mutate: checkEmailDuplicate } = useFetchCheckEmailDuplicate()
   const { mutate: sendEmailAuthCode } = useSendEmailAuthCode()
   const { mutate: checkEmailAuthCode } = useFetchCheckEmailAuthCode()
@@ -56,9 +55,12 @@ const SignUpForm = () => {
     register,
     getValues,
     formState: { errors },
+    watch,
   } = useForm<CreateUserFormType>({
     mode: 'onChange',
   })
+
+  watch()
 
   const onSubmit = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault()
@@ -75,9 +77,12 @@ const SignUpForm = () => {
       return
     }
 
-    const { email, nickname, uuid } = validateInfo
+    const { email, nickname, uuid } = serverInput
 
-    const favoriteMovies = interestMovie.split(',').map(movie => movie.trim())
+    const favoriteMovies = interestMovie
+      .split(',')
+      .map(movie => movie.trim())
+      .filter(movie => !isEmpty(movie))
 
     createSignUpAccount(
       {
@@ -119,7 +124,10 @@ const SignUpForm = () => {
           return
         }
 
-        validateInfo.email = email
+        setServerInput(prev => ({
+          ...prev,
+          email,
+        }))
 
         sendEmailAuthCode(email, {
           onSuccess: ({ resultCode }) => {
@@ -137,7 +145,7 @@ const SignUpForm = () => {
 
   const handleEmailAuthCodeCheck = () => {
     const { emailAuthCode } = getValues()
-    const { email } = validateInfo
+    const { email } = serverInput
 
     if (isEmpty(email)) {
       toast.error('이메일을 재발송해주세요.')
@@ -157,8 +165,11 @@ const SignUpForm = () => {
       {
         onSuccess: ({ result: { uuid }, resultCode }) => {
           if (resultCode === 'SUCCESS') {
-            validateInfo.uuid = uuid
-            validateInfo.validEmail = true
+            setServerInput(prev => ({
+              ...prev,
+              uuid,
+              validEmail: true,
+            }))
             toast.success('인증이 완료되었습니다.')
           }
         },
@@ -176,14 +187,19 @@ const SignUpForm = () => {
       {
         onSuccess: ({ result: { duplicate } }) => {
           if (duplicate) {
-            setNicknameDuplicate(duplicate)
+            setServerInput(prev => ({
+              ...prev,
+              nicknameDuplicate: true,
+            }))
             toast.error('이미 사용중인 닉네임입니다.')
             return
           }
 
-          setNicknameDuplicate(false)
-
-          validateInfo.nickname = nickname
+          setServerInput(prev => ({
+            ...prev,
+            nickname,
+            nicknameDuplicate: false,
+          }))
 
           toast.success('사용가능한 닉네임입니다.')
         },
@@ -206,25 +222,26 @@ const SignUpForm = () => {
     return passwordCheck === password
   }
 
-  const isValidateInput = () => {
+  const isValidateClientInput = () => {
     const { termsOfService } = getValues()
-    const { uuid, validEmail, nickname } = validateInfo
-
-    const isErrorInput = !!(
-      errors.email ||
-      errors.password ||
-      errors.passwordCheck ||
-      errors.nickname
+    const { email, password, passwordCheck, nickname } = errors
+    const isErrorInput = [email, password, passwordCheck, nickname].some(
+      error => error
     )
+
+    return !isErrorInput && termsOfService
+  }
+
+  const isValidateServerInput = () => {
+    const { uuid, validEmail, nickname, nicknameDuplicate } = serverInput
 
     return (
-      validEmail &&
-      !!uuid &&
-      !!nickname &&
-      termsOfService &&
-      !nicknameDuplicate &&
-      !isErrorInput
+      validEmail && !nicknameDuplicate && !isEmpty(uuid) && !isEmpty(nickname)
     )
+  }
+
+  const isValidateForm = () => {
+    return isValidateClientInput() && isValidateServerInput()
   }
 
   return (
@@ -295,6 +312,8 @@ const SignUpForm = () => {
               })}
               type="password"
               name="password"
+              minLength={8}
+              maxLength={100}
               placeholder="비밀번호는 영문과 숫자를 포함해 8자리 이상으로 기입해주세요."
               required
               autoComplete="off"
@@ -320,6 +339,8 @@ const SignUpForm = () => {
               })}
               type="password"
               name="passwordCheck"
+              minLength={8}
+              maxLength={100}
               required
               autoComplete="off"
             />
@@ -343,6 +364,8 @@ const SignUpForm = () => {
                 pattern: NICKNAME_REGEX,
               })}
               type="text"
+              minLength={2}
+              maxLength={20}
               placeholder="닉네임은 2자 이상으로 입력하세요."
               required
             />
@@ -350,14 +373,17 @@ const SignUpForm = () => {
               <Button
                 type="button"
                 onClick={handleNicknameCheck}
-                disabled={!!errors.nickname?.type}
+                disabled={
+                  getValues('nickname')?.length < 2 ||
+                  getValues('nickname')?.length > 20
+                }
               >
                 중복확인
               </Button>
             </OptionBox>
           </InputBox>
           <RenderIf
-            condition={nicknameDuplicate}
+            condition={serverInput.nicknameDuplicate}
             render={
               <Flex>
                 <Empty />
@@ -405,7 +431,7 @@ const SignUpForm = () => {
           </InputBox>
         </Group>
       </Box>
-      <SignUpButton type="submit" disabled={!isValidateInput()}>
+      <SignUpButton type="submit" disabled={!isValidateForm()}>
         가입하기
       </SignUpButton>
     </Form>
