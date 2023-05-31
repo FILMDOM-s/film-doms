@@ -314,7 +314,7 @@ const SignUpForm = () => {
               name="password"
               minLength={8}
               maxLength={100}
-              placeholder="비밀번호는 영문과 숫자를 포함해 8자리 이상으로 기입해주세요."
+              placeholder="영문 대,소문자, 숫자, 특수문자를 포함해 8자리 이상으로 기입해주세요."
               required
               autoComplete="off"
             />
@@ -366,7 +366,7 @@ const SignUpForm = () => {
               type="text"
               minLength={2}
               maxLength={20}
-              placeholder="닉네임은 2자 이상으로 입력하세요."
+              placeholder="닉네임은 2자 이상 20자 이하로 기입해주세요."
               required
             />
             <OptionBox>
