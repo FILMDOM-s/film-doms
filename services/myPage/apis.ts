@@ -1,8 +1,12 @@
 import { createParams } from '@/utils'
-import api, { mswApi } from '../api'
+import { mswApi } from '../api'
 
 export const getUserInfo = async () => {
-  return api.get<null, User.InfoDTO>(`/api/v1/account/profile`)
+  const { result } = await mswApi.get<null, User.InfoDTO>(
+    `/api/v1/account/profile`
+  )
+
+  return result
 }
 
 export const getUserActivityArticle = async (params: User.Activity.Params) => {
