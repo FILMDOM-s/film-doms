@@ -371,8 +371,8 @@ const SignUpForm = () => {
                 type="button"
                 onClick={handleNicknameCheck}
                 disabled={
-                  getValues('nickname').length < 2 ||
-                  getValues('nickname').length > 20
+                  getValues('nickname')?.length < 2 ||
+                  getValues('nickname')?.length > 20
                 }
               >
                 중복확인
