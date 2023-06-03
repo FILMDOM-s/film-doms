@@ -283,22 +283,27 @@ const SignUpForm = () => {
             }
           />
         </Group>
-        <Divider color={colors.grey[100]} size={1} />
-        <Group>
-          <InputBox>
-            <Label />
-            <Input
-              width="sm"
-              {...register('emailAuthCode')}
-              type="password"
-              required
-              autoComplete="off"
-            />
-            <Button type="button" onClick={handleEmailAuthCodeCheck}>
-              인증번호 확인
-            </Button>
-          </InputBox>
-        </Group>
+        <RenderIf
+          condition={!!serverInput.email}
+          render={
+            <Flex gap="1rem" padding="0px 0px 16px 0px">
+              <InputBox>
+                <Label />
+                <Input
+                  width="sm"
+                  {...register('emailAuthCode')}
+                  type="password"
+                  required
+                  autoComplete="off"
+                />
+                <Spacing />
+                <Button type="button" onClick={handleEmailAuthCodeCheck}>
+                  인증번호 확인
+                </Button>
+              </InputBox>
+            </Flex>
+          }
+        />
         <Divider color={colors.grey[100]} size={1} />
         <Group>
           <InputBox>
@@ -314,7 +319,7 @@ const SignUpForm = () => {
               name="password"
               minLength={8}
               maxLength={100}
-              placeholder="비밀번호는 영문과 숫자를 포함해 8자리 이상으로 기입해주세요."
+              placeholder="영문 대,소문자, 숫자, 특수문자를 포함해 8자리 이상으로 기입해주세요."
               required
               autoComplete="off"
             />
@@ -366,7 +371,7 @@ const SignUpForm = () => {
               type="text"
               minLength={2}
               maxLength={20}
-              placeholder="닉네임은 2자 이상으로 입력하세요."
+              placeholder="닉네임은 2자 이상 20자 이하로 기입해주세요."
               required
             />
             <OptionBox>
@@ -438,14 +443,22 @@ const SignUpForm = () => {
   )
 }
 
+const Spacing = styled.div<{ size?: CSSProperties['width'] }>`
+  width: ${({ size = '1rem' }) => size};
+`
+
 const Empty = styled.div`
   width: 160px;
   height: 10px;
 `
 
-const Flex = styled.div<{ gap?: CSSProperties['gap'] }>`
+const Flex = styled.div<{
+  gap?: CSSProperties['gap']
+  padding?: CSSProperties['padding']
+}>`
   display: flex;
   gap: ${({ gap }) => gap};
+  padding: ${({ padding }) => padding};
 `
 
 const SignUpButton = styled.button`
@@ -520,7 +533,7 @@ const Group = styled.div`
   ${flex({ direction: 'column', justify: 'center' })}
   gap: 1rem;
   min-height: 80px;
-  padding: 16px 0;
+  padding: '16px 0px';
 `
 
 const Box = styled.div`
