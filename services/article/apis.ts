@@ -63,3 +63,11 @@ export const createArticle = (item: Article.ArticleCreateRequestDto) => {
     Article.ArticleCreateRequestDto
   >('/api/v1/article', item)
 }
+
+export const createComment = (item: Article.CommentCreateRequestDto) => {
+  return api.post<
+    null,
+    Article.CommentCreateResponseDto,
+    Article.CommentCreateRequestDto
+  >('/api/v1/comment', item)
+}

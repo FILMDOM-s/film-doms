@@ -3,13 +3,8 @@ import { colors, flexGap, typography } from '@/styles/emotion'
 import styled from '@emotion/styled'
 import { useState } from 'react'
 
-const CommentForm = () => {
+const CommentForm = ({}) => {
   const [comment, setComment] = useState('')
-  const [isCommenting, setIsCommenting] = useState(false)
-
-  const handleComment = () => {
-    setIsCommenting(true)
-  }
 
   const handleCommentChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
     setComment(e.target.value)
@@ -17,7 +12,6 @@ const CommentForm = () => {
 
   const handleCommentSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
-    setIsCommenting(false)
     setComment('')
   }
 

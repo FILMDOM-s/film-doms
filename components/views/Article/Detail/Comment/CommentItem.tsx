@@ -9,16 +9,47 @@ import Image from 'next/image'
 import { useState } from 'react'
 import ChildCommentItem from './ChildCommentItem'
 import { getImageSrcByUuid } from '@/utils'
+import { useCreateComment } from '@/services/article'
+import { IconLoader } from '@tabler/icons-react'
 
 const CommentItem = ({
+  articleId,
   comment,
   borderBottom,
+  refetch,
 }: {
+  articleId: number
   comment: Article.Comment
   borderBottom: boolean
+  refetch: () => void
 }) => {
   const [leaveReply, setLeaveReply] = useState<boolean>(false)
   const [replyToggle, setReplyToggle] = useState<boolean>(false)
+
+  const [reply, setReply] = useState('')
+  const { mutate: createComment, isLoading } = useCreateComment()
+
+  const handleCommentChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
+    setReply(e.target.value)
+  }
+
+  const handleCommentSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault()
+    if (!reply) return
+    await createComment(
+      {
+        articleId,
+        parentCommentId: comment.id,
+        content: reply,
+      },
+      {
+        onSuccess: () => {
+          setReply('')
+          refetch()
+        },
+      }
+    )
+  }
 
   return (
     <CommentItemContainer borderBottom={borderBottom}>
@@ -48,11 +79,15 @@ const CommentItem = ({
           <CommentButton leftIcon={<MiniThumb />}>
             {comment.likes}
           </CommentButton>
-          <CommentButton onClick={() => setLeaveReply(!leaveReply)}>
+          <CommentButton
+            onClick={() => {
+              setLeaveReply(!leaveReply)
+            }}
+          >
             답글
           </CommentButton>
         </ButtonBox>
-        {comment.childComments.length > 0 && (
+        {comment.childComments?.length > 0 && (
           <>
             <RelyToggleButton
               leftIcon={replyToggle ? <ChevronFillDown /> : <ChevronFillUp />}
@@ -73,6 +108,15 @@ const CommentItem = ({
                 })}
             </ReplyBox>
           </>
+        )}
+        {leaveReply && (
+          <Form onSubmit={handleCommentSubmit}>
+            <CommentHead>답글 작성</CommentHead>
+            <TextArea onChange={handleCommentChange} value={reply} />
+            <SubmitCommentButton leftIcon={isLoading && <IconLoader />}>
+              등록
+            </SubmitCommentButton>
+          </Form>
         )}
       </CommentInfoBox>
     </CommentItemContainer>
@@ -145,4 +189,42 @@ const RelyToggleButton = styled(Button)`
   border: none;
   font-weight: 500;
   cursor: pointer;
+`
+
+const Form = styled.form`
+  ${flexGap('20px', 'column')}
+  align-items: flex-end;
+  margin-top: 20px;
+  padding: 20px 0;
+  width: 100%;
+`
+
+const TextArea = styled.textarea`
+  resize: none;
+  padding: 10px;
+  font-size: 14px;
+  outline: none;
+  width: 100%;
+  height: 100px;
+  border: 1px solid #444444;
+`
+
+const CommentHead = styled.div`
+  ${typography.contentBodyBold};
+  color: ${colors.primary.black};
+  width: 100%;
+`
+
+const SubmitCommentButton = styled(Button)`
+  color: #ffffff;
+  border: none;
+  background-color: #888888;
+  ${typography.tag};
+  padding: 6px 18px;
+  cursor: pointer;
+  outline: none;
+  transition: all 0.2s ease-in-out;
+  &:hover {
+    background-color: ${colors.primary.black};
+  }
 `

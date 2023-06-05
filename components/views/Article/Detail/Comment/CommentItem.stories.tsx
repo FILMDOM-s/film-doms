@@ -6,6 +6,8 @@ export default {
   title: 'Article/Detail/Comment/CommentItem',
 } as ComponentMeta<typeof CommentItem>
 
+const articleId = 1
+
 const commentItem: Article.Comment = {
   id: 1,
   content: '제가 이번에 관상 2번을 봤는데요. 정말 재밌었어요.',
@@ -44,5 +46,10 @@ const commentItem: Article.Comment = {
 }
 
 export const Default = () => (
-  <CommentItem comment={commentItem} borderBottom={false} />
+  <CommentItem
+    comment={commentItem}
+    borderBottom={false}
+    articleId={articleId}
+    refetch={() => {}}
+  />
 )
