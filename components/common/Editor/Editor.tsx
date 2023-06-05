@@ -1,11 +1,24 @@
+import { useImageUpload } from '@/services/file'
 import styled from '@emotion/styled'
 import dynamic from 'next/dynamic'
+import { useMemo, useRef } from 'react'
+import ReactQuill, { ReactQuillProps } from 'react-quill'
 import 'react-quill/dist/quill.snow.css'
 
-const ReactQuill = dynamic(() => import('react-quill'), {
-  ssr: false,
-  loading: () => <p>Loading ...</p>,
-})
+type ForwardedQuillComponent = ReactQuillProps & {
+  forwardedRef: React.Ref<ReactQuill>
+}
+
+const Quill = dynamic(
+  async () => {
+    const { default: QuillComponent } = await import('react-quill')
+    const Quill = ({ forwardedRef, ...props }: ForwardedQuillComponent) => (
+      <QuillComponent ref={forwardedRef} {...props} />
+    )
+    return Quill
+  },
+  { loading: () => <div>...loading</div>, ssr: false }
+)
 
 type EditorProps = {
   content: string
@@ -13,33 +26,68 @@ type EditorProps = {
 }
 
 const Editor = ({ content, setContent }: EditorProps) => {
-  const modules = {
-    toolbar: [
-      ['bold', 'italic', 'underline', 'strike'], // toggled buttons
-      ['blockquote', 'code-block'],
+  const quillRef = useRef<ReactQuill>(null)
+  const { mutate: imageUpload } = useImageUpload()
 
-      [{ header: 1 }, { header: 2 }, { header: 3 }], // custom button values
-      [{ list: 'ordered' }, { list: 'bullet' }],
-      [{ script: 'sub' }, { script: 'super' }], // superscript/subscript
-      [{ indent: '-1' }, { indent: '+1' }], // outdent/indent
-      [{ direction: 'rtl' }], // text direction
+  const imageHandler = async () => {
+    const input = document.createElement('input')
+    input.setAttribute('type', 'file')
+    input.setAttribute('accept', 'image/*')
+    input.click()
 
-      [{ size: ['small', false, 'large', 'huge'] }], // custom dropdown
-      [{ header: [1, 2, 3, 4, 5, 6, false] }],
+    input.addEventListener('change', async () => {
+      try {
+        const file = input.files ?? []
 
-      [{ color: [] }, { background: [] }], // dropdown with defaults from theme
-      [{ font: [] }],
-      [{ align: [] }],
+        const imageResult = await imageUpload(file[0])
 
-      ['clean'],
-
-      ['link', 'image', 'video'],
-
-      ['formula'],
-
-      ['code-block'],
-    ],
+        const editor = quillRef.current ? quillRef.current.getEditor() : null
+        if (!editor) return
+        const range = editor.getSelection()?.index ?? 0
+        editor.focus()
+        await editor.insertEmbed(range, 'image', file[0])
+        editor.setSelection(range + 1, 0)
+      } catch (error) {}
+    })
   }
+
+  const modules = useMemo(() => {
+    return {
+      toolbar: {
+        container: [
+          ['bold', 'italic', 'underline', 'strike'], // toggled buttons
+          ['blockquote', 'code-block'],
+
+          [{ header: 1 }, { header: 2 }, { header: 3 }], // custom button values
+          [{ list: 'ordered' }, { list: 'bullet' }],
+          [{ script: 'sub' }, { script: 'super' }], // superscript/subscript
+          [{ indent: '-1' }, { indent: '+1' }], // outdent/indent
+          [{ direction: 'rtl' }], // text direction
+
+          [{ size: ['small', false, 'large', 'huge'] }], // custom dropdown
+          [{ header: [1, 2, 3, 4, 5, 6, false] }],
+
+          [{ color: [] }, { background: [] }], // dropdown with defaults from theme
+          [{ font: [] }],
+          [{ align: [] }],
+
+          ['clean'],
+
+          ['link', 'image', 'video'],
+
+          ['formula'],
+
+          ['code-block'],
+        ],
+        handlers: {
+          image: imageHandler,
+        },
+      },
+      clipboard: {
+        matchVisual: false,
+      },
+    }
+  }, [])
 
   const formats = [
     'bold',
@@ -66,21 +114,20 @@ const Editor = ({ content, setContent }: EditorProps) => {
 
   return (
     <Container
+      forwardedRef={quillRef}
       theme="snow"
       modules={modules}
       formats={formats}
       className="quill-custom"
-      onChange={(content, delta, source, editor) => {
-        setContent(editor.getHTML())
-      }}
       value={content}
+      onChange={setContent}
     />
   )
 }
 
 export default Editor
 
-const Container = styled(ReactQuill)`
+const Container = styled(Quill)`
   width: 914px;
   align-items: flex-end;
   border: 2px solid black;

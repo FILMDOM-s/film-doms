@@ -174,8 +174,10 @@ declare module Article {
     category: string
     tag: string
     content: string
-    containsImage: boolean
+    containsImage: string
     mainImageId: string
+    startAt?: string
+    endAt?: string
   }
 
   type ArticleCreateResponseContent = {
@@ -204,5 +206,17 @@ declare module Article {
     content: string
     containsImage: string
     mainImageId: string
+  }
+  type CommentCreateContent = {
+    commentId: number
+  }
+  type CommentCreateRequestDto = {
+    articleId: number
+    parentCommentId: number | null
+    content: string
+  }
+  type CommentCreateResponseDto = {
+    resultCode: string
+    result: CommentCreateContent
   }
 }

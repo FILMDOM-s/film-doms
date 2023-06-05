@@ -3,14 +3,15 @@ import { CATEGORIES } from '@/constants/article'
 import { colors, flexCenter, flexGap, typography } from '@/styles/emotion'
 import styled from '@emotion/styled'
 import Link from 'next/link'
-import Editor from '@/components/common/Editor'
-import { useState } from 'react'
-import File from './File'
+import { Suspense, useState } from 'react'
 import LabeledCheckbox from './Check'
 import { useForm } from 'react-hook-form'
 import { useCreateArticle } from '@/services/article'
 import { useRouter } from 'next/router'
 import toast from 'react-hot-toast'
+import { camelToSnake } from '@/utils'
+import SelectBox from './Select/Select'
+import { Editor } from '@/components/common/Editor'
 
 export type EditorContainerProps = {
   category: string
@@ -18,15 +19,15 @@ export type EditorContainerProps = {
 
 export type ArticleProps = {
   title: string
+  tag: string
   openAllowed: boolean
   commentsAllowed: boolean
   shareAllowed: boolean
   startAt: string
   endAt: string
-  files: File[]
 }
 
-const EditorContainer = ({ category }: EditorContainerProps) => {
+const EditorContainer = ({ category = 'critic' }: EditorContainerProps) => {
   const router = useRouter()
   const [content, setContent] = useState('')
   const { register, handleSubmit, getValues } = useForm<ArticleProps>({
@@ -57,17 +58,37 @@ const EditorContainer = ({ category }: EditorContainerProps) => {
   })
 
   const onSubmit = async (e: any) => {
-    const { title, files, openAllowed, commentsAllowed, shareAllowed } =
-      getValues()
+    const {
+      title,
+      tag,
+      openAllowed,
+      commentsAllowed,
+      shareAllowed,
+      startAt,
+      endAt,
+    } = getValues()
     try {
-      await createArticle({
-        title: title,
-        category: category,
-        tag: 'tag',
-        content: content,
-        containsImage: !!files,
-        mainImageId: 'mainImageId',
-      })
+      if (category === 'filmUniverse') {
+        await createArticle({
+          title: title,
+          category: camelToSnake(category).toUpperCase(),
+          tag: tag,
+          content: content,
+          containsImage: 'true',
+          mainImageId: '1',
+          startAt: new Date(startAt).toISOString(),
+          endAt: new Date(endAt).toISOString(),
+        })
+      } else {
+        await createArticle({
+          title: title,
+          category: camelToSnake(category).toUpperCase(),
+          tag: tag,
+          content: content,
+          containsImage: 'true',
+          mainImageId: '1',
+        })
+      }
     } catch (err) {}
   }
 
@@ -83,6 +104,9 @@ const EditorContainer = ({ category }: EditorContainerProps) => {
       </Title>
       <EditorForm onSubmit={handleSubmit(onSubmit)}>
         <Header>
+          <Suspense>
+            <SelectBox category={category} register={register} />
+          </Suspense>
           <TitleInput
             {...register('title')}
             placeholder="제목"
@@ -91,7 +115,6 @@ const EditorContainer = ({ category }: EditorContainerProps) => {
           />
         </Header>
         <Editor content={content} setContent={setContent} />
-        <File register={register} />
         <Checks>
           <LabeledCheckbox
             label={'공개'}
@@ -225,4 +248,12 @@ const DateInput = styled.input`
 
 const DateContainer = styled.div`
   ${flexGap('20px', 'row')}
+`
+
+const Select = styled.select`
+  width: 200px;
+  height: 40px;
+  border: 2px solid black;
+  outline: none;
+  cursor: pointer;
 `

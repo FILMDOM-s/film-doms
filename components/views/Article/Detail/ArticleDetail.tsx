@@ -5,6 +5,7 @@ import { useFetchArticleCommentListByCategoryById } from '@/services/article'
 import { colors, flexGap, typography } from '@/styles/emotion'
 import styled from '@emotion/styled'
 import { ProfileBar } from './ProfileBar'
+import { ReadOnlyEditor } from '@/components/common/Editor'
 
 export type ArticleDetailProps = {
   articleId: number
@@ -32,7 +33,7 @@ export const ArticleDetail = ({ articleId, category }: ArticleDetailProps) => {
           {article && `filmdoms/${article.id}`}
           <GrayButton>복사</GrayButton>
         </TopContentGrid>
-        {article && article.content}
+        <ReadOnlyEditor content={article && article.content} />
         <BottomContentGrid>
           <OrangeButton leftIcon={<Thumb />}>{article.likes}</OrangeButton>
         </BottomContentGrid>

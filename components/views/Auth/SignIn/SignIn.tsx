@@ -99,7 +99,15 @@ function SignIn({ closeModal }: { closeModal: () => void }) {
         </LoginOptionContainer>
         <LoginButton type="submit">로그인</LoginButton>
       </LoginForm>
-      <LineButton color="#222222" onClick={() => {}}>
+      <LineButton
+        color="#222222"
+        onClick={() => {
+          toast.error('준비중입니다.', {
+            icon: '😥',
+            position: 'top-center',
+          })
+        }}
+      >
         <Image src={google} width="24" height="24" alt="" />
         구글로 로그인
       </LineButton>
