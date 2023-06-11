@@ -57,7 +57,7 @@ const CommonImageContainer = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
-  margin-top: 30px;
+  padding-top: 50px;
 `
 
 const CommonTextContainer = styled.div`
