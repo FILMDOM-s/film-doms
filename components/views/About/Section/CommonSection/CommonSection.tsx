@@ -57,6 +57,7 @@ const CommonImageContainer = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
+  margin-top: 30px;
 `
 
 const CommonTextContainer = styled.div`
@@ -73,7 +74,7 @@ const CommonTitle = styled.div`
   font-family: 'Pretendard';
   font-style: normal;
   font-weight: 700;
-  font-size: 72px;
+  font-size: 40px;
   line-height: 80px;
 `
 
@@ -81,7 +82,7 @@ const CommonSubtitle = styled.div`
   font-family: 'Pretendard';
   font-style: normal;
   font-weight: 700;
-  font-size: 28px;
+  font-size: 40px;
   line-height: 40px;
   margin-bottom: 40px;
   margin-top: 20px;
@@ -89,8 +90,9 @@ const CommonSubtitle = styled.div`
 const CommonDescription = styled.div`
   font-family: 'Pretendard';
   font-style: normal;
-  font-weight: 400;
-  font-size: 22px;
+  font-weight: 500;
+  font-size: 24px;
   text-align: left;
-  line-height: 45px;
+  line-height: 40px;
+  letter-spacing: 0px;
 `
