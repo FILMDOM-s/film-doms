@@ -3,6 +3,7 @@ import {
   type CSSProperties,
   type FormEvent,
   useState,
+  useEffect,
 } from 'react'
 import { useRouter } from 'next/router'
 import styled from '@emotion/styled'
@@ -15,6 +16,7 @@ import {
   PASSWORD_REGEX,
 } from '@/constants/auth/regex'
 import {
+  useCreateGoogleAccount,
   useCreateSignUpAccount,
   useFetchCheckEmailAuthCode,
   useFetchCheckEmailDuplicate,
@@ -25,6 +27,7 @@ import { colors, flex, flexCenter, font } from '@/styles/emotion'
 import { INPUT_WIDTH } from './style'
 import { getErrorMessage, isPatternError, isValidateError } from './utils'
 import { ERROR_MESSAGE } from './constants'
+import { useFetchUserInfo } from '@/services/myPage'
 
 type CreateUserFormType = {
   email: string
@@ -38,6 +41,7 @@ type CreateUserFormType = {
 
 const SignUpForm = () => {
   const router = useRouter()
+  const { from } = router.query
   const [serverInput, setServerInput] = useState({
     email: '',
     nickname: '',
@@ -50,10 +54,14 @@ const SignUpForm = () => {
   const { mutate: checkEmailAuthCode } = useFetchCheckEmailAuthCode()
   const { mutate: checkNicknameDuplicate } = useFetchCheckNicknameDuplicate()
   const { mutate: createSignUpAccount } = useCreateSignUpAccount()
+  const { mutate: createGoogleAccount } = useCreateGoogleAccount()
+
+  const { data } = useFetchUserInfo()
 
   const {
     register,
     getValues,
+    setValue,
     formState: { errors },
     watch,
   } = useForm<CreateUserFormType>({
@@ -83,6 +91,28 @@ const SignUpForm = () => {
       .split(',')
       .map(movie => movie.trim())
       .filter(movie => !isEmpty(movie))
+
+    if (from === 'google') {
+      createGoogleAccount(
+        {
+          nickname,
+          favoriteMovies,
+        },
+        {
+          onError: () => {
+            toast.error('회원가입에 실패했습니다.')
+          },
+          onSuccess: () => {
+            toast.success('회원가입이 완료되었습니다.', {
+              icon: '👏',
+              position: 'top-right',
+            })
+            router.replace('/')
+          },
+        }
+      )
+      return
+    }
 
     createSignUpAccount(
       {
@@ -244,6 +274,26 @@ const SignUpForm = () => {
     return isValidateClientInput() && isValidateServerInput()
   }
 
+  useEffect(() => {
+    if (from === 'google') {
+      toast.success(
+        '구글로 회원가입했어요! 닉네임과 관심영화만 입력해주세요.',
+        {
+          icon: '👏',
+          position: 'top-center',
+        }
+      )
+
+      setServerInput(prev => ({
+        ...prev,
+        email: data?.email,
+        uuid: 'google',
+        validEmail: true,
+      }))
+      setValue('email', data?.email)
+    }
+  }, [data?.email, from, setValue])
+
   return (
     <Form onSubmit={onSubmit}>
       <Box>
@@ -262,12 +312,13 @@ const SignUpForm = () => {
               name="email"
               placeholder="인증메일이 발송되니 이메일 주소를 정확하게 기입해주세요."
               required
+              disabled={from === 'google'}
             />
             <OptionBox>
               <Button
                 type="button"
                 onClick={handleEmailAuthCodeRequest}
-                disabled={!!errors.email?.type}
+                disabled={!!errors.email?.type || from === 'google'}
               >
                 이메일발송
               </Button>
@@ -284,7 +335,7 @@ const SignUpForm = () => {
           />
         </Group>
         <RenderIf
-          condition={!!serverInput.email}
+          condition={!!serverInput.email && from !== 'google'}
           render={
             <Flex gap="1rem" padding="0px 0px 16px 0px">
               <InputBox>
@@ -322,6 +373,7 @@ const SignUpForm = () => {
               placeholder="영문 대,소문자, 숫자, 특수문자를 포함해 8자리 이상으로 기입해주세요."
               required
               autoComplete="off"
+              disabled={from === 'google'}
             />
           </InputBox>
           <RenderIf
@@ -348,6 +400,7 @@ const SignUpForm = () => {
               maxLength={100}
               required
               autoComplete="off"
+              disabled={from === 'google'}
             />
           </InputBox>
           <RenderIf
