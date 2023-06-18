@@ -7,6 +7,8 @@ import {
   sendEmailAuthCode,
   signInAccount,
   findPassword,
+  signInGoogle,
+  createGoogleAccount,
 } from './apis'
 import api from '../api'
 
@@ -16,6 +18,10 @@ export const useCreateSignUpAccount = () => {
       api.defaults.headers.common['Authorization'] = `Bearer ${accessToken}`
     },
   })
+}
+
+export const useCreateGoogleAccount = () => {
+  return useMutation(createGoogleAccount, {})
 }
 
 export const useFetchCheckEmailDuplicate = () => {
@@ -30,6 +36,16 @@ export const useSignInAccount = (
   >
 ) => {
   return useMutation(signInAccount, options)
+}
+
+export const useSignInGoogle = (
+  options?: UseMutationOptions<
+    Awaited<ReturnType<typeof signInGoogle>>,
+    unknown,
+    Parameters<typeof signInGoogle>[0]
+  >
+) => {
+  return useMutation(signInGoogle, options)
 }
 
 export const useFindPassword = (
