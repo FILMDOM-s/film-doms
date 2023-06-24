@@ -1,12 +1,12 @@
-import { Suspense } from 'react'
-import styled from '@emotion/styled'
-import { flexCenter, flexGap } from '@/styles/emotion'
-import { useFetchUserInfo } from '@/services/myPage'
 import { Loading } from '@/components/common'
-import ProfileSection from './ProfileSection'
+import { useFetchUserInfo } from '@/services/myPage'
+import { flexCenter, flexGap } from '@/styles/emotion'
+import styled from '@emotion/styled'
+import { Suspense } from 'react'
 import InterestMovieSection from './InterestMovieSection'
-import UserInfoSection from './UserInfoSection'
+import ProfileSection from './ProfileSection'
 import UserActivitySection from './UserActivitySection'
+import UserInfoSection from './UserInfoSection'
 
 const MyPage = () => {
   const { data: userInfo } = useFetchUserInfo()
@@ -18,12 +18,12 @@ const MyPage = () => {
           profileImage={userInfo.profileImage.uuidFileName}
           nickname={userInfo.nickname}
         />
-        <InterestMovieSection interestMovieList={userInfo.interestMovieList} />
+        <InterestMovieSection interestMovieList={userInfo.favoriteMovies} />
         <UserInfoSection
           email={userInfo.email}
           nickname={userInfo.nickname}
-          interestMovieList={userInfo.interestMovieList}
-          createdAt={userInfo.createdAt}
+          registeredAt={userInfo.registeredAt}
+          interestMovieList={userInfo.favoriteMovies}
         />
         <UserActivitySection />
       </Wrapper>
