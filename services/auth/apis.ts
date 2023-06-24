@@ -10,6 +10,16 @@ export const createSignUpAccount = (item: Auth.SignUp.Request) => {
   )
 }
 
+export const createGoogleAccount = (item: Auth.SignUp.GoogleRequest) => {
+  return api.post<null, Auth.SignUp.GoogleResponse, Auth.SignUp.GoogleRequest>(
+    '/api/v1/account/oauth',
+    item,
+    {
+      withCredentials: true,
+    }
+  )
+}
+
 export const getCheckEmailDuplicate = (
   email: Auth.SignUp.CheckEmailDuplicateRequest['email']
 ) => {
@@ -18,11 +28,25 @@ export const getCheckEmailDuplicate = (
   )
 }
 
+export const getGoogleAccessCode = (state: string) => {
+  return api.get<null, Auth.SignIn.DTO>(`/login/oauth2/code/google`, {
+    params: {
+      state,
+    },
+  })
+}
+
 export const signInAccount = (item: Auth.SignIn.Request) => {
   return api.post<null, Auth.SignIn.DTO, Auth.SignIn.Request>(
     `/api/v1/account/login`,
     item
   )
+}
+
+export const signInGoogle = (code: string) => {
+  return api.post<null, Auth.SignIn.DTO>(`/front/oauth2/google`, {
+    code,
+  })
 }
 
 export const findPassword = (item: Auth.FindPassword.Request) => {

@@ -8,10 +8,23 @@ declare module Auth {
       emailAuthUuid: string
     }
 
+    type GoogleRequest = {
+      nickname: string
+      favoriteMovies: string[]
+    }
+
     type Response = {
       resultCode: string
       result: {
         accessToken: string
+      }
+    }
+
+    type GoogleResponse = {
+      resultCode: string
+      result?: {
+        field: string
+        message: string
       }
     }
 
@@ -86,6 +99,7 @@ declare module Auth {
 
     type DTO = {
       result: {
+        type?: string
         accessToken: string
       }
       resultCode

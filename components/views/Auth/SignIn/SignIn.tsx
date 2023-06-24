@@ -6,13 +6,15 @@ import toast from 'react-hot-toast'
 import { EMAIL_REGEX, PASSWORD_REGEX } from '@/constants/auth/regex'
 import { google } from '@/assets/images/common'
 import Image from 'next/image'
-import { useSignInAccount } from '@/services/auth'
+import { useSignInAccount, useSignInGoogle } from '@/services/auth'
 
 export type LoginFormType = {
   email: string
   password: string
 }
 function SignIn({ closeModal }: { closeModal: () => void }) {
+  const GOOGLE_OAUTH = `https://nginx-nginx-4uvg2mlecrl7qe.sel3.cloudtype.app/oauth2/authorization/google`
+
   const router = useRouter()
   const {
     register,
@@ -99,15 +101,7 @@ function SignIn({ closeModal }: { closeModal: () => void }) {
         </LoginOptionContainer>
         <LoginButton type="submit">로그인</LoginButton>
       </LoginForm>
-      <LineButton
-        color="#222222"
-        onClick={() => {
-          toast.error('준비중입니다.', {
-            icon: '😥',
-            position: 'top-center',
-          })
-        }}
-      >
+      <LineButton color="#222222" href={GOOGLE_OAUTH}>
         <Image src={google} width="24" height="24" alt="" />
         구글로 로그인
       </LineButton>
@@ -139,7 +133,7 @@ const LoginButton = styled.button`
   margin-top: 32px;
 `
 
-const LineButton = styled.button<{ color: string }>`
+const LineButton = styled.a<{ color: string }>`
   display: flex;
   justify-content: center;
   align-items: center;
