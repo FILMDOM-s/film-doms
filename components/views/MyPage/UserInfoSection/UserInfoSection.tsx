@@ -2,20 +2,27 @@ import styled from '@emotion/styled'
 import { colors, flex, flexGap, font } from '@/styles/emotion'
 import { Divider } from '@/components/common'
 import { MAX_INTEREST_MOVIE_COUNT } from '../constants'
+import { useUpdateFavoriteMovie, useUpdateNickname } from '@/services/myPage'
+import { useRef } from 'react'
+import { toast } from 'react-hot-toast'
 
 interface Props {
   email: string
   nickname: string
+  registeredAt: number
   interestMovieList: string[]
-  createdAt: string
 }
 
 const UserInfoSection = ({
   email,
   nickname,
+  registeredAt,
   interestMovieList,
-  createdAt,
 }: Props) => {
+  const newNickname = useRef<HTMLTableDataCellElement>(null)
+  const favoriteMovie = useRef<HTMLDivElement>(null)
+  const { mutate: updateFavoriteMovie } = useUpdateFavoriteMovie()
+  const { mutate: updateNickname } = useUpdateNickname()
   const sliceInterestMovieList = interestMovieList.slice(
     0,
     MAX_INTEREST_MOVIE_COUNT
@@ -33,9 +40,32 @@ const UserInfoSection = ({
           </Tr>
           <Tr>
             <Label>닉네임</Label>
-            <Content>{nickname}</Content>
+            <Content ref={newNickname} contentEditable>
+              {nickname}
+            </Content>
             <OptionBox>
-              <Button as="div" role="button">
+              <Button
+                as="div"
+                role="button"
+                onClick={() => {
+                  const _newNickname = newNickname.current?.textContent
+
+                  if (!_newNickname || _newNickname === nickname) {
+                    return
+                  }
+
+                  updateNickname(
+                    {
+                      newNickname: _newNickname,
+                    },
+                    {
+                      onSuccess: () => {
+                        toast.success('닉네임이 변경되었습니다.')
+                      },
+                    }
+                  )
+                }}
+              >
                 변경
               </Button>
             </OptionBox>
@@ -52,19 +82,48 @@ const UserInfoSection = ({
           <Tr>
             <Label>관심영화</Label>
             <Content>
-              <InterestMovieBox>
+              <InterestMovieBox ref={favoriteMovie} contentEditable>
                 {sliceInterestMovieList.join(', ')}
               </InterestMovieBox>
             </Content>
             <OptionBox>
-              <Button as="div" role="button">
+              <Button
+                as="div"
+                role="button"
+                onClick={() => {
+                  const text = favoriteMovie.current?.textContent
+
+                  if (!text) {
+                    return
+                  }
+
+                  updateFavoriteMovie(
+                    {
+                      favoriteMovies: text
+                        .split(',')
+                        .map(item => item.trim())
+                        .slice(0, 5),
+                    },
+                    {
+                      onSuccess: () => {
+                        toast.success('관심영화가 변경되었습니다.')
+                      },
+                    }
+                  )
+                }}
+              >
                 변경
               </Button>
             </OptionBox>
           </Tr>
           <Tr>
             <Label>가입일</Label>
-            <Content>{createdAt}</Content>
+            <Content>
+              {new Intl.DateTimeFormat('ko-KR')
+                .format(registeredAt)
+                .replaceAll(/\s/g, '')
+                .slice(0, -1)}
+            </Content>
           </Tr>
         </tbody>
       </Table>

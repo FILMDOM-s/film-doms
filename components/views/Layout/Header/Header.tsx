@@ -2,27 +2,16 @@ import { mediaQuery } from '@/styles/emotion'
 import styled from '@emotion/styled'
 import { flexCenter } from '@/styles/emotion'
 import SideNav from '../SideNav'
-import { useState } from 'react'
-import { useResizeWindow } from '@/hooks'
+import { Suspense, useState } from 'react'
 import * as Svgs from '@svgs/common'
 import NavContainer from '../../Home/Nav/NavContainer'
 import Link from 'next/link'
-import { useModal } from '@/hooks/useModal'
 import Modal from '@/components/common/Modal'
-import { SignIn } from '../../Auth'
+import Avatar from './Avatar'
 
 const Header = () => {
-  const windowWidth = useResizeWindow()
-  const responseFontSize = windowWidth <= 768 ? '28px' : '32px'
   const [showSideNav, setShowSideNav] = useState(false)
 
-  const { openModal, closeModal } = useModal()
-
-  const modalData = {
-    title: '로그인',
-    content: <SignIn closeModal={closeModal} />,
-    callback: () => alert('Modal Callback()'),
-  }
   return (
     <HeaderContainer>
       <HeaderInner>
@@ -32,13 +21,6 @@ const Header = () => {
           </Link>
         </ImageWrapper>
         <NavContainer />
-        {/* <MenuWrapper
-          onClick={() => {
-            setShowSideNav(!showSideNav)
-          }}
-        >
-          <IconMenu2 stroke={2} color={"white"} size={responseFontSize} />
-        </MenuWrapper> */}
         <RightSideWrapper>
           <IconMutableWrapper>
             <IconWrapper>
@@ -53,9 +35,9 @@ const Header = () => {
             </IconWrapper>
           </IconMutableWrapper>
           <IconWrapper>
-            <button onClick={() => openModal(modalData)}>
-              <Svgs.Person fill="#FFFFFF" />
-            </button>
+            <Suspense fallback={<Svgs.Person fill="#FFFFFF" />}>
+              <Avatar />
+            </Suspense>
           </IconWrapper>
         </RightSideWrapper>
       </HeaderInner>
@@ -99,21 +81,6 @@ const ImageWrapper = styled.div`
   }
 `
 
-const MenuWrapper = styled.nav`
-  position: absolute;
-  left: 0;
-  ${mediaQuery.laptop`
-    display: none;
-  `};
-  ${mediaQuery.pc`
-    display: none;
-  `};
-
-  &:hover {
-    cursor: pointer;
-  }
-`
-
 const RightSideWrapper = styled.div`
   display: flex;
   align-items: center;
@@ -134,6 +101,7 @@ const IconMutableWrapper = styled.div`
 
 const IconWrapper = styled.div`
   ${flexCenter}
+  position: relative;
   width: 32px;
   height: 32px;
   border-radius: 50%;

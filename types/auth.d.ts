@@ -113,4 +113,50 @@ declare module Auth {
 
     type DTO = {}
   }
+
+  declare module UpdatePassword {
+    type Request = {
+      oldPassword: string
+      newPassword: string
+    }
+  }
+
+  declare module UpdateProfile {
+    type Request = {
+      imageId: string
+    }
+
+    type Response = {
+      resultCode: string
+      result: null
+    }
+  }
+
+  declare module UpdateFavoriteMovie {
+    type Request = {
+      favoriteMovies: string[]
+    }
+
+    type Response = {
+      resultCode: string
+      result: null
+    }
+  }
+
+  declare module DeleteUser {
+    type Request = {
+      password: string
+    }
+  }
+
+  declare module UpdateNickname {
+    type Request = {
+      newNickname: string
+    }
+
+    type Response = {
+      resultCode: string
+      result: null
+    }
+  }
 }
