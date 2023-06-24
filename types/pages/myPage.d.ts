@@ -5,12 +5,15 @@ declare module User {
     id: number
     email: string
     nickname: string
-    createdAt: string
     profileImage: {
       id: number
       uuidFileName: string
     }
-    interestMovieList: InterestMovie[]
+    accountRole: string
+    accountStatus: string
+    favoriteMovies: string[]
+    socialLogin: boolean
+    registeredAt: number
   }
 
   type InfoDTO = {
@@ -60,6 +63,12 @@ declare module User {
         totalPages: number
         size: number
       }
+    }
+  }
+
+  declare module UpdateProfile {
+    type Params = {
+      imageId?: number
     }
   }
 }
