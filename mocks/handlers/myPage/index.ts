@@ -1,20 +1,6 @@
 import { rest } from 'msw'
-import { userInfo } from './data'
 import { activityArticleList } from './data/article'
 import { activityCommentList } from './data/comment'
-
-export const getUserInfo = rest.get(
-  '/api/v1/account/profile',
-  (req, res, ctx) => {
-    return res(
-      ctx.status(200),
-      ctx.json<User.InfoDTO>({
-        resultCode: 'SUCCESS',
-        result: userInfo,
-      })
-    )
-  }
-)
 
 export const getUserActivityArticle = rest.get(
   '/api/v1/account/activity/article',
