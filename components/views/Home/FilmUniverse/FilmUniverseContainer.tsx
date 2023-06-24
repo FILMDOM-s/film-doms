@@ -18,7 +18,10 @@ const FilmUniverseContainer = () => {
       <Section.Header
         title="Film Universe"
         right={
-          <Button rightIcon={<ArrowRight />} onClick={() => push('/notice')}>
+          <Button
+            rightIcon={<ArrowRight />}
+            onClick={() => push('/article/filmUniverse')}
+          >
             More
           </Button>
         }
