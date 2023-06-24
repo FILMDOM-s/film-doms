@@ -32,8 +32,15 @@ const CriticBoard = ({ criticItems }: Props) => {
 export default CriticBoard
 
 const CriticsList = styled.div`
-  display: grid;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
   gap: 64px 40px;
-  grid-template-columns: repeat(3, 400px);
-  grid-template-rows: repeat(2, 448px);
+  margin-bottom: 40px;
+  max-width: 1280px;
+
+  & > a {
+    display: inline;
+    width: fit-content;
+  }
 `
