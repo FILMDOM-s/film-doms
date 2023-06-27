@@ -23,6 +23,7 @@ export default function App({
       queries: {
         refetchOnWindowFocus: false,
         staleTime: Infinity,
+        retry: 0,
       },
     },
   })
