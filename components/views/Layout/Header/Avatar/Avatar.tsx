@@ -1,35 +1,35 @@
-import { Person } from '@svgs/common'
-import { useModal } from '@/hooks/useModal'
+import { defaultProfile } from '@/assets/images/common'
 import { SignIn } from '@/components/views/Auth'
+import { useModal } from '@/hooks/useModal'
 import { useFetchUserInfo } from '@/services/myPage'
-import Image from 'next/image'
 import { getImageSrcByUuid } from '@/utils'
+import { Person } from '@svgs/common'
+import Image from 'next/image'
 import Link from 'next/link'
+import { Suspense } from 'react'
+import { ErrorBoundary } from 'react-error-boundary'
 
 const Avatar = () => {
-  const {
-    data: { profileImage },
-    error,
-  } = useFetchUserInfo()
-
-  if (error) {
-    return <GuestUser />
-  }
-
-  return <LoginUser image={getImageSrcByUuid(profileImage.uuidFileName)} />
+  return (
+    <ErrorBoundary fallback={<GuestUser />}>
+      <Suspense fallback={<GuestUser />}>
+        <LoginUser />
+      </Suspense>
+    </ErrorBoundary>
+  )
 }
 
 export default Avatar
 
-interface LoginUserProps {
-  image: string
-}
+const LoginUser = () => {
+  const {
+    data: { profileImage },
+  } = useFetchUserInfo()
 
-const LoginUser = ({ image }: LoginUserProps) => {
   return (
     <Link href="/mypage">
       <Image
-        src={image}
+        src={getImageSrcByUuid(profileImage?.uuidFileName ?? defaultProfile)}
         alt="user-image"
         fill
         style={{ borderRadius: '50%' }}

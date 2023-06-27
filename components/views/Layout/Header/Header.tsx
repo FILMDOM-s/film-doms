@@ -2,7 +2,7 @@ import { mediaQuery } from '@/styles/emotion'
 import styled from '@emotion/styled'
 import { flexCenter } from '@/styles/emotion'
 import SideNav from '../SideNav'
-import { Suspense, useState } from 'react'
+import { useState } from 'react'
 import * as Svgs from '@svgs/common'
 import NavContainer from '../../Home/Nav/NavContainer'
 import Link from 'next/link'
@@ -35,9 +35,7 @@ const Header = () => {
             </IconWrapper>
           </IconMutableWrapper>
           <IconWrapper>
-            <Suspense fallback={<Svgs.Person fill="#FFFFFF" />}>
-              <Avatar />
-            </Suspense>
+            <Avatar />
           </IconWrapper>
         </RightSideWrapper>
       </HeaderInner>
