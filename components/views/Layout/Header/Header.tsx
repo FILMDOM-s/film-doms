@@ -24,7 +24,11 @@ const Header = () => {
         <RightSideWrapper>
           <IconMutableWrapper>
             <IconWrapper>
-              <Link passHref href={'https://www.instagram.com/filmdomaypole/'}>
+              <Link
+                passHref
+                href={'https://www.instagram.com/filmdomaypole/'}
+                target="_blank"
+              >
                 <Svgs.Instagram fill="#FFFFFF" />
               </Link>
             </IconWrapper>
