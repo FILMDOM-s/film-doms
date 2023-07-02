@@ -7,11 +7,13 @@ import { Tab } from '@/components/common'
 import SearchForm from './SearchForm'
 import TagList from './TagList'
 import { useRouter } from 'next/router'
-import { BoardContainer } from './BoardContainer'
+import { SearchBoardContainer } from './BoardContainer'
 
-const ArticleContainer = () => {
+const SearchArticleContainer = () => {
   const router = useRouter()
   const category = String(router.query.category)
+  const method = String(router.query.method)
+  const searchString = String(router.query.keyword)
   const [currentPage, setCurrentPage] = useState(1)
 
   return (
@@ -38,13 +40,15 @@ const ArticleContainer = () => {
         <Tab.Views>
           {({ selected }) => (
             <Suspense fallback={<BoardLoading />}>
-              <BoardContainer
+              <SearchBoardContainer
                 category={category}
+                method={method}
                 params={{
                   page: currentPage,
                   size: 22,
                   ...(selected !== '전체' && { tag: selected }),
                 }}
+                searchString={searchString}
                 onChangePage={page => setCurrentPage(page)}
               />
             </Suspense>
@@ -105,4 +109,4 @@ const TagListLoading = styled.div`
   height: 34px;
 `
 
-export default ArticleContainer
+export default SearchArticleContainer

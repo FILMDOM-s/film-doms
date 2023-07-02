@@ -3,6 +3,7 @@ import queryKeys from '../queryKeys'
 import {
   getArticleCommentListByCategoryById,
   getArticleDetailContentByCategoryById,
+  getArticleListBySearchString,
   getArticleMainContentByCategory,
   getArticleNoticeList,
   getArticleTagListByCategory,
@@ -51,4 +52,15 @@ export const useFetchArticleCommentListByCategoryById = (
 
 export const useFetchPopularArticleList = () => {
   return useSuspendedQuery(queryKeys.article.popularDTO, getPopularArticleList)
+}
+
+export const useFetchSearchArticleList = (
+  category: string,
+  method: string,
+  param: string
+) => {
+  return useSuspendedQuery(
+    queryKeys.article.articleBySearchString(category, method, param),
+    () => getArticleListBySearchString(category, method, param)
+  )
 }
