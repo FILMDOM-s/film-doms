@@ -219,4 +219,14 @@ declare module Article {
     resultCode: string
     result: CommentCreateContent
   }
+
+  type LikeResponseDto = {
+    resultCode: string
+    result: LikeContentDto
+  }
+
+  type LikeContentDto = {
+    isVoted: boolean
+    voteCount: number
+  }
 }
