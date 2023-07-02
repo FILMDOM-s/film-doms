@@ -2,6 +2,9 @@ import { colors } from '@/styles/emotion'
 import styled from '@emotion/styled'
 import { useForm } from 'react-hook-form'
 import * as Svgs from '@svgs/common'
+import { Suspense, useState } from 'react'
+import { SearchBoardContainer } from '../Article/Main/BoardContainer'
+import { useRouter } from 'next/router'
 
 type SearchPackageProps = {
   searchString: string
@@ -9,12 +12,11 @@ type SearchPackageProps = {
 
 const SearchPackage = () => {
   const { register, handleSubmit, getValues } = useForm<SearchPackageProps>()
-
+  const router = useRouter()
   const onSubmit = async () => {
     try {
       const item = getValues()
-      alert(item.searchString)
-      //await search(item)
+      router.push(`/search/movie/title_content/?keyword=${item.searchString}`)
     } catch (err) {}
   }
 
@@ -75,4 +77,9 @@ const SearchInput = styled.input`
     width: 400px;
     border: 2px solid ${colors.primary.orange};
   }
+`
+
+const BoardLoading = styled.div`
+  width: 100%;
+  height: 1606px;
 `

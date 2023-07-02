@@ -19,7 +19,7 @@ const Board = ({ items }: Props) => {
   return (
     <Table>
       <tbody>
-        {items.map(item => {
+        {items?.map(item => {
           return (
             <Tr key={item.id}>
               <TdTag css={Tag}>{cutString(item.tag, 8)}</TdTag>

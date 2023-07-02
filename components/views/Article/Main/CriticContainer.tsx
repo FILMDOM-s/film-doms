@@ -4,9 +4,10 @@ import styled from '@emotion/styled'
 import { colors, flex, flexGap } from '@/styles/emotion'
 import { Tab } from '@/components/common'
 import TagList from './TagList'
-import BoardContainer from './BoardContainer'
+
 import Image from 'next/image'
 import { SlideContainer } from './Slide'
+import { BoardContainer } from './BoardContainer'
 
 const CriticContainer = () => {
   const category = 'critic'

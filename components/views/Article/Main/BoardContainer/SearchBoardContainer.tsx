@@ -2,73 +2,54 @@ import { useRouter } from 'next/router'
 import styled from '@emotion/styled'
 import {
   useFetchArticleNoticeList,
-  useFetchArticleMainContentByCategory,
   useFetchSearchArticleList,
 } from '@/services/article'
 import { flex, flexCenter, flexGap, font } from '@/styles/emotion'
-import { ArticleBoard, CriticBoard } from './ArticleBoard'
+import { ArticleBoard } from './ArticleBoard'
 import { camelToSnake } from '@/utils'
-import { Pagination, SwitchCase } from '@/components/common'
+import { Pagination } from '@/components/common'
 
 interface Props {
   category: string
+  method: string
+  searchString: string
   params: Required<Omit<Article.MainContentParams, 'tag'>> &
     Pick<Article.MainContentParams, 'tag'>
   onChangePage: (page: number) => void
 }
 
-const BoardContainer = ({
+const SearchBoardContainer = ({
   category,
+  method,
+  searchString,
   params: { page, tag, size },
   onChangePage,
 }: Props) => {
   const { push } = useRouter()
 
   const { data: noticeList } = useFetchArticleNoticeList()
-  const { data: articleList } = useFetchArticleMainContentByCategory(
+  const { data: articleList } = useFetchSearchArticleList(
     camelToSnake(category),
-    {
-      page: Math.max(page - 1, 0),
-      tag,
-      size,
-    }
+    method,
+    `keyword=${searchString}&page=${page}&size=${size}`
   )
 
   return (
     <Container>
-      <SwitchCase
-        value={category}
-        caseBy={{
-          critic: (
-            <>
-              <CriticBoard criticItems={articleList.content} />
-              <ButtonBox>
-                <Button onClick={() => push(`/write/article/${category}`)}>
-                  게시글 작성하기
-                </Button>
-              </ButtonBox>
-            </>
-          ),
-        }}
-        defaultRender={
-          <>
-            <ArticleBoard
-              noticeItems={noticeList}
-              articleItems={articleList.content}
-            />
-            <ButtonBox>
-              <Button onClick={() => push(`/write/article/${category}`)}>
-                게시글 작성하기
-              </Button>
-            </ButtonBox>
-          </>
-        }
+      <ArticleBoard
+        noticeItems={noticeList}
+        articleItems={articleList?.content}
       />
+      <ButtonBox>
+        <Button onClick={() => push(`/write/article/${category}`)}>
+          게시글 작성하기
+        </Button>
+      </ButtonBox>
       <Box>
         <Pagination
           count={5}
           currentPage={page}
-          totalPage={articleList.totalPages}
+          totalPage={articleList?.totalPages}
           onChange={onChangePage}
         />
       </Box>
@@ -98,4 +79,4 @@ const Container = styled.div`
   width: 100%;
 `
 
-export default BoardContainer
+export default SearchBoardContainer

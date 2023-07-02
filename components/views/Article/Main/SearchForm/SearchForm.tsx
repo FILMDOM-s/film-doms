@@ -6,8 +6,8 @@ import { type SelectRef, SearchSelect, SearchInput } from '@/components/common'
 import { SEARCH_OPTIONS } from './constants'
 
 interface FormData {
+  method: string
   keyword: string
-  option: string
 }
 
 interface Props {
@@ -23,10 +23,10 @@ const SearchForm = ({ pushUrl }: Props) => {
   const onSubmitSearch = (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault()
 
-    const option = searchOptionRef.current?.selected.value
+    const method = searchOptionRef.current?.selected.value
     const keyword = searchInputRef.current?.value
 
-    if (!option || !keyword) {
+    if (!method || !keyword) {
       return
     }
 
@@ -39,7 +39,7 @@ const SearchForm = ({ pushUrl }: Props) => {
       return
     }
 
-    const url = pushUrl({ keyword, option })
+    const url = pushUrl({ method, keyword })
 
     push(url)
   }

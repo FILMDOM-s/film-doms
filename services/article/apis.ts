@@ -48,6 +48,18 @@ export const getArticleCommentListByCategoryById = async (
   return result
 }
 
+export const getArticleListBySearchString = async (
+  category: string,
+  method: string,
+  param: string
+) => {
+  const { result } = await api.get<null, Article.MainContentDTO>(
+    `/api/v1/${category}/${method}?${param}`
+  )
+
+  return result
+}
+
 export const getPopularArticleList = async () => {
   const { result } = await api.get<null, Article.PopularDTO>(
     `/api/v1/article/top-posts`
