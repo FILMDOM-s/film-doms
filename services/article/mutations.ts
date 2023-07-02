@@ -1,5 +1,10 @@
 import { type UseMutationOptions, useMutation } from '@tanstack/react-query'
-import { createArticle, createComment } from './apis'
+import {
+  createArticle,
+  createComment,
+  toggleArticleLike,
+  toggleCommentLike,
+} from './apis'
 
 export const useCreateArticle = (
   options?: UseMutationOptions<
@@ -13,4 +18,12 @@ export const useCreateArticle = (
 
 export const useCreateComment = () => {
   return useMutation(createComment)
+}
+
+export const useToggleArticleLike = () => {
+  return useMutation(toggleArticleLike)
+}
+
+export const useToggleCommentLike = () => {
+  return useMutation(toggleCommentLike)
 }

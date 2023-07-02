@@ -1,11 +1,15 @@
 import { Thumb } from '@/assets/svgs/common'
-import { Button, Divider } from '@/components/common'
-import { useFetchArticleDetailContentByCategoryById } from '@/services/article'
+import { Button, Divider, Loading } from '@/components/common'
+import {
+  useFetchArticleDetailContentByCategoryById,
+  useToggleArticleLike,
+} from '@/services/article'
 import { useFetchArticleCommentListByCategoryById } from '@/services/article'
 import { colors, flexGap, typography } from '@/styles/emotion'
 import styled from '@emotion/styled'
 import { ProfileBar } from './ProfileBar'
 import { ReadOnlyEditor } from '@/components/common/Editor'
+import { toast } from 'react-hot-toast'
 
 export type ArticleDetailProps = {
   articleId: number
@@ -13,7 +17,7 @@ export type ArticleDetailProps = {
 }
 
 export const ArticleDetail = ({ articleId, category }: ArticleDetailProps) => {
-  const { data: article } = useFetchArticleDetailContentByCategoryById(
+  const { data: article, refetch } = useFetchArticleDetailContentByCategoryById(
     category,
     articleId
   )
@@ -21,6 +25,28 @@ export const ArticleDetail = ({ articleId, category }: ArticleDetailProps) => {
     category,
     articleId
   )
+
+  const { mutate: toggleArticleLike, isLoading } = useToggleArticleLike()
+
+  const handleCopyClipBoard = async (text: string) => {
+    try {
+      await navigator.clipboard.writeText(text)
+      toast.success('클립보드에 링크가 복사되었습니다.', {
+        icon: '📋',
+        position: 'top-right',
+      })
+    } catch (e) {
+      toast.error('복사에 실패하였습니다')
+    }
+  }
+
+  const handleToggleLike = () => {
+    toggleArticleLike(articleId, {
+      onSuccess: () => {
+        refetch()
+      },
+    })
+  }
 
   return (
     <Container>
@@ -30,12 +56,25 @@ export const ArticleDetail = ({ articleId, category }: ArticleDetailProps) => {
       <Divider color={colors.grey[100]} size={1} />
       <Content>
         <TopContentGrid>
-          {article && `filmdoms/${article.id}`}
-          <GrayButton>복사</GrayButton>
+          {article && `Filmdoms/${article.id}`}
+          <GrayButton
+            onClick={() => {
+              handleCopyClipBoard(
+                `${window.location.origin}/article/${category}/${articleId}`
+              )
+            }}
+          >
+            복사
+          </GrayButton>
         </TopContentGrid>
         <ReadOnlyEditor content={article && article.content} />
         <BottomContentGrid>
-          <OrangeButton leftIcon={<Thumb />}>{article.likes}</OrangeButton>
+          <OrangeButton
+            leftIcon={isLoading ? <Loading /> : <Thumb />}
+            onClick={handleToggleLike}
+          >
+            {article.likes}
+          </OrangeButton>
         </BottomContentGrid>
       </Content>
       <Divider color={colors.grey[100]} size={1} />

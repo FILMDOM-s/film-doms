@@ -71,3 +71,15 @@ export const createComment = (item: Article.CommentCreateRequestDto) => {
     Article.CommentCreateRequestDto
   >('/api/v1/comment', item)
 }
+
+export const toggleArticleLike = (item: number) => {
+  return api.post<null, Article.LikeResponseDto, null>(
+    `/api/v1/article/${item}/vote`
+  )
+}
+
+export const toggleCommentLike = (item: number) => {
+  return api.post<null, Article.LikeResponseDto, null>(
+    `/api/v1/comment/${item}/vote`
+  )
+}

@@ -1,7 +1,7 @@
 import { defaultProfile } from '@images/common'
 import { ChevronFillDown, ChevronFillUp } from '@svgs/common'
 import MiniThumb from '@svgs/common/MiniThumb'
-import { Button } from '@/components/common'
+import { Button, Loading } from '@/components/common'
 import { colors, flexGap, typography } from '@/styles/emotion'
 import { dateDiff } from '@/utils/dateDiff'
 import styled from '@emotion/styled'
@@ -9,7 +9,7 @@ import Image from 'next/image'
 import { useState } from 'react'
 import ChildCommentItem from './ChildCommentItem'
 import { getImageSrcByUuid } from '@/utils'
-import { useCreateComment } from '@/services/article'
+import { useCreateComment, useToggleCommentLike } from '@/services/article'
 import { IconLoader } from '@tabler/icons-react'
 
 const CommentItem = ({
@@ -28,6 +28,8 @@ const CommentItem = ({
 
   const [reply, setReply] = useState('')
   const { mutate: createComment, isLoading } = useCreateComment()
+  const { mutate: toggleCommentLike, isLoading: isToggleLoading } =
+    useToggleCommentLike()
 
   const handleCommentChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
     setReply(e.target.value)
@@ -49,6 +51,14 @@ const CommentItem = ({
         },
       }
     )
+  }
+
+  const handleToggleLike = () => {
+    toggleCommentLike(comment.id, {
+      onSuccess: () => {
+        refetch()
+      },
+    })
   }
 
   return (
@@ -76,7 +86,10 @@ const CommentItem = ({
         </NicknameBox>
         <ContentBox>{comment.content}</ContentBox>
         <ButtonBox>
-          <CommentButton leftIcon={<MiniThumb />}>
+          <CommentButton
+            leftIcon={isToggleLoading ? <Loading /> : <MiniThumb />}
+            onClick={handleToggleLike}
+          >
             {comment.likes}
           </CommentButton>
           <CommentButton
