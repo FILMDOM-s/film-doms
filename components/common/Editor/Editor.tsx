@@ -1,4 +1,5 @@
 import { useImageUpload } from '@/services/file'
+import { getImageSrcByUuid } from '@/utils'
 import styled from '@emotion/styled'
 import dynamic from 'next/dynamic'
 import { useMemo, useRef } from 'react'
@@ -39,14 +40,22 @@ const Editor = ({ content, setContent }: EditorProps) => {
       try {
         const file = input.files ?? []
 
-        const imageResult = await imageUpload(file[0])
-
-        const editor = quillRef.current ? quillRef.current.getEditor() : null
-        if (!editor) return
-        const range = editor.getSelection()?.index ?? 0
-        editor.focus()
-        await editor.insertEmbed(range, 'image', file[0])
-        editor.setSelection(range + 1, 0)
+        imageUpload(file[0], {
+          onSuccess({ result: { uploadedFiles } }) {
+            const editor = quillRef.current
+              ? quillRef.current.getEditor()
+              : null
+            if (!editor) return
+            const range = editor.getSelection()?.index ?? 0
+            editor.focus()
+            editor.insertEmbed(
+              range,
+              'image',
+              getImageSrcByUuid(uploadedFiles[0].uuidFileName)
+            )
+            editor.setSelection(range + 1, 0)
+          },
+        })
       } catch (error) {}
     })
   }
