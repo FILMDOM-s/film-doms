@@ -26,7 +26,7 @@ const LoginUser = () => {
   const {
     data: { profileImage },
   } = useFetchUserInfo()
-  const [toggle, setToggle] = useState(true)
+  const [toggle, setToggle] = useState(false)
 
   return (
     <Container
