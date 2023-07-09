@@ -23,7 +23,6 @@ const MyPage = () => {
           email={userInfo.email}
           nickname={userInfo.nickname}
           registeredAt={userInfo.registeredAt}
-          interestMovieList={userInfo.favoriteMovies}
         />
         <UserActivitySection />
       </Wrapper>
