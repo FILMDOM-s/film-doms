@@ -1,4 +1,4 @@
-import { useSuspendedQuery } from '@/hooks'
+import { useSuspendedQuery, useToken } from '@/hooks'
 import queryKeys from '../queryKeys'
 import {
   getUserActivityArticle,
@@ -7,7 +7,11 @@ import {
 } from './apis'
 
 export const useFetchUserInfo = () => {
-  return useSuspendedQuery(queryKeys.myPage.userInfo, getUserInfo)
+  const { token } = useToken()
+
+  return useSuspendedQuery(queryKeys.myPage.userInfo, getUserInfo, {
+    enabled: !!token,
+  })
 }
 
 export const useFetchUserActivityArticle = (params: User.Activity.Params) => {

@@ -5,6 +5,7 @@ import {
   getDomain,
   isAuthError,
   setAuthorization,
+  isTokenError,
 } from './utils'
 import { getAccessToken } from '../auth'
 
@@ -13,7 +14,7 @@ const createApi = (type: DomainType) => {
     baseURL: `${getDomain(type)}`,
   })
 
-  _api.interceptors.request.use(config => {
+  _api.interceptors.request.use(async config => {
     const _config: InternalAxiosRequestConfig = {
       ...config,
       withCredentials: true,
@@ -28,6 +29,13 @@ const createApi = (type: DomainType) => {
     },
     async error => {
       if (error instanceof AxiosError) {
+        if (isTokenError(error)) {
+          // TODO: 로그인 유도 필요
+          // ?: 현재, url path가 아닌 modal로 관리하기 때문에 별도 처리 필요
+
+          return Promise.reject(error)
+        }
+
         if (!isAuthError(error)) {
           return Promise.reject(error)
         }

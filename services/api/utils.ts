@@ -45,6 +45,19 @@ export const setAuthorization = ({
   instance.defaults.headers.common['Authorization'] = `Bearer ${token}`
 }
 
+export const isTokenError = (error: AxiosError) => {
+  const { response } = error
+  const data = response?.data
+
+  if ('resultCode' in (data as { resultCode: string })) {
+    const { resultCode } = data as { resultCode: string }
+
+    return resultCode === 'TOKEN_NOT_IN_DB'
+  }
+
+  return false
+}
+
 export const isAuthError = (error: AxiosError) => {
   const { response } = error
 
