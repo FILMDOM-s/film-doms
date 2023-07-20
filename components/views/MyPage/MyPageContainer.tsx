@@ -11,6 +11,10 @@ import UserInfoSection from './UserInfoSection'
 const MyPage = () => {
   const { data: userInfo } = useFetchUserInfo()
 
+  if (!userInfo) {
+    return null
+  }
+
   return (
     <Container>
       <Wrapper>

@@ -1,6 +1,6 @@
 import { defaultProfile } from '@/assets/images/common'
-import { SignIn } from '@/components/views/Auth'
-import { useModal } from '@/hooks/useModal'
+import useSignInModal from '@/components/views/Auth/SignIn/hooks/useSignInModal'
+import { useToken } from '@/hooks'
 import { useFetchUserInfo } from '@/services/myPage'
 import { getImageSrcByUuid } from '@/utils'
 import { Person } from '@svgs/common'
@@ -10,10 +10,12 @@ import { Suspense } from 'react'
 import { ErrorBoundary } from 'react-error-boundary'
 
 const Avatar = () => {
+  const { token } = useToken()
+
   return (
     <ErrorBoundary fallback={<GuestUser />}>
       <Suspense fallback={<GuestUser />}>
-        <LoginUser />
+        {token ? <LoginUser /> : <GuestUser />}
       </Suspense>
     </ErrorBoundary>
   )
@@ -39,16 +41,10 @@ const LoginUser = () => {
 }
 
 const GuestUser = () => {
-  const { openModal, closeModal } = useModal()
-
-  const modalData = {
-    title: '로그인',
-    content: <SignIn closeModal={closeModal} />,
-    callback: () => alert('Modal Callback()'),
-  }
+  const { openModal } = useSignInModal()
 
   return (
-    <button onClick={() => openModal(modalData)}>
+    <button onClick={openModal}>
       <Person fill="#FFFFFF" />
     </button>
   )
