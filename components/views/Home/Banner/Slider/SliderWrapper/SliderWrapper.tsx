@@ -52,22 +52,33 @@ const SliderOutsideAlign = styled.div`
 const TextArea = styled.div`
   position: absolute;
   color: white;
-  top: 80px;
-  left: 80px;
-  font-family: Pretendard;
+  top: 120px;
+  left: 110px;
   font-weight: 700;
+  border-left: 5px solid white;
+  padding: 0 0 0 12px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: flex-start;
+  height: 109px;
+  gap: 8px;
 `
 
 const TypeText = styled.div`
-  font-size: 20px;
-  line-height: 0px;
-  text-transform: capitalize;
+  color: #fff;
+  font-size: 38px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 60px; /* 157.895% */
 `
 
 const TitleText = styled.div`
-  padding-top: 28px;
-  font-size: 40px;
-  line-height: 60px;
+  color: #fff;
+  font-size: 60px;
+  font-style: normal;
+  font-weight: 500;
+  line-height: 60px; /* 100% */
 `
 
 const SubTitleText = styled.div`

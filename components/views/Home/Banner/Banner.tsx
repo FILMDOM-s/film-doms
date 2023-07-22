@@ -13,7 +13,35 @@ const Banner = () => {
       subtitle: '',
       image: mainBannerImage,
     },
-    ...bannerList.slice(0, 3),
+    {
+      id: 0,
+      type: '나를 공유하는 공간',
+      title: 'FILMDOMS`s MOVIE',
+      subtitle: '',
+      image: mainBannerImage,
+    },
+    {
+      id: 0,
+      type: '나를 공유하는 공간',
+      title: 'FILMDOMS`s MOVIE',
+      subtitle: '',
+      image: mainBannerImage,
+    },
+    {
+      id: 0,
+      type: '나를 공유하는 공간',
+      title: 'FILMDOMS`s MOVIE',
+      subtitle: '',
+      image: mainBannerImage,
+    },
+    {
+      id: 0,
+      type: '나를 공유하는 공간',
+      title: 'FILMDOMS`s MOVIE',
+      subtitle: '',
+      image: mainBannerImage,
+    },
+    //...bannerList.slice(0, 3),
   ]
 
   return <Slider banners={mainBannerList} />
