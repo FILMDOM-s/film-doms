@@ -5,6 +5,7 @@ type ModalType = {
   title: string
   content: JSX.Element | string
   callBack?: () => any
+  theme: 'dark' | 'white'
 }
 
 export const modalState = atom<ModalType>({
@@ -13,5 +14,6 @@ export const modalState = atom<ModalType>({
     isOpen: false,
     title: '',
     content: '',
+    theme: 'dark',
   },
 })

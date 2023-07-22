@@ -1,20 +1,30 @@
 import styled from '@emotion/styled'
 import { colors, flex, flexGap, font } from '@/styles/emotion'
 import { Divider } from '@/components/common'
-import { useUpdateNickname } from '@/services/myPage'
+import { useUpdateNickname, useUpdatePassword } from '@/services/myPage'
 import { useState } from 'react'
 import { toast } from 'react-hot-toast'
+import { useChangePassword, useWithdrawal } from '../../Auth/Help/hooks'
 
 interface Props {
   email: string
   nickname: string
   registeredAt: number
+  password?: string
 }
 
-const UserInfoSection = ({ email, nickname, registeredAt }: Props) => {
+const UserInfoSection = ({
+  email,
+  nickname,
+  registeredAt,
+  password,
+}: Props) => {
   const [newNickname, setNewNickname] = useState(nickname)
   const [editNewNickname, setEditNewNickname] = useState(false)
   const { mutate: updateNickname } = useUpdateNickname()
+
+  const { openModal: openModalChangePassword } = useChangePassword()
+  const { openModal: openModalWithdrawal } = useWithdrawal()
 
   const handleNewNicknameMutation = () => {
     updateNickname(
@@ -74,7 +84,13 @@ const UserInfoSection = ({ email, nickname, registeredAt }: Props) => {
             <Label>비밀번호</Label>
             <Content>{'*'.repeat(10)}</Content>
             <OptionBox>
-              <Button as="div" role="button">
+              <Button
+                as="div"
+                role="button"
+                onClick={() => {
+                  openModalChangePassword()
+                }}
+              >
                 변경
               </Button>
             </OptionBox>
@@ -91,7 +107,13 @@ const UserInfoSection = ({ email, nickname, registeredAt }: Props) => {
         </tbody>
       </Table>
       <Box>
-        <QuitButton>회원탈퇴</QuitButton>
+        <QuitButton
+          onClick={() => {
+            openModalWithdrawal()
+          }}
+        >
+          회원탈퇴
+        </QuitButton>
       </Box>
     </Container>
   )

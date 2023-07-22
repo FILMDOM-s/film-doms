@@ -28,6 +28,7 @@ import { INPUT_WIDTH } from './style'
 import { getErrorMessage, isPatternError, isValidateError } from './utils'
 import { ERROR_MESSAGE } from './constants'
 import { useFetchUserInfo } from '@/services/myPage'
+import { useTerms } from '../../SignIn/hooks'
 
 type CreateUserFormType = {
   email: string
@@ -55,6 +56,8 @@ const SignUpForm = () => {
   const { mutate: checkNicknameDuplicate } = useFetchCheckNicknameDuplicate()
   const { mutate: createSignUpAccount } = useCreateSignUpAccount()
   const { mutate: createGoogleAccount } = useCreateGoogleAccount()
+
+  const { openModal } = useTerms()
 
   const { data } = useFetchUserInfo()
 
@@ -484,7 +487,14 @@ const SignUpForm = () => {
               </Text>
             </Flex>
             <OptionBox>
-              <MoreButton type="button">자세히</MoreButton>
+              <MoreButton
+                type="button"
+                onClick={() => {
+                  openModal()
+                }}
+              >
+                자세히
+              </MoreButton>
             </OptionBox>
           </InputBox>
         </Group>

@@ -48,13 +48,7 @@ export const useSignInGoogle = (
   return useMutation(signInGoogle, options)
 }
 
-export const useFindPassword = (
-  options?: UseMutationOptions<
-    Awaited<ReturnType<typeof signInAccount>>,
-    unknown,
-    Parameters<typeof signInAccount>[0]
-  >
-) => {
+export const useFindPassword = () => {
   return useMutation(findPassword)
 }
 

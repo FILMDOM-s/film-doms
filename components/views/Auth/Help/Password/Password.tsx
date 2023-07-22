@@ -13,20 +13,7 @@ type FindPasswordProps = {
 }
 
 const Password = () => {
-  const { mutate: findPassword } = useFindPassword({
-    onSuccess: () => {
-      toast('비밀번호를 전송했습니다!', {
-        icon: '👏',
-        position: 'top-center',
-      })
-    },
-    onError: err => {
-      toast.error('가입한 이메일이 아니거나 잘못된 이메일입니다.', {
-        icon: '😥',
-        position: 'top-center',
-      })
-    },
-  })
+  const { mutate: findPassword } = useFindPassword()
 
   const {
     register,
@@ -38,7 +25,26 @@ const Password = () => {
   })
   const onSubmit = () => {
     const { email } = getValues()
-    findPassword({ email })
+    findPassword(
+      { email },
+      {
+        onSuccess: () => {
+          toast(
+            '임시 비밀번호를 전송했습니다! 로그인 후 비밀번호를 변경해주세요.',
+            {
+              icon: '👏',
+              position: 'top-center',
+            }
+          )
+        },
+        onError: err => {
+          toast.error('가입한 이메일이 아니거나 잘못된 이메일입니다.', {
+            icon: '😥',
+            position: 'top-center',
+          })
+        },
+      }
+    )
   }
   return (
     <Form onSubmit={handleSubmit(onSubmit)}>

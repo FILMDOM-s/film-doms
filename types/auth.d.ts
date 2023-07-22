@@ -111,7 +111,10 @@ declare module Auth {
       email: string
     }
 
-    type DTO = {}
+    type Response = {
+      resultCode: string
+      result: null
+    }
   }
 
   declare module UpdatePassword {

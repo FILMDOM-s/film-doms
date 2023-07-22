@@ -2,10 +2,13 @@ import { useRecoilState } from 'recoil'
 import { useCallback, useState } from 'react'
 import { modalState } from '@/states'
 
-type OpenModalType = {
+export type ThemeType = 'dark' | 'white'
+
+export type OpenModalType = {
   title: string
   content: JSX.Element | string
   callback?: () => any
+  theme?: ThemeType
 }
 
 export const useModal = () => {
@@ -25,12 +28,13 @@ export const useModal = () => {
   }, [setModalDataState])
 
   const openModal = useCallback(
-    ({ title, content, callback }: OpenModalType) => {
+    ({ title, content, callback, theme }: OpenModalType) => {
       setModalDataState({
         isOpen: true,
         title: title,
         content: content,
         callBack: callback,
+        theme: theme || 'dark',
       })
     },
     [setModalDataState]

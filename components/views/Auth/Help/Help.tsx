@@ -1,5 +1,4 @@
 import styled from '@emotion/styled'
-import EmailFinder from './Email'
 import PasswordFinder from './Password'
 
 const Help = () => {

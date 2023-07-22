@@ -14,6 +14,7 @@ declare module User {
     favoriteMovies: string[]
     socialLogin: boolean
     registeredAt: number
+    password?: string
   }
 
   type InfoDTO = {

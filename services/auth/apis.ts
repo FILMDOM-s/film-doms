@@ -50,8 +50,8 @@ export const signInGoogle = (code: string) => {
 }
 
 export const findPassword = (item: Auth.FindPassword.Request) => {
-  return api.post<null, Auth.FindPassword.DTO, Auth.FindPassword.Request>(
-    `/api/v1/account/password`,
+  return api.post<null, Auth.FindPassword.Response, Auth.FindPassword.Request>(
+    `/api/v1/email/temp-password`,
     item
   )
 }
