@@ -17,6 +17,7 @@ const ArticlePage = ({ category }: CategoryProps) => {
     movie: dynamic(() => import('@views/Article/Main/ArticleContainer')),
     filmUniverse: dynamic(() => import('@views/Article/Main/ArticleContainer')),
     critic: dynamic(() => import('@views/Article/Main/CriticContainer')),
+    recent: dynamic(() => import('@views/Article/Main/RecentContainer')),
   }
   const Component = components[category]
 
@@ -47,6 +48,7 @@ export const getStaticPaths: GetStaticPaths = async () => {
       { params: { category: 'movie' } },
       { params: { category: 'filmUniverse' } },
       { params: { category: 'critic' } },
+      { params: { category: 'recent' } },
     ],
     fallback: false,
   }

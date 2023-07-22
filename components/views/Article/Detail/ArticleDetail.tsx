@@ -10,6 +10,7 @@ import styled from '@emotion/styled'
 import { ProfileBar } from './ProfileBar'
 import { ReadOnlyEditor } from '@/components/common/Editor'
 import { toast } from 'react-hot-toast'
+import { snakeToCamel } from '@/utils'
 
 export type ArticleDetailProps = {
   articleId: number
@@ -60,7 +61,9 @@ export const ArticleDetail = ({ articleId, category }: ArticleDetailProps) => {
           <GrayButton
             onClick={() => {
               handleCopyClipBoard(
-                `${window.location.origin}/article/${category}/${articleId}`
+                `${window.location.origin}/article/${snakeToCamel(
+                  category
+                )}/${articleId}`
               )
             }}
           >

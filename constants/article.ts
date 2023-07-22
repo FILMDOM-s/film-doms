@@ -11,4 +11,8 @@ export const CATEGORIES: Record<string, { title: string; value: string }> = {
     title: 'Critic',
     value: 'critic',
   },
+  recent: {
+    title: 'Recent',
+    value: 'recent',
+  },
 }
