@@ -56,11 +56,13 @@ const BoardContainer = ({
               noticeItems={noticeList}
               articleItems={articleList.content}
             />
-            <ButtonBox>
-              <Button onClick={() => push(`/write/article/${category}`)}>
-                게시글 작성하기
-              </Button>
-            </ButtonBox>
+            {category !== 'recent' && (
+              <ButtonBox>
+                <Button onClick={() => push(`/write/article/${category}`)}>
+                  게시글 작성하기
+                </Button>
+              </ButtonBox>
+            )}
           </>
         }
       />

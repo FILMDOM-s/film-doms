@@ -1,7 +1,7 @@
 import styled from '@emotion/styled'
 import { colors, flex, flexGap, font } from '@/styles/emotion'
 import { Divider } from '@/components/common'
-import { useUpdateNickname, useUpdatePassword } from '@/services/myPage'
+import { useUpdateNickname } from '@/services/myPage'
 import { useState } from 'react'
 import { toast } from 'react-hot-toast'
 import { useChangePassword, useWithdrawal } from '../../Auth/Help/hooks'
@@ -13,12 +13,7 @@ interface Props {
   password?: string
 }
 
-const UserInfoSection = ({
-  email,
-  nickname,
-  registeredAt,
-  password,
-}: Props) => {
+const UserInfoSection = ({ email, nickname, registeredAt }: Props) => {
   const [newNickname, setNewNickname] = useState(nickname)
   const [editNewNickname, setEditNewNickname] = useState(false)
   const { mutate: updateNickname } = useUpdateNickname()
