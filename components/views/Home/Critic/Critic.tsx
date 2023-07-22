@@ -1,6 +1,7 @@
 import { Tag } from '@/components/common'
 import { colors, typography } from '@/styles/emotion'
 import { cutString } from '@/utils'
+import { convertHtmlToText } from '@/utils/convertStringToHtml'
 import styled from '@emotion/styled'
 import Image from 'next/image'
 
@@ -39,7 +40,9 @@ const Critic = ({
           </Tag>
         </ContentBodyHeader>
         <Title>{cutString(title, 28)}</Title>
-        <Description>{cutString(description, 70)}</Description>
+        <Description>
+          {cutString(convertHtmlToText(description), 70)}
+        </Description>
         <Time>
           {new Intl.DateTimeFormat('ko').format(createAt).slice(0, -1)}
         </Time>

@@ -6,7 +6,7 @@ import toast from 'react-hot-toast'
 import { EMAIL_REGEX, PASSWORD_REGEX } from '@/constants/auth/regex'
 import { google } from '@/assets/images/common'
 import Image from 'next/image'
-import { useSignInAccount, useSignInGoogle } from '@/services/auth'
+import { useSignInAccount } from '@/services/auth'
 
 export type LoginFormType = {
   email: string

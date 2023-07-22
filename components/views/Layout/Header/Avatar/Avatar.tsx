@@ -50,7 +50,7 @@ const LoginUser = () => {
 const ProfileMenu = () => {
   const menus = [
     { title: '마이페이지', link: '/mypage' },
-    { title: '로그아웃', link: '/logout' },
+    { title: '로그아웃', link: '/auth/logout' },
   ]
   return (
     <div
