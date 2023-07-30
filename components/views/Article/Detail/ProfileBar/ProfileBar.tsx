@@ -51,6 +51,10 @@ const ProfileBar = ({ article, count }: ProfileBarProps) => {
 const Bar = styled.div`
   ${typography.contentBody}
   color: ${colors.primary.black};
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
 `
 const Ul = styled.ul`
   ${flexCenter}

@@ -139,10 +139,6 @@ const OptionBox = styled.td`
   gap: 12px;
 `
 
-const InterestMovieBox = styled.div`
-  width: 400px;
-`
-
 const Tr = styled.tr`
   ${flex({ justify: 'flex-start', align: 'center' })}
   width: 100%;

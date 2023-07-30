@@ -6,29 +6,23 @@ import { useForm } from 'react-hook-form'
 import toast from 'react-hot-toast'
 
 type ChangePasswordProps = {
-  currentPassword?: string
   newPassword?: string
-  checkNewPassword?: string
+  checkPassword?: string
 }
 
-const ChangePassword = () => {
+const ResetPassword = () => {
   const { mutate: updatePassword } = useUpdatePassword()
   const { register, getValues, handleSubmit } = useForm<ChangePasswordProps>()
 
   const onSubmit = () => {
-    const { currentPassword, newPassword, checkNewPassword } = getValues()
+    const { newPassword, checkPassword } = getValues()
 
-    if (!currentPassword) {
-      toast.error('현재 비밀번호를 입력해주세요.')
-      return
-    }
-
-    if (newPassword !== checkNewPassword) {
+    if (newPassword !== checkPassword) {
       toast.error('비밀번호가 일치하지 않습니다.')
       return
     }
 
-    if (!newPassword || !checkNewPassword) {
+    if (!newPassword || !checkPassword) {
       toast.error('비밀번호를 입력해주세요.')
       return
     }
@@ -36,7 +30,7 @@ const ChangePassword = () => {
     updatePassword(
       {
         newPassword: newPassword,
-        oldPassword: currentPassword,
+        oldPassword: newPassword,
       },
       {
         onSuccess: () => {
@@ -50,38 +44,33 @@ const ChangePassword = () => {
   }
   return (
     <Container>
-      <TitleText>비밀번호 변경</TitleText>
+      <TitleText>비밀번호 재설정</TitleText>
+      <OpacityText>필름덤즈에서 사용할 비밀번호를 입력해 주세요.</OpacityText>
       <PasswordForm onSubmit={handleSubmit(onSubmit)}>
-        <LabelText>현재 비밀번호</LabelText>
-        <PasswordInput
-          {...register('currentPassword')}
-          name="newPassword"
-          type="password"
-        />
-        <LabelText>새 비밀번호</LabelText>
+        <LabelText>새로운 비밀번호</LabelText>
         <PasswordInput
           {...register('newPassword')}
           name="newPassword"
           type="password"
         />
-        <LabelText>새 비밀번호 확인</LabelText>
+        <LabelText>비밀번호 확인</LabelText>
         <PasswordInput
-          {...register('checkNewPassword')}
+          {...register('checkPassword')}
           name="checkPassword"
           type="password"
         />
-        <Button type="submit">변경</Button>
+        <Button type="submit">비밀번호 변경</Button>
       </PasswordForm>
     </Container>
   )
 }
 
-const useChangePassword = () => {
+const useResetPassword = () => {
   const { openModal, closeModal } = usePureModal()
 
   const modalData: OpenModalType = {
     title: '비밀번호 변경',
-    content: <ChangePassword />,
+    content: <ResetPassword />,
     callback: () => alert('Modal Callback()'),
     theme: 'white',
   }
@@ -92,22 +81,20 @@ const useChangePassword = () => {
   }
 }
 
-export default useChangePassword
+export default useResetPassword
 
 const Container = styled.div`
   width: 360px;
   overflow-y: scroll;
   display: flex;
   flex-direction: column;
-  align-items: flex-start;
-  padding: 10px 0;
+  align-items: center;
+  padding: 10px 20px;
   box-sizing: border-box;
   font-size: 14px;
   line-height: 1.5;
   color: #333333;
   margin: 0 auto;
-  margin-top: 32px;
-  margin-bottom: 32px;
 `
 
 const TitleText = styled.div`
@@ -118,6 +105,16 @@ const TitleText = styled.div`
   line-height: 14px; /* 58.333% */
   letter-spacing: 0.24px;
   margin-bottom: 40px;
+`
+
+const OpacityText = styled.div`
+  color: #aaa;
+  font-size: 14px;
+  font-style: normal;
+  font-weight: 500;
+  line-height: 14px; /* 100% */
+  letter-spacing: 0.14px;
+  margin-bottom: 64px;
 `
 
 const LabelText = styled.div`
@@ -138,6 +135,7 @@ const PasswordForm = styled.form`
 
 const PasswordInput = styled.input`
   width: 100%;
+  height: 40px;
   border-bottom: 1px solid #ddd;
   margin-bottom: 24px;
   box-sizing: border-box;
@@ -147,7 +145,6 @@ const PasswordInput = styled.input`
   line-height: 14px; /* 100% */
   letter-spacing: 0.14px;
   outline: none;
-  padding: 24px 0 16px 0;
 `
 
 const Button = styled.button`
@@ -164,6 +161,4 @@ const Button = styled.button`
   outline: none;
   border: none;
   cursor: pointer;
-  margin-top: 32px;
-  margin-bottom: 32px;
 `

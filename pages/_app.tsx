@@ -38,7 +38,21 @@ export default function App({
   const { isActiveServiceWorker } = useStartWorker()
 
   if (!isActiveServiceWorker) {
-    return <div>서비스워커가 활성화 되기 전입니다.</div>
+    return (
+      <div
+        style={{
+          position: 'fixed',
+          top: '50%',
+          left: '50%',
+          transform: 'translate(-50%,-50%)',
+          fontSize: '30px',
+          fontWeight: 'bold',
+          color: '#000',
+        }}
+      >
+        서비스워커가 활성화 되기 전입니다.
+      </div>
+    )
   }
 
   return (

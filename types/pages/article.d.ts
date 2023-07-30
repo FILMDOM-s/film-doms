@@ -180,6 +180,17 @@ declare module Article {
     endAt?: string
   }
 
+  type ArticleUpdateRequestDto = {
+    title: string
+    category: string
+    tag: string
+    content: string
+    containsImage: string
+    mainImageId: string
+    startAt?: string
+    endAt?: string
+  }
+
   type ArticleCreateResponseContent = {
     id: number
     category: string
@@ -188,6 +199,11 @@ declare module Article {
   type ArticleCreateResponseDTO = {
     resultCode: string
     result: ArticleCreateResponseContent
+  }
+
+  type ArticleUpdateResponseDTO = {
+    resultCode: string
+    result: null
   }
 
   type FilmUniverseCreateRequestDto = {

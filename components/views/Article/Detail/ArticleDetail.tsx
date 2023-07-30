@@ -1,6 +1,7 @@
 import { Thumb } from '@/assets/svgs/common'
 import { Button, Divider, Loading } from '@/components/common'
 import {
+  useDeleteArticle,
   useFetchArticleDetailContentByCategoryById,
   useToggleArticleLike,
 } from '@/services/article'
@@ -11,6 +12,9 @@ import { ProfileBar } from './ProfileBar'
 import { ReadOnlyEditor } from '@/components/common/Editor'
 import { toast } from 'react-hot-toast'
 import { snakeToCamel } from '@/utils'
+import { useEffect, useState } from 'react'
+import { useRouter } from 'next/router'
+import { useFetchUserInfo } from '@/services/myPage'
 
 export type ArticleDetailProps = {
   articleId: number
@@ -18,6 +22,11 @@ export type ArticleDetailProps = {
 }
 
 export const ArticleDetail = ({ articleId, category }: ArticleDetailProps) => {
+  const router = useRouter()
+  const { mutate: deleteArticle } = useDeleteArticle()
+  const { data: userInfo } = useFetchUserInfo()
+  const [isMine, setIsMine] = useState(false)
+
   const { data: article, refetch } = useFetchArticleDetailContentByCategoryById(
     category,
     articleId
@@ -49,6 +58,12 @@ export const ArticleDetail = ({ articleId, category }: ArticleDetailProps) => {
     })
   }
 
+  useEffect(() => {
+    if (userInfo?.id === article.author.id) {
+      setIsMine(true)
+    }
+  }, [article.author.id, userInfo?.id])
+
   return (
     <Container>
       <Category>{article.tag}</Category>
@@ -69,6 +84,39 @@ export const ArticleDetail = ({ articleId, category }: ArticleDetailProps) => {
           >
             복사
           </GrayButton>
+          {isMine && (
+            <>
+              <GrayButton
+                onClick={() => {
+                  router.push(
+                    `/article/${snakeToCamel(category)}/${article.id}/edit`
+                  )
+                }}
+              >
+                수정
+              </GrayButton>
+              <GrayButton
+                onClick={() => {
+                  deleteArticle(
+                    {
+                      category,
+                      articleId: article.id,
+                    },
+                    {
+                      onSuccess: () => {
+                        router.push(`/article/${category}`)
+                      },
+                      onError: () => {
+                        toast.error('삭제 실패')
+                      },
+                    }
+                  )
+                }}
+              >
+                삭제
+              </GrayButton>
+            </>
+          )}
         </TopContentGrid>
         <ReadOnlyEditor content={article && article.content} />
         <BottomContentGrid>
@@ -106,7 +154,7 @@ const Content = styled.div`
 `
 
 const TopContentGrid = styled.div`
-  ${flexGap('16px', 'row')}
+  ${flexGap('8px', 'row')}
   justify-content: flex-end;
   align-items: center;
   margin-top: 8px;

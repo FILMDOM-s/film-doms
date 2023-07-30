@@ -1,3 +1,4 @@
+import { useQuery } from '@tanstack/react-query'
 import { useSuspendedQuery } from '@/hooks'
 import queryKeys from '../queryKeys'
 import {
@@ -31,6 +32,13 @@ export const useFetchArticleDetailContentByCategoryById = (
   id: number
 ) => {
   return useSuspendedQuery(
+    queryKeys.article.detailContentDTOByCategoryById(category, id),
+    () => getArticleDetailContentByCategoryById(category, id)
+  )
+}
+
+export const useFetchArticleDetailEdit = (category: string, id: number) => {
+  return useQuery(
     queryKeys.article.detailContentDTOByCategoryById(category, id),
     () => getArticleDetailContentByCategoryById(category, id)
   )

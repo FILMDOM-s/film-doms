@@ -75,6 +75,34 @@ export const createArticle = (item: Article.ArticleCreateRequestDto) => {
     Article.ArticleCreateRequestDto
   >('/api/v1/article', item)
 }
+// title, tag, content, mainImage, startAt, endAt 변경 가능
+export const updateArticle = ({
+  category,
+  articleId,
+  item,
+}: {
+  category: string
+  articleId: number
+  item: Article.ArticleUpdateRequestDto
+}) => {
+  return api.put<
+    null,
+    Article.ArticleUpdateResponseDTO,
+    Article.ArticleUpdateRequestDto
+  >(`/api/v1/article/${category}/${articleId}`, item)
+}
+
+export const deleteArticle = ({
+  category,
+  articleId,
+}: {
+  category: string
+  articleId: number
+}) => {
+  return api.delete<null, Article.ArticleCreateResponseDTO, null>(
+    `/api/v1/article/${category}/${articleId}`
+  )
+}
 
 export const createComment = (item: Article.CommentCreateRequestDto) => {
   return api.post<
