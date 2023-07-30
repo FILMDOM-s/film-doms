@@ -3,17 +3,19 @@ import { CATEGORIES } from '@/constants/article'
 import { colors, flexCenter, flexGap, typography } from '@/styles/emotion'
 import styled from '@emotion/styled'
 import Link from 'next/link'
-import { Suspense, useState } from 'react'
+import { Suspense, useEffect, useState } from 'react'
 import LabeledCheckbox from './Check'
 import { useForm } from 'react-hook-form'
-import { useCreateArticle } from '@/services/article'
+import { useFetchArticleDetailEdit, useUpdateArticle } from '@/services/article'
 import { useRouter } from 'next/router'
 import toast from 'react-hot-toast'
+import { camelToSnake, snakeToCamel } from '@/utils'
 import SelectBox from './Select/Select'
 import { Editor } from '@/components/common/Editor'
 
 export type EditorContainerProps = {
   category: string
+  id: number
 }
 
 export type ArticleProps = {
@@ -26,36 +28,23 @@ export type ArticleProps = {
   endAt: string
 }
 
-const EditorContainer = ({ category = 'critic' }: EditorContainerProps) => {
+const UpdateEditorContainer = ({
+  category = 'critic',
+  id,
+}: EditorContainerProps) => {
   const router = useRouter()
   const [content, setContent] = useState('')
-  const [imageList, setImageList] = useState<string[]>([])
-  const { register, handleSubmit, getValues } = useForm<ArticleProps>({
-    mode: 'onChange',
-  })
+  const { register, handleSubmit, getValues, setValue } = useForm<ArticleProps>(
+    {
+      mode: 'onChange',
+    }
+  )
+  const { data: article, refetch } = useFetchArticleDetailEdit(
+    camelToSnake(category),
+    id
+  )
 
-  const { mutate: createArticle } = useCreateArticle({
-    onSuccess: ({ resultCode }) => {
-      if (resultCode === 'SUCCESS') {
-        toast('등록 완료!', {
-          icon: '👏',
-          position: 'top-center',
-        })
-        router.push(`/article/${[category]}`, `/article/${category}`)
-      } else {
-        toast.error(resultCode, {
-          icon: '😥',
-          position: 'top-center',
-        })
-      }
-    },
-    onError: err => {
-      toast.error('등록 실패!', {
-        icon: '😥',
-        position: 'top-center',
-      })
-    },
-  })
+  const { mutate: updateArticle } = useUpdateArticle()
 
   const onSubmit = async (e: any) => {
     const {
@@ -68,102 +57,57 @@ const EditorContainer = ({ category = 'critic' }: EditorContainerProps) => {
       endAt,
     } = getValues()
     try {
-      if (!title) {
-        toast.error('제목을 입력해주세요', {
-          icon: '😥',
-          position: 'top-center',
-        })
-        return
-      }
-
-      const tempImageList = content.match(
-        /<img[^>]*src=[\"']?([^>\"']+)[\"']?[^>]*>/g
+      await updateArticle(
+        {
+          category: camelToSnake(category).toUpperCase(),
+          articleId: id,
+          item: {
+            title: title,
+            category: camelToSnake(category).toUpperCase(),
+            tag: tag,
+            content: content,
+            containsImage: 'true',
+            mainImageId: '1',
+            startAt: new Date(startAt).toISOString(),
+            endAt: new Date(endAt).toISOString(),
+          },
+        },
+        {
+          onSuccess: ({ result, resultCode }) => {
+            if (resultCode === 'SUCCESS') {
+              toast('수정 완료!', {
+                icon: '👏',
+                position: 'top-center',
+              })
+              router.push(`/article/${[category]}`, `/article/${category}`)
+            } else {
+              toast.error(resultCode, {
+                icon: '😥',
+                position: 'top-center',
+              })
+            }
+          },
+          onError: err => {
+            toast.error('수정 실패!', {
+              icon: '😥',
+              position: 'top-center',
+            })
+          },
+        }
       )
-
-      let thumbnail = ''
-      if (tempImageList && tempImageList.length > 0) {
-        const src = tempImageList[0].split('src=')[1].split('"')[1]
-        // https://nginx-nginx-4uvg2mlecrl7qe.sel3.cloudtype.app/image/를 제거
-        thumbnail = src.replace(
-          'https://nginx-nginx-4uvg2mlecrl7qe.sel3.cloudtype.app/image/',
-          ''
-        )
-      }
-
-      if (category === 'filmUniverse') {
-        if (!startAt || !endAt) {
-          toast.error('게시 기간을 입력해주세요', {
-            icon: '😥',
-            position: 'top-center',
-          })
-          return
-        }
-
-        if (!tempImageList) {
-          toast.error('이미지가 반드시 포함되어야 해요!', {
-            icon: '😥',
-            position: 'top-center',
-          })
-          return
-        }
-
-        await createArticle({
-          title: title,
-          category: 'FILM_UNIVERSE',
-          tag: tag,
-          content: content,
-          containsImage: 'true',
-          mainImageId: thumbnail,
-          startAt: new Date(startAt).toISOString(),
-          endAt: new Date(endAt).toISOString(),
-        })
-      } else if (category === 'critic') {
-        if (!tempImageList) {
-          toast.error('이미지가 반드시 포함되어야 해요!', {
-            icon: '😥',
-            position: 'top-center',
-          })
-          return
-        }
-
-        if (tempImageList.length < 3) {
-          toast.error('이미지는 3개 이상 포함되어야 해요!', {
-            icon: '😥',
-            position: 'top-center',
-          })
-          return
-        }
-
-        // 글자수 3000자 미만 체크
-        // 음... 이거 어떻게 해야할까요?
-        if (content.length < 4000) {
-          toast.error('3000자 이상 입력해주세요!', {
-            icon: '😥',
-            position: 'top-center',
-          })
-          return
-        }
-
-        await createArticle({
-          title: title,
-          category: 'CRITIC',
-          tag: tag,
-          content: content,
-          containsImage: 'true',
-          mainImageId: thumbnail,
-        })
-      } else {
-        await createArticle({
-          title: title,
-          category: 'MOVIE',
-          tag: tag,
-          content: content,
-          containsImage: 'true',
-          mainImageId: thumbnail ? thumbnail : '1',
-        })
-      }
     } catch (err) {}
   }
+
+  useEffect(() => {
+    setValue('title', article?.title || '')
+    setValue('tag', article?.tag || '')
+    setValue('openAllowed', true)
+    setValue('commentsAllowed', true)
+    setValue('shareAllowed', true)
+    setValue('startAt', '2021-07-01')
+    setValue('endAt', '2021-08-01')
+    setContent(article?.content || '')
+  }, [article?.content, article?.tag, article?.title, id, setValue])
 
   return (
     <Container>
@@ -187,11 +131,7 @@ const EditorContainer = ({ category = 'critic' }: EditorContainerProps) => {
             type="text"
           />
         </Header>
-        <Editor
-          content={content}
-          setContent={setContent}
-          setImageList={setImageList}
-        />
+        <Editor content={content} setContent={setContent} />
         <Checks>
           <LabeledCheckbox
             label={'공개'}
@@ -242,7 +182,7 @@ const EditorContainer = ({ category = 'critic' }: EditorContainerProps) => {
   )
 }
 
-export default EditorContainer
+export default UpdateEditorContainer
 
 const Container = styled.div`
   ${flexGap('40px')}

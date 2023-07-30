@@ -2,7 +2,7 @@ import { useImageUpload } from '@/services/file'
 import { getImageSrcByUuid } from '@/utils'
 import styled from '@emotion/styled'
 import dynamic from 'next/dynamic'
-import { useMemo, useRef } from 'react'
+import { useCallback, useMemo, useRef } from 'react'
 import ReactQuill, { ReactQuillProps } from 'react-quill'
 import 'react-quill/dist/quill.snow.css'
 
@@ -24,13 +24,14 @@ const Quill = dynamic(
 type EditorProps = {
   content: string
   setContent: React.Dispatch<React.SetStateAction<string>>
+  setImageList?: React.Dispatch<React.SetStateAction<string[]>>
 }
 
-const Editor = ({ content, setContent }: EditorProps) => {
+const Editor = ({ content, setContent, setImageList }: EditorProps) => {
   const quillRef = useRef<ReactQuill>(null)
   const { mutate: imageUpload } = useImageUpload()
 
-  const imageHandler = async () => {
+  const imageHandler = useCallback(async () => {
     const input = document.createElement('input')
     input.setAttribute('type', 'file')
     input.setAttribute('accept', 'image/*')
@@ -42,6 +43,12 @@ const Editor = ({ content, setContent }: EditorProps) => {
 
         imageUpload(file[0], {
           onSuccess({ result: { uploadedFiles } }) {
+            if (setImageList !== undefined && uploadedFiles.length > 0) {
+              setImageList((prev: string[]) => [
+                ...prev,
+                getImageSrcByUuid(uploadedFiles[0].uuidFileName),
+              ])
+            }
             const editor = quillRef.current
               ? quillRef.current.getEditor()
               : null
@@ -58,7 +65,7 @@ const Editor = ({ content, setContent }: EditorProps) => {
         })
       } catch (error) {}
     })
-  }
+  }, [imageUpload, setImageList])
 
   const modules = useMemo(() => {
     return {
@@ -96,7 +103,7 @@ const Editor = ({ content, setContent }: EditorProps) => {
         matchVisual: false,
       },
     }
-  }, [])
+  }, [imageHandler])
 
   const formats = [
     'bold',
