@@ -23,7 +23,7 @@ const BoardContainer = ({
 }: Props) => {
   const { push } = useRouter()
 
-  const { data: noticeList } = useFetchArticleNoticeList()
+  const { data: noticeList } = useFetchArticleNoticeList(camelToSnake(category))
   const { data: articleList } = useFetchArticleMainContentByCategory(
     camelToSnake(category),
     {
@@ -52,7 +52,7 @@ const BoardContainer = ({
         defaultRender={
           <>
             <ArticleBoard
-              noticeItems={noticeList}
+              noticeItems={noticeList?.content ?? []}
               articleItems={articleList.content}
             />
             {category !== 'recent' && (

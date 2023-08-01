@@ -36,8 +36,14 @@ export const useFetchArticleDetailContentByCategoryById = (
   )
 }
 
-export const useFetchArticleNoticeList = () => {
-  return useSuspendedQuery(queryKeys.article.noticeDTO, getArticleNoticeList)
+export const useFetchArticleNoticeList = (category: string) => {
+  return useSuspendedQuery(
+    queryKeys.article.noticeDTO,
+    () => getArticleNoticeList(category),
+    {
+      enabled: category !== 'recent',
+    }
+  )
 }
 
 export const useFetchArticleCommentListByCategoryById = (
