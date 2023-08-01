@@ -38,7 +38,9 @@ export default function App({
   const { isActiveServiceWorker } = useStartWorker()
 
   if (!isActiveServiceWorker) {
-    return <div>서비스워커가 활성화 되기 전입니다.</div>
+    console.warn('Service Worker is not active')
+
+    return <>{null}</>
   }
 
   return (
