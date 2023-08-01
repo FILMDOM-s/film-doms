@@ -1,9 +1,10 @@
 import api, { setAuthorization } from '@/services/api'
 import { getAccessToken } from '@/services/auth'
+import Cookies from 'js-cookie'
 import { useEffect, useState } from 'react'
 
 const useToken = () => {
-  const prevToken = api.defaults.headers.common['Authorization']
+  const prevToken = Cookies.get('accessToken')
   const [token, setToken] = useState(prevToken)
 
   useEffect(() => {

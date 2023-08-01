@@ -3,6 +3,7 @@ import {
   type AxiosInstance,
   type InternalAxiosRequestConfig,
 } from 'axios'
+import Cookies from 'js-cookie'
 
 export type DomainType = 'server' | 'msw'
 
@@ -43,6 +44,8 @@ export const setAuthorization = ({
   token: string
 }) => {
   instance.defaults.headers.common['Authorization'] = `Bearer ${token}`
+
+  Cookies.set('accessToken', token)
 }
 
 export const isTokenError = (error: AxiosError) => {

@@ -8,10 +8,16 @@ import {
   isTokenError,
 } from './utils'
 import { getAccessToken } from '../auth'
+import Cookies from 'js-cookie'
 
 const createApi = (type: DomainType) => {
+  const token = Cookies.get('accessToken')
+
   const _api = axios.create({
     baseURL: `${getDomain(type)}`,
+    headers: {
+      ...(token && { Authorization: `Bearer ${token}` }),
+    },
   })
 
   _api.interceptors.request.use(async config => {
