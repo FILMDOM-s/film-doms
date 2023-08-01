@@ -50,6 +50,7 @@ const queryKeys = {
       params,
     ],
   },
+  publicProfile: (id: string) => ['publicProfile', id],
 } as const
 
 export default queryKeys

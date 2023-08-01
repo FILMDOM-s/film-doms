@@ -5,6 +5,7 @@ import { defaultProfile } from '@/assets/images/common'
 import { dateDiff } from '@/utils/dateDiff'
 import { getRoundString } from '@/utils/getRoundString'
 import { getImageSrcByUuid } from '@/utils'
+import Link from 'next/link'
 
 interface ProfileBarProps {
   article: Article.BaseDetailContent
@@ -15,24 +16,26 @@ const ProfileBar = ({ article, count }: ProfileBarProps) => {
   return (
     <Bar>
       <Ul>
-        <Li>
-          <Image
-            src={
-              getImageSrcByUuid(article.author.profileImage.uuidFileName) ??
-              defaultProfile
-            }
-            alt="user-profile"
-            width={40}
-            height={40}
-            style={{
-              borderRadius: '50%',
-              marginRight: '12px',
-              marginLeft: '8px',
-            }}
-            priority
-          />
-          {article.author.nickname}
-        </Li>
+        <Link href={`/profile/${article.author.id}`}>
+          <Li>
+            <Image
+              src={
+                getImageSrcByUuid(article.author.profileImage.uuidFileName) ??
+                defaultProfile
+              }
+              alt="user-profile"
+              width={40}
+              height={40}
+              style={{
+                borderRadius: '50%',
+                marginRight: '12px',
+                marginLeft: '8px',
+              }}
+              priority
+            />
+            {article.author.nickname}
+          </Li>
+        </Link>
         <Li>{dateDiff(article.createdAt)}</Li>
         <Li>
           조회수<Span>{getRoundString(article.views)}</Span>

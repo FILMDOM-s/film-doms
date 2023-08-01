@@ -3,7 +3,6 @@ import styled from '@emotion/styled'
 import {
   useFetchArticleNoticeList,
   useFetchArticleMainContentByCategory,
-  useFetchSearchArticleList,
 } from '@/services/article'
 import { flex, flexCenter, flexGap, font } from '@/styles/emotion'
 import { ArticleBoard, CriticBoard } from './ArticleBoard'

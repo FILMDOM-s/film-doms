@@ -1,5 +1,5 @@
-import { Loading } from '@/components/common'
-import { useFetchUserInfo } from '@/services/myPage'
+import { Loading, RenderIf } from '@/components/common'
+import { useFetchPublicUserInfo, useFetchUserInfo } from '@/services/myPage'
 import { flexCenter, flexGap } from '@/styles/emotion'
 import styled from '@emotion/styled'
 import { Suspense } from 'react'
@@ -8,27 +8,53 @@ import ProfileSection from './ProfileSection'
 import UserActivitySection from './UserActivitySection'
 import UserInfoSection from './UserInfoSection'
 
-const MyPage = () => {
-  const { data: userInfo } = useFetchUserInfo()
+type Props = {
+  id?: string
+}
 
-  if (!userInfo) {
+const MyPage = ({ id }: Props) => {
+  const { data: userInfo } = useFetchUserInfo({
+    enabled: id === undefined,
+  })
+  const { data: publicUserInfo } = useFetchPublicUserInfo(id as string, {
+    enabled: id !== undefined,
+  })
+
+  if (!userInfo && !publicUserInfo) {
     return null
   }
+
+  const uuidFileName =
+    userInfo?.profileImage?.uuidFileName ??
+    publicUserInfo?.profileImage?.uuidFileName
+  const nickname = userInfo?.nickname ?? publicUserInfo?.nickname
+  const email = userInfo?.email
+  const registeredAt = userInfo?.registeredAt ?? publicUserInfo?.registeredAt
+  const favoriteMovies =
+    userInfo?.favoriteMovies ?? publicUserInfo?.favoriteMovies
 
   return (
     <Container>
       <Wrapper>
         <ProfileSection
-          profileImage={userInfo.profileImage.uuidFileName}
-          nickname={userInfo.nickname}
+          type={id === undefined ? 'private' : 'public'}
+          profileImage={uuidFileName}
+          nickname={nickname}
         />
-        <InterestMovieSection interestMovieList={userInfo.favoriteMovies} />
+        <InterestMovieSection
+          type={id === undefined ? 'private' : 'public'}
+          interestMovieList={favoriteMovies}
+        />
         <UserInfoSection
-          email={userInfo.email}
-          nickname={userInfo.nickname}
-          registeredAt={userInfo.registeredAt}
+          type={id === undefined ? 'private' : 'public'}
+          email={email}
+          nickname={nickname}
+          registeredAt={registeredAt}
         />
-        <UserActivitySection />
+        <RenderIf
+          condition={id === undefined}
+          render={<UserActivitySection />}
+        />
       </Wrapper>
     </Container>
   )
@@ -46,10 +72,14 @@ const Container = styled.div`
   margin: 80px 0;
 `
 
-const MyPageContainer = () => {
+type ContainerProps = {
+  id?: string
+}
+
+const MyPageContainer = ({ id }: ContainerProps) => {
   return (
     <Suspense fallback={<Loading height="100vh" empty />}>
-      <MyPage />
+      <MyPage id={id} />
     </Suspense>
   )
 }

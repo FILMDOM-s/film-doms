@@ -47,9 +47,7 @@ const Board = ({ items }: Props) => {
                 </TitleBox>
               </TdTitle>
               <TdWriter css={Writer}>
-                <WriterBox
-                  onClick={() => push(`/user/profile/${item.author.id}`)}
-                >
+                <WriterBox onClick={() => push(`/profile/${item.author.id}`)}>
                   <Image
                     src={
                       getImageSrcByUuid(

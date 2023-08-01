@@ -1,19 +1,20 @@
 import styled from '@emotion/styled'
 import { colors, flex, flexGap, font } from '@/styles/emotion'
-import { Divider } from '@/components/common'
+import { Divider, RenderIf } from '@/components/common'
 import { useUpdateNickname } from '@/services/myPage'
 import { useState } from 'react'
 import { toast } from 'react-hot-toast'
 import { useChangePassword, useWithdrawal } from '../../Auth/Help/hooks'
 
 interface Props {
-  email: string
+  email?: string
   nickname: string
   registeredAt: number
   password?: string
+  type: 'public' | 'private'
 }
 
-const UserInfoSection = ({ email, nickname, registeredAt }: Props) => {
+const UserInfoSection = ({ type, email, nickname, registeredAt }: Props) => {
   const [newNickname, setNewNickname] = useState(nickname)
   const [editNewNickname, setEditNewNickname] = useState(false)
   const { mutate: updateNickname } = useUpdateNickname()
@@ -35,16 +36,24 @@ const UserInfoSection = ({ email, nickname, registeredAt }: Props) => {
     )
   }
 
+  const isPublic = type === 'public'
+  const isPrivate = type === 'private'
+
   return (
     <Container>
       <Divider color={colors.primary.orange} size={4} limit="24px" />
       <Title>회원정보</Title>
       <Table>
         <tbody>
-          <Tr>
-            <Label>이메일</Label>
-            <Content>{email}</Content>
-          </Tr>
+          <RenderIf
+            condition={!!email}
+            render={
+              <Tr>
+                <Label>이메일</Label>
+                <Content>{email}</Content>
+              </Tr>
+            }
+          />
           <Tr>
             <Label>닉네임</Label>
             <Content>
@@ -53,43 +62,53 @@ const UserInfoSection = ({ email, nickname, registeredAt }: Props) => {
                 onChange={e => {
                   setNewNickname(e.target.value)
                 }}
-                disabled={!editNewNickname}
+                disabled={isPublic || !editNewNickname}
               />
             </Content>
-            <OptionBox>
-              {editNewNickname && (
-                <Button
-                  as="div"
-                  role="button"
-                  onClick={handleNewNicknameMutation}
-                >
-                  완료
-                </Button>
-              )}
-              <Button
-                onClick={() => {
-                  setEditNewNickname(!editNewNickname)
-                }}
-              >
-                변경
-              </Button>
-            </OptionBox>
+            <RenderIf
+              condition={isPrivate}
+              render={
+                <OptionBox>
+                  {editNewNickname && (
+                    <Button
+                      as="div"
+                      role="button"
+                      onClick={handleNewNicknameMutation}
+                    >
+                      완료
+                    </Button>
+                  )}
+                  <Button
+                    onClick={() => {
+                      setEditNewNickname(!editNewNickname)
+                    }}
+                  >
+                    변경
+                  </Button>
+                </OptionBox>
+              }
+            />
           </Tr>
-          <Tr>
-            <Label>비밀번호</Label>
-            <Content>{'*'.repeat(10)}</Content>
-            <OptionBox>
-              <Button
-                as="div"
-                role="button"
-                onClick={() => {
-                  openModalChangePassword()
-                }}
-              >
-                변경
-              </Button>
-            </OptionBox>
-          </Tr>
+          <RenderIf
+            condition={isPrivate}
+            render={
+              <Tr>
+                <Label>비밀번호</Label>
+                <Content>{'*'.repeat(10)}</Content>
+                <OptionBox>
+                  <Button
+                    as="div"
+                    role="button"
+                    onClick={() => {
+                      openModalChangePassword()
+                    }}
+                  >
+                    변경
+                  </Button>
+                </OptionBox>
+              </Tr>
+            }
+          />
           <Tr>
             <Label>가입일</Label>
             <Content>
@@ -101,15 +120,20 @@ const UserInfoSection = ({ email, nickname, registeredAt }: Props) => {
           </Tr>
         </tbody>
       </Table>
-      <Box>
-        <QuitButton
-          onClick={() => {
-            openModalWithdrawal()
-          }}
-        >
-          회원탈퇴
-        </QuitButton>
-      </Box>
+      <RenderIf
+        condition={isPrivate}
+        render={
+          <Box>
+            <QuitButton
+              onClick={() => {
+                openModalWithdrawal()
+              }}
+            >
+              회원탈퇴
+            </QuitButton>
+          </Box>
+        }
+      />
     </Container>
   )
 }
@@ -137,10 +161,6 @@ const OptionBox = styled.td`
   ${flex({ justify: 'flex-end', align: 'center' })}
   margin-left: auto;
   gap: 12px;
-`
-
-const InterestMovieBox = styled.div`
-  width: 400px;
 `
 
 const Tr = styled.tr`

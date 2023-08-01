@@ -1,16 +1,17 @@
 import styled from '@emotion/styled'
 import { colors, flexGap, font } from '@/styles/emotion'
-import { Divider, Tag } from '@/components/common'
+import { Divider, RenderIf } from '@/components/common'
 import { MAX_INTEREST_MOVIE_COUNT } from '../constants'
 import { useEffect, useState } from 'react'
 import { useUpdateFavoriteMovie } from '@/services/myPage'
 import toast from 'react-hot-toast'
 
 interface Props {
+  type: 'private' | 'public'
   interestMovieList: User.InterestMovie[]
 }
 
-const InterestMovieSection = ({ interestMovieList }: Props) => {
+const InterestMovieSection = ({ type, interestMovieList }: Props) => {
   const [value, setValue] = useState<string>('')
   const [hashtags, setHashtags] = useState<string[]>(interestMovieList)
   const { mutate: updateFavoriteMovie } = useUpdateFavoriteMovie()
@@ -66,25 +67,37 @@ const InterestMovieSection = ({ interestMovieList }: Props) => {
     setValue('')
   }, [hashtags])
 
+  const isPrivate = type === 'private'
+
   return (
     <Container>
       <Divider color={colors.primary.orange} size={4} limit="24px" />
       <Flex>
         <Title>관심영화</Title>
-        <TagInput
-          value={value}
-          onChange={handleInputChange}
-          onKeyDown={handleInputKeyDown}
-          placeholder="Hashtag"
+        <RenderIf
+          condition={isPrivate}
+          render={
+            <TagInput
+              value={value}
+              onChange={handleInputChange}
+              onKeyDown={handleInputKeyDown}
+              placeholder="Hashtag"
+            />
+          }
         />
       </Flex>
       <TagContainer>
         {hashtags.map((hashtag, index) => (
           <TagSpan key={index}>
             #{hashtag}
-            <TagRemoveButton onClick={() => handleRemoveHashtag(hashtag)}>
-              X
-            </TagRemoveButton>
+            <RenderIf
+              condition={isPrivate}
+              render={
+                <TagRemoveButton onClick={() => handleRemoveHashtag(hashtag)}>
+                  X
+                </TagRemoveButton>
+              }
+            />
           </TagSpan>
         ))}
       </TagContainer>
