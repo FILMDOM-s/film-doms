@@ -17,3 +17,13 @@ export const modalState = atom<ModalType>({
     theme: 'dark',
   },
 })
+
+export const pureModalState = atom<ModalType>({
+  key: 'pureModalState',
+  default: {
+    isOpen: false,
+    title: '',
+    content: '',
+    theme: 'dark',
+  },
+})

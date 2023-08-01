@@ -2,7 +2,7 @@ import styled from '@emotion/styled'
 import { colors, flexGap, font } from '@/styles/emotion'
 import { Divider, RenderIf } from '@/components/common'
 import { MAX_INTEREST_MOVIE_COUNT } from '../constants'
-import { useEffect, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { useUpdateFavoriteMovie } from '@/services/myPage'
 import toast from 'react-hot-toast'
 
@@ -16,6 +16,7 @@ const InterestMovieSection = ({ type, interestMovieList }: Props) => {
   const [hashtags, setHashtags] = useState<string[]>(interestMovieList)
   const { mutate: updateFavoriteMovie } = useUpdateFavoriteMovie()
 
+  const inputRef = useRef<HTMLInputElement>(null)
   const handleRemoveHashtag = (hashtagToRemove: string) => {
     const filteredHashtags = hashtags.filter(
       hashtag => hashtag !== hashtagToRemove
@@ -67,6 +68,13 @@ const InterestMovieSection = ({ type, interestMovieList }: Props) => {
     setValue('')
   }, [hashtags])
 
+  // 인풋에 입력한 글자수만큼 인풋 넓이 조절
+  useEffect(() => {
+    if (inputRef.current) {
+      inputRef.current.style.width = `${value.length * 10}px`
+    }
+  }, [hashtags, value.length])
+
   const isPrivate = type === 'private'
 
   return (
@@ -100,6 +108,21 @@ const InterestMovieSection = ({ type, interestMovieList }: Props) => {
             />
           </TagSpan>
         ))}
+        <TagSpan
+          style={{
+            display:
+              hashtags.length >= MAX_INTEREST_MOVIE_COUNT ? 'none' : 'flex',
+          }}
+        >
+          #
+          <TagInput
+            ref={inputRef}
+            value={value}
+            onChange={handleInputChange}
+            onKeyDown={handleInputKeyDown}
+            placeholder="영화제목"
+          />
+        </TagSpan>
       </TagContainer>
     </Container>
   )
@@ -115,17 +138,24 @@ const Container = styled.div`
   width: 100%;
 `
 
+// placeholder 글자색 white로 바꾸기
 const TagInput = styled.input`
-  width: 200px;
-  height: 40px;
-  border: 1px solid #e0e0e0;
-  padding: 0 1rem;
-  font-size: 1rem;
   cursor: pointer;
   outline: none;
   transition: all 0.2s ease-in-out;
-  box-shadow: 0 0 0 0 rgba(0, 0, 0, 0.2);
-  border-radius: 10px;
+  background-color: transparent;
+  color: white;
+  flex: 1;
+  &::placeholder {
+    color: white;
+  }
+  &::-webkit-input-placeholder {
+    color: white;
+  }
+  &::-ms-input-placeholder {
+    color: white;
+  }
+  min-width: 55px;
 `
 
 const TagContainer = styled.div`

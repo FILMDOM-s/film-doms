@@ -6,7 +6,7 @@ import { useState } from 'react'
 import * as Svgs from '@svgs/common'
 import NavContainer from '../../Home/Nav/NavContainer'
 import Link from 'next/link'
-import Modal from '@/components/common/Modal'
+import { Modal, PureModal } from '@/components/common/Modal'
 import Avatar from './Avatar'
 
 const Header = () => {
@@ -44,6 +44,7 @@ const Header = () => {
         </RightSideWrapper>
       </HeaderInner>
       <Modal />
+      <PureModal />
       <SideNav
         isShow={showSideNav}
         onClose={() => setShowSideNav(!showSideNav)}

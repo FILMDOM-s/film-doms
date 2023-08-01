@@ -2,7 +2,7 @@ import { useImageUpload } from '@/services/file'
 import { getImageSrcByUuid } from '@/utils'
 import styled from '@emotion/styled'
 import dynamic from 'next/dynamic'
-import { useMemo, useRef, useState } from 'react'
+import { useCallback, useMemo, useRef, useState } from 'react'
 import ReactQuill, { ReactQuillProps } from 'react-quill'
 import 'react-quill/dist/quill.snow.css'
 
@@ -36,7 +36,7 @@ const Editor = ({
   const [imageList, setImageList] = useState<string[]>([])
   const { mutate: imageUpload } = useImageUpload()
 
-  const imageHandler = async () => {
+  const imageHandler = useCallback(async () => {
     const input = document.createElement('input')
     input.setAttribute('type', 'file')
     input.setAttribute('accept', 'image/*')
@@ -48,6 +48,12 @@ const Editor = ({
 
         imageUpload(file[0], {
           onSuccess({ result: { uploadedFiles } }) {
+            if (setImageList !== undefined && uploadedFiles.length > 0) {
+              setImageList((prev: string[]) => [
+                ...prev,
+                getImageSrcByUuid(uploadedFiles[0].uuidFileName),
+              ])
+            }
             const editor = quillRef.current
               ? quillRef.current.getEditor()
               : null
@@ -61,12 +67,12 @@ const Editor = ({
             editor.setSelection(range + 1, 0)
 
             setImageList(prev => [...prev, imageUrl])
-            onChangeImageList?.([...imageList, imageUrl])
+            onChangeImageList?.([...imageList, uploadedFiles[0].id.toString()])
           },
         })
       } catch (error) {}
     })
-  }
+  }, [imageUpload, setImageList])
 
   const modules = useMemo(() => {
     return {
@@ -104,7 +110,7 @@ const Editor = ({
         matchVisual: false,
       },
     }
-  }, [])
+  }, [imageHandler])
 
   const formats = [
     'bold',

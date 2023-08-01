@@ -40,7 +40,21 @@ export default function App({
   if (!isActiveServiceWorker) {
     console.warn('Service Worker is not active')
 
-    return <>{null}</>
+    return (
+      <div
+        style={{
+          position: 'fixed',
+          top: '50%',
+          left: '50%',
+          transform: 'translate(-50%,-50%)',
+          fontSize: '30px',
+          fontWeight: 'bold',
+          color: '#000',
+        }}
+      >
+        서비스워커가 활성화 되기 전입니다.
+      </div>
+    )
   }
 
   return (

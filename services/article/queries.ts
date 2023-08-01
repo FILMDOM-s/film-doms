@@ -1,3 +1,4 @@
+import { useQuery } from '@tanstack/react-query'
 import { useSuspendedQuery } from '@/hooks'
 import queryKeys from '../queryKeys'
 import {
@@ -43,6 +44,13 @@ export const useFetchArticleNoticeList = (category: string) => {
     {
       enabled: category !== 'recent',
     }
+  )
+}
+
+export const useFetchArticleDetailEdit = (category: string, id: number) => {
+  return useQuery(
+    queryKeys.article.detailContentDTOByCategoryById(category, id),
+    () => getArticleDetailContentByCategoryById(category, id)
   )
 }
 

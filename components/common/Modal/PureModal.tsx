@@ -1,13 +1,12 @@
 import { XIcon } from '@/assets/svgs/common'
-import { useModal } from '@/hooks/useModal'
+import { usePureModal } from '@/hooks/usePureModal'
 import styled from '@emotion/styled'
 import { useEffect } from 'react'
-import Alphabets from './deco'
 
-const Modal = () => {
-  const { animation, modalDataState, closeModal } = useModal()
+const PureModal = () => {
+  const { animation, pureModalDataState, closeModal } = usePureModal()
   useEffect(() => {
-    if (modalDataState.isOpen) {
+    if (pureModalDataState.isOpen) {
       document.body.style.top = `-${window.scrollY}px`
       document.body.style.position = 'fixed'
       document.body.style.overflow = 'hidden'
@@ -21,29 +20,28 @@ const Modal = () => {
       document.body.style.removeProperty('top')
       window.scrollTo(0, heightScroll)
     }
-  }, [modalDataState.isOpen])
+  }, [pureModalDataState.isOpen])
   return (
     <>
-      {modalDataState.isOpen && (
-        <ModalDimmer theme={modalDataState.theme}>
-          <ModalBody className={animation} theme={modalDataState.theme}>
+      {pureModalDataState.isOpen && (
+        <ModalDimmer theme={pureModalDataState.theme}>
+          <ModalBodyWrapper>
             <ModalHeader>
               <ModalCloseButton onClick={() => closeModal()}>
-                <XIcon
-                  fill={modalDataState.theme === 'dark' ? '#ffffff' : '#000000'}
-                />
+                <XIcon fill={'#ffffff'} />
               </ModalCloseButton>
             </ModalHeader>
-            <Alphabets theme={modalDataState.theme} />
-            <ModalContents>{modalDataState.content}</ModalContents>
-          </ModalBody>
+            <ModalBody className={animation} theme={pureModalDataState.theme}>
+              <ModalContents>{pureModalDataState.content}</ModalContents>
+            </ModalBody>
+          </ModalBodyWrapper>
         </ModalDimmer>
       )}
     </>
   )
 }
 
-export default Modal
+export default PureModal
 
 const ModalDimmer = styled.div<{ theme: 'dark' | 'white' }>`
   position: fixed;
@@ -59,28 +57,39 @@ const ModalDimmer = styled.div<{ theme: 'dark' | 'white' }>`
     rgba(17, 17, 17, 0.7) 18.15%,
     #111111 29.71%
   );`
-      : 'background: rgba(255,255,255,0.7);'}
+      : 'background: rgba(0, 0, 0, 0.40);'}
   display: flex;
   justify-content: center;
   align-items: center;
   z-index: 100;
 `
+
+const ModalBodyWrapper = styled.div`
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+`
+
 const ModalBody = styled.div<{ theme: 'dark' | 'white' }>`
   position: relative;
   display: flex;
   flex-direction: column;
-  width: 580px;
+  width: 480px;
   background-color: ${({ theme }) =>
     theme === 'dark' ? 'transparent' : '#ffffff'};
-  border-radius: 10px;
-  padding: 10px;
 `
 const ModalContents = styled.div`
   margin-top: 32px;
 `
 const ModalHeader = styled.div`
+  width: 100%;
   position: relative;
-  height: 48px;
+  height: 20px;
+  display: flex;
+  justify-content: flex-end;
+  margin-bottom: 16px;
 `
 const ModalCloseButton = styled.button`
   position: absolute;
