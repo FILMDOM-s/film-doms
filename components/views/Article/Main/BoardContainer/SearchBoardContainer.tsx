@@ -22,7 +22,7 @@ const SearchBoardContainer = ({
   category,
   method,
   searchString,
-  params: { page, tag, size },
+  params: { page, size },
   onChangePage,
 }: Props) => {
   const { push } = useRouter()
@@ -31,7 +31,7 @@ const SearchBoardContainer = ({
   const { data: articleList } = useFetchSearchArticleList(
     camelToSnake(category),
     method,
-    `keyword=${searchString}&page=${page}&size=${size}`
+    `keyword=${searchString}&page=${Math.max(page - 1, 0)}&size=${size}`
   )
 
   return (
