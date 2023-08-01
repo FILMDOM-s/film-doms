@@ -27,7 +27,7 @@ const SearchBoardContainer = ({
 }: Props) => {
   const { push } = useRouter()
 
-  const { data: noticeList } = useFetchArticleNoticeList()
+  const { data: noticeList } = useFetchArticleNoticeList(camelToSnake(category))
   const { data: articleList } = useFetchSearchArticleList(
     camelToSnake(category),
     method,
@@ -37,7 +37,7 @@ const SearchBoardContainer = ({
   return (
     <Container>
       <ArticleBoard
-        noticeItems={noticeList}
+        noticeItems={noticeList?.content ?? []}
         articleItems={articleList?.content}
       />
       <ButtonBox>
