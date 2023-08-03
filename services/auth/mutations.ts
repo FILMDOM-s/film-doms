@@ -11,11 +11,16 @@ import {
   createGoogleAccount,
 } from './apis'
 import api from '../api'
+import Cookies from 'js-cookie'
 
 export const useCreateSignUpAccount = () => {
   return useMutation(createSignUpAccount, {
-    onSuccess: ({ result: { accessToken } }) => {
+    onSuccess: ({ result: { accessToken, expiredAt } }) => {
       api.defaults.headers.common['Authorization'] = `Bearer ${accessToken}`
+
+      Cookies.set('accessToken', accessToken, {
+        expires: Number(expiredAt),
+      })
     },
   })
 }

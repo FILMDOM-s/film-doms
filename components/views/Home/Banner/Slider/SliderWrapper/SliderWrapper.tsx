@@ -9,7 +9,15 @@ import Image from 'next/image'
 import { flexCenter } from '@/styles/emotion'
 import styled from '@emotion/styled'
 
-function SliderWrapper({ banners }: { banners: Main.Banner[] }) {
+type Props = {
+  banners: Array<
+    {
+      onClick?: VoidFunction
+    } & Main.Banner
+  >
+}
+
+function SliderWrapper({ banners }: Props) {
   return (
     <SliderOutsideAlign>
       <Swiper
@@ -26,9 +34,16 @@ function SliderWrapper({ banners }: { banners: Main.Banner[] }) {
           disableOnInteraction: false,
         }}
       >
-        {banners.map(({ id, type, title, subtitle, image }) => (
-          <SwiperSlide key={id}>
-            <Image src={image} alt={title} width={1280} height={440} priority />
+        {banners.map(({ id, type, title, subtitle, image, onClick }) => (
+          <SwiperSlide key={id} onClick={onClick}>
+            <Image
+              src={image}
+              alt={title}
+              width={1280}
+              height={440}
+              priority
+              style={{ cursor: 'pointer' }}
+            />
             <TextArea>
               <TypeText>{type}</TypeText>
               <TitleText>{title}</TitleText>
@@ -63,6 +78,7 @@ const TextArea = styled.div`
   align-items: flex-start;
   height: 109px;
   gap: 8px;
+  cursor: pointer;
 `
 
 const TypeText = styled.div`
@@ -79,6 +95,7 @@ const TitleText = styled.div`
   font-style: normal;
   font-weight: 500;
   line-height: 60px; /* 100% */
+  letter-spacing: -1px;
 `
 
 const SubTitleText = styled.div`

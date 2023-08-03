@@ -9,7 +9,7 @@ import { useForm } from 'react-hook-form'
 import { useFetchArticleDetailEdit, useUpdateArticle } from '@/services/article'
 import { useRouter } from 'next/router'
 import toast from 'react-hot-toast'
-import { camelToSnake, snakeToCamel } from '@/utils'
+import { camelToSnake } from '@/utils'
 import SelectBox from './Select/Select'
 import { Editor } from '@/components/common/Editor'
 
@@ -39,23 +39,15 @@ const UpdateEditorContainer = ({
       mode: 'onChange',
     }
   )
-  const { data: article, refetch } = useFetchArticleDetailEdit(
+  const { data: article } = useFetchArticleDetailEdit(
     camelToSnake(category),
     id
   )
 
   const { mutate: updateArticle } = useUpdateArticle()
 
-  const onSubmit = async (e: any) => {
-    const {
-      title,
-      tag,
-      openAllowed,
-      commentsAllowed,
-      shareAllowed,
-      startAt,
-      endAt,
-    } = getValues()
+  const onSubmit = async () => {
+    const { title, tag, startAt, endAt } = getValues()
     try {
       await updateArticle(
         {
@@ -73,7 +65,7 @@ const UpdateEditorContainer = ({
           },
         },
         {
-          onSuccess: ({ result, resultCode }) => {
+          onSuccess: ({ resultCode }) => {
             if (resultCode === 'SUCCESS') {
               toast('수정 완료!', {
                 icon: '👏',
@@ -87,7 +79,7 @@ const UpdateEditorContainer = ({
               })
             }
           },
-          onError: err => {
+          onError: () => {
             toast.error('수정 실패!', {
               icon: '😥',
               position: 'top-center',
@@ -131,7 +123,10 @@ const UpdateEditorContainer = ({
             type="text"
           />
         </Header>
-        <Editor content={content} setContent={setContent} />
+        <Editor
+          content={content}
+          onChangeContent={content => setContent(content)}
+        />
         <Checks>
           <LabeledCheckbox
             label={'공개'}
@@ -265,12 +260,4 @@ const DateInput = styled.input`
 
 const DateContainer = styled.div`
   ${flexGap('20px', 'row')}
-`
-
-const Select = styled.select`
-  width: 200px;
-  height: 40px;
-  border: 2px solid black;
-  outline: none;
-  cursor: pointer;
 `

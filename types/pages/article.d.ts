@@ -139,18 +139,57 @@ declare module Article {
     }
   }
 
-  type Notice = {
+  type NoticeItem = {
     id: number
+    category: string
     tag: string
-    isContainImage: boolean
     title: string
-    comments: number[]
-    writer: User
-    createAt: string
-    updateAt: string
+    author: {
+      id: number
+      nickname: string
+      profileImage: {
+        id: number
+        uuidFileName: string
+      }
+    }
+    createdAt: number
+    updatedAt: number
     views: number
     likes: number
-    category: 'notice'
+    commentCount: number
+    containImage: boolean
+  }
+
+  type NoticeDTO = {
+    resultCode: string
+    result: {
+      content: NoticeItem[]
+      pageable: {
+        sort: {
+          empty: boolean
+          sorted: boolean
+          unsorted: boolean
+        }
+        offset: number
+        pageSize: number
+        pageNumber: number
+        paged: boolean
+        unpaged: boolean
+      }
+      last: boolean
+      totalPages: number
+      totalElements: number
+      size: number
+      number: number
+      sort: {
+        empty: boolean
+        sorted: boolean
+        unsorted: boolean
+      }
+      first: boolean
+      numberOfElements: number
+      empty: boolean
+    }
   }
 
   type Popular = {

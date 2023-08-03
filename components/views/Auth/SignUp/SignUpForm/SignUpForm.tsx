@@ -71,7 +71,7 @@ const SignUpForm = () => {
     mode: 'onChange',
   })
 
-  watch()
+  const termsOfService = watch('termsOfService')
 
   const onSubmit = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault()
@@ -256,7 +256,6 @@ const SignUpForm = () => {
   }
 
   const isValidateClientInput = () => {
-    const { termsOfService } = getValues()
     const { email, password, passwordCheck, nickname } = errors
     const isErrorInput = [email, password, passwordCheck, nickname].some(
       error => error

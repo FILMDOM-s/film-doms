@@ -37,15 +37,21 @@ export const useFetchArticleDetailContentByCategoryById = (
   )
 }
 
+export const useFetchArticleNoticeList = (category: string) => {
+  return useSuspendedQuery(
+    queryKeys.article.noticeDTO,
+    () => getArticleNoticeList(category),
+    {
+      enabled: category !== 'recent',
+    }
+  )
+}
+
 export const useFetchArticleDetailEdit = (category: string, id: number) => {
   return useQuery(
     queryKeys.article.detailContentDTOByCategoryById(category, id),
     () => getArticleDetailContentByCategoryById(category, id)
   )
-}
-
-export const useFetchArticleNoticeList = () => {
-  return useSuspendedQuery(queryKeys.article.noticeDTO, getArticleNoticeList)
 }
 
 export const useFetchArticleCommentListByCategoryById = (

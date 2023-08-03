@@ -3,7 +3,6 @@ import styled from '@emotion/styled'
 import {
   useFetchArticleNoticeList,
   useFetchArticleMainContentByCategory,
-  useFetchSearchArticleList,
 } from '@/services/article'
 import { flex, flexCenter, flexGap, font } from '@/styles/emotion'
 import { ArticleBoard, CriticBoard } from './ArticleBoard'
@@ -24,7 +23,7 @@ const BoardContainer = ({
 }: Props) => {
   const { push } = useRouter()
 
-  const { data: noticeList } = useFetchArticleNoticeList()
+  const { data: noticeList } = useFetchArticleNoticeList(camelToSnake(category))
   const { data: articleList } = useFetchArticleMainContentByCategory(
     camelToSnake(category),
     {
@@ -53,7 +52,7 @@ const BoardContainer = ({
         defaultRender={
           <>
             <ArticleBoard
-              noticeItems={noticeList}
+              noticeItems={noticeList?.content ?? []}
               articleItems={articleList.content}
             />
             {category !== 'recent' && (

@@ -1,5 +1,5 @@
-import { createParams, getRandomNum } from '@/utils'
-import api, { mswApi } from '../api'
+import { createParams } from '@/utils'
+import api from '../api'
 
 export const getArticleTagListByCategory = async (category: string) => {
   const { result } = await api.get<null, Article.TagDTO>(
@@ -31,10 +31,12 @@ export const getArticleDetailContentByCategoryById = async (
   return result
 }
 
-export const getArticleNoticeList = async () => {
-  const data = await mswApi.get<null, Article.Notice[]>(`/api/article/notice`)
+export const getArticleNoticeList = async (category: string) => {
+  const { result } = await api.get<null, Article.NoticeDTO>(
+    `/api/v1/article/${category}/announce`
+  )
 
-  return data
+  return result
 }
 
 export const getArticleCommentListByCategoryById = async (

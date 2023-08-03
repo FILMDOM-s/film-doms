@@ -59,3 +59,11 @@ export const updateNickname = (data: Auth.UpdateNickname.Request) => {
     Auth.UpdateNickname.Request
   >('/api/v1/account/profile/nickname', data)
 }
+
+export const getPublicUserInfo = async (id: string) => {
+  const { result } = await api.get<null, PublicProfile.Response>(
+    `/api/v1/account/profile/${id}`
+  )
+
+  return result
+}

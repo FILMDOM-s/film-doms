@@ -38,6 +38,8 @@ export default function App({
   const { isActiveServiceWorker } = useStartWorker()
 
   if (!isActiveServiceWorker) {
+    console.warn('Service Worker is not active')
+
     return (
       <div
         style={{

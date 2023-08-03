@@ -3,6 +3,7 @@ import {
   type AxiosInstance,
   type InternalAxiosRequestConfig,
 } from 'axios'
+import Cookies from 'js-cookie'
 
 export type DomainType = 'server' | 'msw'
 
@@ -43,6 +44,8 @@ export const setAuthorization = ({
   token: string
 }) => {
   instance.defaults.headers.common['Authorization'] = `Bearer ${token}`
+
+  Cookies.set('accessToken', token)
 }
 
 export const isTokenError = (error: AxiosError) => {
@@ -52,7 +55,7 @@ export const isTokenError = (error: AxiosError) => {
   if ('resultCode' in (data as { resultCode: string })) {
     const { resultCode } = data as { resultCode: string }
 
-    return resultCode === 'TOKEN_NOT_IN_DB'
+    return resultCode === 'TOKEN_NOT_IN_DB' || resultCode === 'TOKEN_NOT_FOUND'
   }
 
   return false
@@ -60,6 +63,13 @@ export const isTokenError = (error: AxiosError) => {
 
 export const isAuthError = (error: AxiosError) => {
   const { response } = error
+  const data = response?.data
 
-  return response?.status === 401
+  if ('resultCode' in (data as { resultCode: string })) {
+    const { resultCode } = data as { resultCode: string }
+
+    return resultCode === 'AUTHENTICATION_ERROR'
+  }
+
+  return false
 }

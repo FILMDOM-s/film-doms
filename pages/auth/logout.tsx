@@ -1,10 +1,6 @@
-import api from '@/services/api'
 import styled from '@emotion/styled'
-
-import axios from 'axios'
 import { useRouter } from 'next/router'
 import { useEffect } from 'react'
-import { toast } from 'react-hot-toast'
 
 const Logout = () => {
   const router = useRouter()

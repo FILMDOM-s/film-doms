@@ -17,6 +17,7 @@ declare module Auth {
       resultCode: string
       result: {
         accessToken: string
+        expiredAt: string
       }
     }
 

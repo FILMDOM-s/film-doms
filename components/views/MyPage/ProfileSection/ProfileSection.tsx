@@ -1,3 +1,4 @@
+import { RenderIf } from '@/components/common'
 import { useImageUpload } from '@/services/file'
 import { useUpdateUserProfile } from '@/services/myPage'
 import { colors, flex, font } from '@/styles/emotion'
@@ -10,6 +11,7 @@ import { useState } from 'react'
 import { toast } from 'react-hot-toast'
 
 interface Props {
+  type: 'private' | 'public'
   profileImage: string
   nickname: string
 }
@@ -23,7 +25,7 @@ const readFile = (file: File) => {
   })
 }
 
-const ProfileSection = ({ profileImage, nickname }: Props) => {
+const ProfileSection = ({ type, profileImage, nickname }: Props) => {
   const [previewProfile, setPreviewProfile] = useState<string | null>(null)
   const { mutate: imageUpload } = useImageUpload()
   const { mutate: updateProfile } = useUpdateUserProfile()
@@ -53,6 +55,8 @@ const ProfileSection = ({ profileImage, nickname }: Props) => {
     })
   }
 
+  const isPrivate = type === 'private'
+
   return (
     <Container>
       <ProfileImageBox>
@@ -65,19 +69,29 @@ const ProfileSection = ({ profileImage, nickname }: Props) => {
           alt={`profile-${nickname}`}
           fill
         />
-        <ProfileEditBox htmlFor="profile" role="button">
-          <ProfileEdit />
-        </ProfileEditBox>
-        <Input
-          type="file"
-          id="profile"
-          hide
-          accept="image/*"
-          onChange={onChangeProfile}
+        <RenderIf
+          condition={isPrivate}
+          render={
+            <>
+              <ProfileEditBox htmlFor="profile" role="button">
+                <ProfileEdit />
+              </ProfileEditBox>
+              <Input
+                type="file"
+                id="profile"
+                hide
+                accept="image/*"
+                onChange={onChangeProfile}
+              />
+            </>
+          }
         />
       </ProfileImageBox>
       <NickName>{nickname}</NickName>
-      <Description>{`'${nickname}' 님 환영합니다!`}</Description>
+      <RenderIf
+        condition={isPrivate}
+        render={<Description>{`'${nickname}' 님 환영합니다!`}</Description>}
+      />
     </Container>
   )
 }

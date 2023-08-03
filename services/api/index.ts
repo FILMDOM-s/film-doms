@@ -8,10 +8,17 @@ import {
   isTokenError,
 } from './utils'
 import { getAccessToken } from '../auth'
+import Cookies from 'js-cookie'
+import Router from 'next/router'
 
 const createApi = (type: DomainType) => {
+  const token = Cookies.get('accessToken')
+
   const _api = axios.create({
     baseURL: `${getDomain(type)}`,
+    headers: {
+      ...(token && { Authorization: `Bearer ${token}` }),
+    },
   })
 
   _api.interceptors.request.use(async config => {
@@ -29,34 +36,33 @@ const createApi = (type: DomainType) => {
     },
     async error => {
       if (error instanceof AxiosError) {
-        if (isTokenError(error)) {
-          // TODO: 로그인 유도 필요
-          // ?: 현재, url path가 아닌 modal로 관리하기 때문에 별도 처리 필요
+        if (isAuthError(error)) {
+          const { config } = error
 
-          return Promise.reject(error)
+          try {
+            const {
+              result: { accessToken },
+            } = await getAccessToken()
+
+            setAuthorization({
+              instance: _api,
+              token: accessToken,
+            })
+
+            const _config = getAuthorizationConfig({
+              token: accessToken,
+              config,
+            })
+
+            return _api.request(_config)
+          } catch (error: any) {
+            if (isTokenError(error)) {
+              Cookies.remove('accessToken')
+
+              Router.push('/')
+            }
+          }
         }
-
-        if (!isAuthError(error)) {
-          return Promise.reject(error)
-        }
-
-        const { config } = error
-
-        const {
-          result: { accessToken },
-        } = await getAccessToken()
-
-        setAuthorization({
-          instance: _api,
-          token: accessToken,
-        })
-
-        const _config = getAuthorizationConfig({
-          token: accessToken,
-          config,
-        })
-
-        return _api.request(_config)
       }
 
       return Promise.reject(error)
