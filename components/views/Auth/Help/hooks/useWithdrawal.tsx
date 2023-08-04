@@ -1,4 +1,5 @@
 import { useModal, OpenModalType } from '@/hooks/useModal'
+import { useDeleteUser } from '@/services/myPage'
 import styled from '@emotion/styled'
 import { useForm } from 'react-hook-form'
 import toast from 'react-hot-toast'
@@ -9,20 +10,32 @@ type WithdrawalProps = {
 }
 
 const Withdrawal = () => {
+  const { mutate } = useDeleteUser()
   const { register, getValues, handleSubmit } = useForm<WithdrawalProps>()
 
   const onSubmit = () => {
     const { password, checkPassword } = getValues()
+
+    if (!password || !checkPassword) {
+      toast.error('비밀번호를 입력해주세요.')
+      return
+    }
 
     if (password !== checkPassword) {
       toast.error('비밀번호가 일치하지 않습니다.')
       return
     }
 
-    if (!password || !checkPassword) {
-      toast.error('비밀번호를 입력해주세요.')
-      return
-    }
+    mutate(
+      {
+        password: password,
+      },
+      {
+        onSuccess: () => {
+          toast.success('회원탈퇴가 완료되었습니다.')
+        },
+      }
+    )
   }
   return (
     <Container>
@@ -37,13 +50,11 @@ const Withdrawal = () => {
           탈퇴 전, 꼭 확인하세요!
         </LabelText>
         <OpacityText>
-          스터닝 계정은 라우드소싱, 노트폴리오 등 스터닝이 운영하는 모든
-          서비스를 함께 이용하는 통합 계정입니다. 스터닝 계정을 탈퇴하면 계정
-          정보 및 현재 이용중인 세부 서비스의 모든 정보가 삭제됩니다. 탈퇴한
-          후에는 더 이상 스터닝 계정으로 로그인 할 수 없으므로, 모든 세부
-          서비스들도 이용할 수 없게 됩니다. 탈퇴 후 3개월 내 동일
-          아이디(이메일)로 재가입 불가합니다. 탈퇴된 스터닝 정보와 서비스
-          이용기록 등은 복구할 수 없으니 신중하게 선택하시길 바랍니다.
+          탈퇴 후 계정은 7일간 비활성화 상태로 변하며, 7일 사이에 언제든지
+          로그인 하면 계정은 다시 활성화 됩니다. 7일 이후에는 계정이 삭제되며,
+          작성한 글, 댓글, 마이페이지에 보이는 모든 회원 정보가 삭제됩니다.
+          계정이 삭제된 이후로는 서비스 이용 기록은 복구가 불가능하니 신중하게
+          선택하여 주세요
         </OpacityText>
         <LabelText
           style={{
@@ -57,8 +68,8 @@ const Withdrawal = () => {
             marginBottom: '24px',
           }}
         >
-          안전한 탈퇴를 위해 본인 확인 절차를 진행합니다. 비밀번호를 정확하게
-          입력해주세요.
+          탈퇴 요청이 올바른 요청인지 확인하기 위하여 비밀번호를 재확인 합니다.
+          비밀번호를 입력해 주세요.
         </OpacityText>
         <LabelText>비밀번호</LabelText>
         <PasswordInput

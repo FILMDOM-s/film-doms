@@ -9,7 +9,12 @@ import Image from 'next/image'
 import { useState } from 'react'
 import ChildCommentItem from './ChildCommentItem'
 import { getImageSrcByUuid } from '@/utils'
-import { useCreateComment, useToggleCommentLike } from '@/services/article'
+import {
+  useCreateComment,
+  useDeleteComment,
+  useToggleCommentLike,
+  useUpdateComment,
+} from '@/services/article'
 import { IconLoader } from '@tabler/icons-react'
 
 const CommentItem = ({
@@ -17,17 +22,25 @@ const CommentItem = ({
   comment,
   borderBottom,
   refetch,
+  isMine,
 }: {
   articleId: number
   comment: Article.Comment
   borderBottom: boolean
   refetch: () => void
+  isMine: boolean
 }) => {
   const [leaveReply, setLeaveReply] = useState<boolean>(false)
   const [replyToggle, setReplyToggle] = useState<boolean>(false)
+  const [content, setContent] = useState<string>(comment.content)
+  const [isUpdate, setIsUpdate] = useState<boolean>(false)
 
   const [reply, setReply] = useState('')
   const { mutate: createComment, isLoading } = useCreateComment()
+  const { mutate: updateComment, isLoading: isUpdateLoading } =
+    useUpdateComment()
+  const { mutate: deleteComment, isLoading: isDeleteLoading } =
+    useDeleteComment()
   const { mutate: toggleCommentLike, isLoading: isToggleLoading } =
     useToggleCommentLike()
 
@@ -84,7 +97,13 @@ const CommentItem = ({
           {comment.author.nickname}
           <span>{dateDiff(comment.createdAt)}</span>
         </NicknameBox>
-        <ContentBox>{comment.content}</ContentBox>
+        <ContentBox
+          value={content}
+          onChange={e => {
+            setContent(e.target.value)
+          }}
+          disabled={!isUpdate}
+        />
         <ButtonBox>
           <CommentButton
             leftIcon={isToggleLoading ? <Loading /> : <MiniThumb />}
@@ -99,6 +118,49 @@ const CommentItem = ({
           >
             답글
           </CommentButton>
+          {isMine && (
+            <CommentButton
+              onClick={() => {
+                if (isUpdate) {
+                  // 수정완료
+                  updateComment(
+                    {
+                      commentId: comment.id,
+                      content,
+                    },
+                    {
+                      onSuccess: () => {
+                        refetch()
+                      },
+                    }
+                  )
+                }
+
+                setIsUpdate(!isUpdate)
+              }}
+            >
+              {isUpdate ? '수정완료' : '수정'}
+            </CommentButton>
+          )}
+          {isMine && (
+            <CommentButton
+              onClick={() => {
+                // 수정완료
+                deleteComment(
+                  {
+                    commentId: comment.id,
+                  },
+                  {
+                    onSuccess: () => {
+                      refetch()
+                    },
+                  }
+                )
+              }}
+            >
+              삭제
+            </CommentButton>
+          )}
         </ButtonBox>
         {comment.childComments?.length > 0 && (
           <>
@@ -169,9 +231,13 @@ const NicknameBox = styled.div`
   }
 `
 
-const ContentBox = styled.div`
+const ContentBox = styled.input`
   ${typography.contentBody}
   color: ${colors.primary.black};
+  &:disabled {
+    border: none;
+    background-color: transparent;
+  }
 `
 
 const ButtonBox = styled.div`

@@ -3,9 +3,11 @@ import {
   createArticle,
   createComment,
   deleteArticle,
+  deleteComment,
   toggleArticleLike,
   toggleCommentLike,
   updateArticle,
+  updateComment,
 } from './apis'
 
 export const useCreateArticle = (
@@ -28,6 +30,14 @@ export const useDeleteArticle = () => {
 
 export const useCreateComment = () => {
   return useMutation(createComment)
+}
+
+export const useUpdateComment = () => {
+  return useMutation(updateComment)
+}
+
+export const useDeleteComment = () => {
+  return useMutation(deleteComment)
 }
 
 export const useToggleArticleLike = () => {

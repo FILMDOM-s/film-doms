@@ -114,6 +114,23 @@ export const createComment = (item: Article.CommentCreateRequestDto) => {
   >('/api/v1/comment', item)
 }
 
+export const updateComment = ({
+  commentId,
+  content,
+}: {
+  commentId: number
+  content: string
+}) => {
+  return api.put<null, DefaultResponse, { content: string }>(
+    `/api/v1/comment/${commentId}`,
+    { content }
+  )
+}
+
+export const deleteComment = ({ commentId }: { commentId: number }) => {
+  return api.delete<null, DefaultResponse>(`/api/v1/comment/${commentId}`)
+}
+
 export const toggleArticleLike = (item: number) => {
   return api.post<null, Article.LikeResponseDto, null>(
     `/api/v1/article/${item}/vote`

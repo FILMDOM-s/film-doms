@@ -43,6 +43,10 @@ export const signInAccount = (item: Auth.SignIn.Request) => {
   )
 }
 
+export const signOutAccount = () => {
+  return api.post<null, null, null>(`/api/v1/account/logout`)
+}
+
 export const signInGoogle = (code: string) => {
   return api.post<null, Auth.SignIn.DTO>(`/front/oauth2/google`, {
     code,

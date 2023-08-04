@@ -51,5 +51,6 @@ export const Default = () => (
     borderBottom={false}
     articleId={articleId}
     refetch={() => {}}
+    isMine={true}
   />
 )

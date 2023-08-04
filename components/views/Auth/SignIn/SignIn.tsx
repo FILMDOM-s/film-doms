@@ -26,7 +26,7 @@ function SignIn({ closeModal }: { closeModal: () => void }) {
   })
 
   const { mutate: signIn } = useSignInAccount({
-    onSuccess: ({ result, resultCode }) => {
+    onSuccess: ({ resultCode }) => {
       if (resultCode === 'SUCCESS') {
         toast('로그인 성공!', {
           icon: '👏',
@@ -41,7 +41,7 @@ function SignIn({ closeModal }: { closeModal: () => void }) {
         })
       }
     },
-    onError: err => {
+    onError: () => {
       toast.error('로그인에 실패했습니다.', {
         icon: '😥',
         position: 'top-center',

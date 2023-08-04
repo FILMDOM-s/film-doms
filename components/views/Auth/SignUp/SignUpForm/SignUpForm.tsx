@@ -1,7 +1,6 @@
 import {
   type InputHTMLAttributes,
   type CSSProperties,
-  type FormEvent,
   useState,
   useEffect,
 } from 'react'
@@ -29,6 +28,7 @@ import { getErrorMessage, isPatternError, isValidateError } from './utils'
 import { ERROR_MESSAGE } from './constants'
 import { useFetchUserInfo } from '@/services/myPage'
 import { useTerms } from '../../SignIn/hooks'
+import MovieTagStateList from '@/components/views/MyPage/InterestMovieSection/MovieTagStateList'
 
 type CreateUserFormType = {
   email: string
@@ -36,8 +36,6 @@ type CreateUserFormType = {
   password: string
   passwordCheck: string
   nickname: string
-  interestMovie: string
-  termsOfService: boolean
 }
 
 const SignUpForm = () => {
@@ -50,6 +48,8 @@ const SignUpForm = () => {
     validEmail: false,
     nicknameDuplicate: false,
   })
+  const [termsOfService, setTermsOfService] = useState(false)
+  const [interestMovie, setInterestMovie] = useState<string[]>([])
   const { mutate: checkEmailDuplicate } = useFetchCheckEmailDuplicate()
   const { mutate: sendEmailAuthCode } = useSendEmailAuthCode()
   const { mutate: checkEmailAuthCode } = useFetchCheckEmailAuthCode()
@@ -66,17 +66,13 @@ const SignUpForm = () => {
     getValues,
     setValue,
     formState: { errors },
-    watch,
+    handleSubmit,
   } = useForm<CreateUserFormType>({
     mode: 'onChange',
   })
 
-  const termsOfService = watch('termsOfService')
-
-  const onSubmit = async (event: FormEvent<HTMLFormElement>) => {
-    event.preventDefault()
-    const { password, passwordCheck, termsOfService, interestMovie } =
-      getValues()
+  const onSubmit = () => {
+    const { password, passwordCheck } = getValues()
 
     if (termsOfService === false) {
       toast.error('약관에 동의해주세요.')
@@ -90,16 +86,16 @@ const SignUpForm = () => {
 
     const { email, nickname, uuid } = serverInput
 
-    const favoriteMovies = interestMovie
-      .split(',')
-      .map(movie => movie.trim())
-      .filter(movie => !isEmpty(movie))
+    if (interestMovie.length === 0) {
+      toast.error('관심영화를 1개 이상 입력해주세요.')
+      return
+    }
 
     if (from === 'google') {
       createGoogleAccount(
         {
           nickname,
-          favoriteMovies,
+          favoriteMovies: interestMovie,
         },
         {
           onError: () => {
@@ -122,7 +118,7 @@ const SignUpForm = () => {
         email,
         password,
         nickname,
-        favoriteMovies,
+        favoriteMovies: interestMovie,
         emailAuthUuid: uuid,
       },
       {
@@ -240,14 +236,6 @@ const SignUpForm = () => {
     )
   }
 
-  const handleInterestMovieValidate = (
-    interestMovie: CreateUserFormType['interestMovie']
-  ) => {
-    const interestMovieList = interestMovie.split(',')
-
-    return interestMovieList.length <= 5
-  }
-
   const handlePasswordCheckValidate = (
     passwordCheck: CreateUserFormType['passwordCheck'],
     { password }: CreateUserFormType
@@ -297,211 +285,219 @@ const SignUpForm = () => {
   }, [data?.email, from, setValue])
 
   return (
-    <Form onSubmit={onSubmit}>
-      <Box>
-        <Divider color={colors.primary.orange} />
-        <Group>
-          <InputBox>
-            <Label required>이메일</Label>
-            <Input
-              {...register('email', {
-                pattern: {
-                  value: EMAIL_REGEX,
-                  message: ERROR_MESSAGE.EMAIL,
-                },
-              })}
-              type="email"
-              name="email"
-              placeholder="인증메일이 발송되니 이메일 주소를 정확하게 기입해주세요."
-              required
-              disabled={from === 'google'}
-            />
-            <OptionBox>
-              <Button
-                type="button"
-                onClick={handleEmailAuthCodeRequest}
-                disabled={!!errors.email?.type || from === 'google'}
-              >
-                이메일발송
-              </Button>
-            </OptionBox>
-          </InputBox>
-          <RenderIf
-            condition={isPatternError(errors.email)}
-            render={
-              <Flex>
-                <Empty />
-                <ErrorText>{getErrorMessage(errors.email)}</ErrorText>
-              </Flex>
-            }
-          />
-        </Group>
-        <RenderIf
-          condition={!!serverInput.email && from !== 'google'}
-          render={
-            <Flex gap="1rem" padding="0px 0px 16px 0px">
-              <InputBox>
-                <Label />
-                <Input
-                  width="sm"
-                  {...register('emailAuthCode')}
-                  type="password"
-                  required
-                  autoComplete="off"
-                />
-                <Spacing />
-                <Button type="button" onClick={handleEmailAuthCodeCheck}>
-                  인증번호 확인
+    <Box>
+      <Form onSubmit={handleSubmit(onSubmit)}>
+        <Box>
+          <Divider color={colors.primary.orange} />
+          <Group>
+            <InputBox>
+              <Label required>이메일</Label>
+              <Input
+                {...register('email', {
+                  pattern: {
+                    value: EMAIL_REGEX,
+                    message: ERROR_MESSAGE.EMAIL,
+                  },
+                })}
+                type="email"
+                name="email"
+                placeholder="인증메일이 발송되니 이메일 주소를 정확하게 기입해주세요."
+                required
+                disabled={from === 'google'}
+              />
+              <OptionBox>
+                <Button
+                  type="button"
+                  onClick={handleEmailAuthCodeRequest}
+                  disabled={!!errors.email?.type || from === 'google'}
+                >
+                  이메일발송
                 </Button>
-              </InputBox>
-            </Flex>
-          }
-        />
-        <Divider color={colors.grey[100]} size={1} />
-        <Group>
-          <InputBox>
-            <Label required>비밀번호</Label>
-            <Input
-              {...register('password', {
-                pattern: {
-                  value: PASSWORD_REGEX,
-                  message: ERROR_MESSAGE.PASSWORD,
-                },
-              })}
-              type="password"
-              name="password"
-              minLength={8}
-              maxLength={100}
-              placeholder="영문 대,소문자, 숫자, 특수문자를 포함해 8자리 이상으로 기입해주세요."
+              </OptionBox>
+            </InputBox>
+            <RenderIf
+              condition={isPatternError(errors.email)}
+              render={
+                <Flex>
+                  <Empty />
+                  <ErrorText>{getErrorMessage(errors.email)}</ErrorText>
+                </Flex>
+              }
+            />
+          </Group>
+          <RenderIf
+            condition={!!serverInput.email && from !== 'google'}
+            render={
+              <Flex gap="1rem" padding="0px 0px 16px 0px">
+                <InputBox>
+                  <Label />
+                  <Input
+                    width="sm"
+                    {...register('emailAuthCode')}
+                    type="password"
+                    required
+                    autoComplete="off"
+                  />
+                  <Spacing />
+                  <Button type="button" onClick={handleEmailAuthCodeCheck}>
+                    인증번호 확인
+                  </Button>
+                </InputBox>
+              </Flex>
+            }
+          />
+          <Divider color={colors.grey[100]} size={1} />
+          <Group>
+            <InputBox>
+              <Label required>비밀번호</Label>
+              <Input
+                {...register('password', {
+                  pattern: {
+                    value: PASSWORD_REGEX,
+                    message: ERROR_MESSAGE.PASSWORD,
+                  },
+                })}
+                type="password"
+                name="password"
+                minLength={8}
+                maxLength={100}
+                placeholder="영문 대,소문자, 숫자, 특수문자를 포함해 8자리 이상으로 기입해주세요."
+                required
+                autoComplete="off"
+                disabled={from === 'google'}
+              />
+            </InputBox>
+            <RenderIf
+              condition={isPatternError(errors.password)}
+              render={
+                <Flex>
+                  <Empty />
+                  <ErrorText>{getErrorMessage(errors.password)}</ErrorText>
+                </Flex>
+              }
+            />
+          </Group>
+          <Divider color={colors.grey[100]} size={1} />
+          <Group>
+            <InputBox>
+              <Label required>비밀번호확인</Label>
+              <Input
+                {...register('passwordCheck', {
+                  validate: handlePasswordCheckValidate,
+                })}
+                type="password"
+                name="passwordCheck"
+                minLength={8}
+                maxLength={100}
+                required
+                autoComplete="off"
+                disabled={from === 'google'}
+              />
+            </InputBox>
+            <RenderIf
+              condition={isValidateError(errors.passwordCheck)}
+              render={
+                <Flex>
+                  <Empty />
+                  <ErrorText>{ERROR_MESSAGE.PASSWORD_CHECK}</ErrorText>
+                </Flex>
+              }
+            />
+          </Group>
+          <Divider color={colors.grey[100]} size={1} />
+          <Group>
+            <InputBox>
+              <Label required>닉네임</Label>
+              <Input
+                {...register('nickname', {
+                  pattern: NICKNAME_REGEX,
+                })}
+                type="text"
+                minLength={2}
+                maxLength={20}
+                placeholder="닉네임은 2자 이상 20자 이하로 기입해주세요."
+                required
+              />
+              <OptionBox>
+                <Button
+                  type="button"
+                  onClick={handleNicknameCheck}
+                  disabled={
+                    getValues('nickname')?.length < 2 ||
+                    getValues('nickname')?.length > 20
+                  }
+                >
+                  중복확인
+                </Button>
+              </OptionBox>
+            </InputBox>
+            <RenderIf
+              condition={serverInput.nicknameDuplicate}
+              render={
+                <Flex>
+                  <Empty />
+                  <ErrorText>{ERROR_MESSAGE.NICKNAME_EXIST}</ErrorText>
+                </Flex>
+              }
+            />
+          </Group>
+          <Divider color={colors.grey[100]} size={1} />
+        </Box>
+      </Form>
+      <Group>
+        <InputBox>
+          <Label>관심영화</Label>
+          <MovieTagStateList
+            interestMovieList={interestMovie}
+            setInterestMovieList={setInterestMovie}
+          />
+        </InputBox>
+      </Group>
+      <Divider color={colors.grey[100]} size={1} />
+      <Group>
+        <InputBox>
+          <Label required>이용약관</Label>
+          <Flex gap={'10px'}>
+            <TermsCheck
+              type="checkbox"
               required
-              autoComplete="off"
-              disabled={from === 'google'}
+              onChange={() => {
+                setTermsOfService(!termsOfService)
+              }}
+              checked={termsOfService}
             />
-          </InputBox>
-          <RenderIf
-            condition={isPatternError(errors.password)}
-            render={
-              <Flex>
-                <Empty />
-                <ErrorText>{getErrorMessage(errors.password)}</ErrorText>
-              </Flex>
-            }
-          />
-        </Group>
-        <Divider color={colors.grey[100]} size={1} />
-        <Group>
-          <InputBox>
-            <Label required>비밀번호확인</Label>
-            <Input
-              {...register('passwordCheck', {
-                validate: handlePasswordCheckValidate,
-              })}
-              type="password"
-              name="passwordCheck"
-              minLength={8}
-              maxLength={100}
-              required
-              autoComplete="off"
-              disabled={from === 'google'}
-            />
-          </InputBox>
-          <RenderIf
-            condition={isValidateError(errors.passwordCheck)}
-            render={
-              <Flex>
-                <Empty />
-                <ErrorText>{ERROR_MESSAGE.PASSWORD_CHECK}</ErrorText>
-              </Flex>
-            }
-          />
-        </Group>
-        <Divider color={colors.grey[100]} size={1} />
-        <Group>
-          <InputBox>
-            <Label required>닉네임</Label>
-            <Input
-              {...register('nickname', {
-                pattern: NICKNAME_REGEX,
-              })}
-              type="text"
-              minLength={2}
-              maxLength={20}
-              placeholder="닉네임은 2자 이상 20자 이하로 기입해주세요."
-              required
-            />
-            <OptionBox>
-              <Button
-                type="button"
-                onClick={handleNicknameCheck}
-                disabled={
-                  getValues('nickname')?.length < 2 ||
-                  getValues('nickname')?.length > 20
-                }
-              >
-                중복확인
-              </Button>
-            </OptionBox>
-          </InputBox>
-          <RenderIf
-            condition={serverInput.nicknameDuplicate}
-            render={
-              <Flex>
-                <Empty />
-                <ErrorText>{ERROR_MESSAGE.NICKNAME_EXIST}</ErrorText>
-              </Flex>
-            }
-          />
-        </Group>
-        <Divider color={colors.grey[100]} size={1} />
-        <Group>
-          <InputBox>
-            <Label>관심영화</Label>
-            <Input
-              {...register('interestMovie', {
-                validate: handleInterestMovieValidate,
-              })}
-              type="text"
-              name="interestMovie"
-              placeholder="좋아하는 영화 제목 최대 5가지를 기입해주세요."
-            />
-          </InputBox>
-          <RenderIf
-            condition={isValidateError(errors.interestMovie)}
-            render={
-              <Flex>
-                <Empty />
-                <ErrorText>{ERROR_MESSAGE.INTEREST_MOVIE}</ErrorText>
-              </Flex>
-            }
-          />
-        </Group>
-        <Divider color={colors.grey[100]} size={1} />
-        <Group>
-          <InputBox>
-            <Label required>이용약관</Label>
-            <Flex gap={'10px'}>
-              <Input {...register('termsOfService')} type="checkbox" required />
-              <Text>
-                Film Dom&#39;s 이용을 위한 개인정보 제공 및 수집에 동의합니다.
-              </Text>
-            </Flex>
-            <OptionBox>
-              <MoreButton
-                type="button"
-                onClick={() => {
-                  openModal()
-                }}
-              >
-                자세히
-              </MoreButton>
-            </OptionBox>
-          </InputBox>
-        </Group>
+            <Text>
+              Film Dom&#39;s 이용을 위한 개인정보 제공 및 수집에 동의합니다.
+            </Text>
+          </Flex>
+          <OptionBox>
+            <MoreButton
+              type="button"
+              onClick={() => {
+                openModal()
+              }}
+            >
+              자세히
+            </MoreButton>
+          </OptionBox>
+        </InputBox>
+      </Group>
+      <Box
+        style={{
+          display: 'flex',
+          justifyContent: 'center',
+          marginTop: '2rem',
+        }}
+      >
+        <SignUpButton
+          type="button"
+          disabled={!isValidateForm()}
+          onClick={() => onSubmit()}
+        >
+          가입하기
+        </SignUpButton>
       </Box>
-      <SignUpButton type="submit" disabled={!isValidateForm()}>
-        가입하기
-      </SignUpButton>
-    </Form>
+    </Box>
   )
 }
 
@@ -521,6 +517,7 @@ const Flex = styled.div<{
   display: flex;
   gap: ${({ gap }) => gap};
   padding: ${({ padding }) => padding};
+  align-items: center;
 `
 
 const SignUpButton = styled.button`
@@ -571,6 +568,21 @@ const Input = styled.input<{
       `
     }
   }}
+`
+
+const TermsCheck = styled.input`
+  appearance: none;
+  color: black;
+  background: transparent;
+  border: 2px solid black;
+  width: 18px;
+  height: 18px;
+  &:checked {
+    background-image: url("data:image/svg+xml,%3csvg viewBox='0 0 16 16' fill='black' xmlns='http://www.w3.org/2000/svg'%3e%3cpath d='M5.707 7.293a1 1 0 0 0-1.414 1.414l2 2a1 1 0 0 0 1.414 0l4-4a1 1 0 0 0-1.414-1.414L7 8.586 5.707 7.293z'/%3e%3c/svg%3e");
+    background-size: 150% 150%;
+    background-position: 50%;
+    background-repeat: no-repeat;
+  }
 `
 
 const Label = styled.label<{ required?: boolean }>`

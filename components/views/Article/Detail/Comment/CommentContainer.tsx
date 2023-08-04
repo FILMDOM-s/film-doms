@@ -9,12 +9,14 @@ import CommentItem from './CommentItem'
 import { useState } from 'react'
 import { Button } from '@/components/common'
 import { IconLoader } from '@tabler/icons-react'
+import { useFetchUserInfo } from '@/services/myPage'
 
 const CommentContainer = ({ articleId, category }: ArticleDetailProps) => {
   const { data: commentList, refetch } =
     useFetchArticleCommentListByCategoryById(category, articleId)
   const [comment, setComment] = useState('')
   const { mutate: createComment, isLoading } = useCreateComment()
+  const { data: userInfo } = useFetchUserInfo()
 
   const handleCommentChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
     setComment(e.target.value)
@@ -49,6 +51,7 @@ const CommentContainer = ({ articleId, category }: ArticleDetailProps) => {
             comment={comment}
             articleId={articleId}
             refetch={refetch}
+            isMine={userInfo?.id === comment.author.id}
           />
         )
       })}

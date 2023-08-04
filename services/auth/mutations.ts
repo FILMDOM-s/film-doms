@@ -9,6 +9,7 @@ import {
   findPassword,
   signInGoogle,
   createGoogleAccount,
+  signOutAccount,
 } from './apis'
 import api from '../api'
 import Cookies from 'js-cookie'
@@ -41,6 +42,10 @@ export const useSignInAccount = (
   >
 ) => {
   return useMutation(signInAccount, options)
+}
+
+export const useSignOutAccount = () => {
+  return useMutation(signOutAccount)
 }
 
 export const useSignInGoogle = (

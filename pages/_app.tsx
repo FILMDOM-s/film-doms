@@ -38,8 +38,6 @@ export default function App({
   const { isActiveServiceWorker } = useStartWorker()
 
   if (!isActiveServiceWorker) {
-    console.warn('Service Worker is not active')
-
     return (
       <div
         style={{
@@ -52,7 +50,7 @@ export default function App({
           color: '#000',
         }}
       >
-        서비스워커가 활성화 되기 전입니다.
+        ...loading
       </div>
     )
   }

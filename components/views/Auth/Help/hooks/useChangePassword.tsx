@@ -13,7 +13,8 @@ type ChangePasswordProps = {
 
 const ChangePassword = () => {
   const { mutate: updatePassword } = useUpdatePassword()
-  const { register, getValues, handleSubmit } = useForm<ChangePasswordProps>()
+  const { register, getValues, handleSubmit, setValue } =
+    useForm<ChangePasswordProps>()
 
   const onSubmit = () => {
     const { currentPassword, newPassword, checkNewPassword } = getValues()
@@ -41,6 +42,9 @@ const ChangePassword = () => {
       {
         onSuccess: () => {
           toast.success('비밀번호가 변경되었습니다.')
+          setValue('currentPassword', '')
+          setValue('newPassword', '')
+          setValue('checkNewPassword', '')
         },
         onError() {
           toast.error('비밀번호 변경에 실패했습니다. 다시 시도해주세요.')
@@ -55,7 +59,7 @@ const ChangePassword = () => {
         <LabelText>현재 비밀번호</LabelText>
         <PasswordInput
           {...register('currentPassword')}
-          name="newPassword"
+          name="currentPassword"
           type="password"
         />
         <LabelText>새 비밀번호</LabelText>
@@ -67,7 +71,7 @@ const ChangePassword = () => {
         <LabelText>새 비밀번호 확인</LabelText>
         <PasswordInput
           {...register('checkNewPassword')}
-          name="checkPassword"
+          name="checkNewPassword"
           type="password"
         />
         <Button type="submit">변경</Button>

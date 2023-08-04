@@ -1,11 +1,19 @@
+import { useSignOutAccount } from '@/services/auth'
 import styled from '@emotion/styled'
 import { useRouter } from 'next/router'
 import { useEffect } from 'react'
 
 const Logout = () => {
   const router = useRouter()
+  const { mutate } = useSignOutAccount()
 
-  useEffect(() => {}, [router])
+  useEffect(() => {
+    mutate(undefined, {
+      onSuccess: () => {
+        router.push('/')
+      },
+    })
+  }, [mutate, router])
 
   return (
     <LogoutBox>
