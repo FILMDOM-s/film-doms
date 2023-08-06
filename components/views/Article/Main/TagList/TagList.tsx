@@ -26,7 +26,7 @@ const TagList = ({ category }: Props) => {
               color={isActive ? 'orange' : tagColor}
               {...(isActive && { fill: 'true' })}
             >
-              전체
+              ALL
             </Tag>
           )
         }}

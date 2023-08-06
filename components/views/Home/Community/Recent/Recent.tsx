@@ -3,8 +3,11 @@ import styled from '@emotion/styled'
 import { css } from '@emotion/react'
 import { colors, flex, flexCenter, typography } from '@/styles/emotion'
 import { RenderIf, SwitchCase, Tag } from '@/components/common'
+import { snakeToCamel } from '@/utils'
 
-const Recent = ({ id, tag, title, commentCount }: Main.Recent) => {
+const Recent = ({ id, tag, title, commentCount, category }: Main.Recent) => {
+  const categoryUrl = snakeToCamel(category.toLowerCase())
+
   return (
     <Container>
       <SwitchCase
@@ -14,7 +17,7 @@ const Recent = ({ id, tag, title, commentCount }: Main.Recent) => {
         }}
         defaultRender={<Tag>{tag}</Tag>}
       />
-      <Link href={`/article/recent/${id}`} css={LinkBox}>
+      <Link href={`/article/${categoryUrl}/${id}`} css={LinkBox}>
         <Title>{title}</Title>
         <RenderIf
           condition={commentCount > 0}

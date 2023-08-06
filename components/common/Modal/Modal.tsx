@@ -8,7 +8,7 @@ const Modal = () => {
   const { animation, modalDataState, closeModal } = useModal()
   useEffect(() => {
     if (modalDataState.isOpen) {
-      document.body.style.top = `-${window.pageYOffset}px`
+      document.body.style.top = `-${window.scrollY}px`
       document.body.style.position = 'fixed'
       document.body.style.overflow = 'hidden'
       document.body.style.width = '100%'
@@ -25,14 +25,16 @@ const Modal = () => {
   return (
     <>
       {modalDataState.isOpen && (
-        <ModalDimmer>
-          <ModalBody className={animation}>
+        <ModalDimmer theme={modalDataState.theme}>
+          <ModalBody className={animation} theme={modalDataState.theme}>
             <ModalHeader>
               <ModalCloseButton onClick={() => closeModal()}>
-                <XIcon />
+                <XIcon
+                  fill={modalDataState.theme === 'dark' ? '#ffffff' : '#000000'}
+                />
               </ModalCloseButton>
             </ModalHeader>
-            <Alphabets />
+            <Alphabets theme={modalDataState.theme} />
             <ModalContents>{modalDataState.content}</ModalContents>
           </ModalBody>
         </ModalDimmer>
@@ -43,29 +45,35 @@ const Modal = () => {
 
 export default Modal
 
-const ModalDimmer = styled.div`
+const ModalDimmer = styled.div<{ theme: 'dark' | 'white' }>`
   position: fixed;
   top: 0;
   left: 0;
   width: 100%;
   height: 100%;
-  background: linear-gradient(
+  ${({ theme }) =>
+    theme === 'dark'
+      ? `background: linear-gradient(
     180deg,
     rgba(17, 17, 17, 0) 0%,
     rgba(17, 17, 17, 0.7) 18.15%,
     #111111 29.71%
-  );
+  );`
+      : 'background: rgba(255,255,255,0.7);'}
   display: flex;
   justify-content: center;
   align-items: center;
   z-index: 100;
 `
-const ModalBody = styled.div`
+const ModalBody = styled.div<{ theme: 'dark' | 'white' }>`
   position: relative;
   display: flex;
   flex-direction: column;
-  width: 560px;
-  background-color: tranparent;
+  width: 580px;
+  background-color: ${({ theme }) =>
+    theme === 'dark' ? 'transparent' : '#ffffff'};
+  border-radius: 10px;
+  padding: 10px;
 `
 const ModalContents = styled.div`
   margin-top: 32px;

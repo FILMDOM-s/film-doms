@@ -19,7 +19,7 @@ const Board = ({ items }: Props) => {
   return (
     <Table>
       <tbody>
-        {items.map(item => {
+        {items?.map(item => {
           return (
             <Tr key={item.id}>
               <TdTag css={Tag}>{cutString(item.tag, 8)}</TdTag>
@@ -47,9 +47,7 @@ const Board = ({ items }: Props) => {
                 </TitleBox>
               </TdTitle>
               <TdWriter css={Writer}>
-                <WriterBox
-                  onClick={() => push(`/user/profile/${item.author.id}`)}
-                >
+                <WriterBox onClick={() => push(`/profile/${item.author.id}`)}>
                   <Image
                     src={
                       getImageSrcByUuid(

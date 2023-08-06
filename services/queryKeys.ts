@@ -28,6 +28,11 @@ const queryKeys = {
       category,
       id,
     ],
+    articleBySearchString: (
+      category: string,
+      method: string,
+      param: string
+    ) => ['article', 'articleBySearchString', category, method, param],
     noticeDTO: ['article', 'noticeDTO'],
     popularDTO: ['article', 'popularDTO'],
   },
@@ -45,6 +50,7 @@ const queryKeys = {
       params,
     ],
   },
+  publicProfile: (id: string) => ['publicProfile', id],
 } as const
 
 export default queryKeys

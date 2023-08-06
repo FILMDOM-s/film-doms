@@ -3,11 +3,11 @@ import { css } from '@emotion/react'
 import styled from '@emotion/styled'
 import { colors, flex, flexGap, typography } from '@/styles/emotion'
 import { CATEGORIES } from '@/constants/article'
-import { RenderIf, Tab } from '@/components/common'
+import { Tab } from '@/components/common'
 import SearchForm from './SearchForm'
 import TagList from './TagList'
-import BoardContainer from './BoardContainer'
 import { useRouter } from 'next/router'
+import { BoardContainer } from './BoardContainer'
 
 const ArticleContainer = () => {
   const router = useRouter()
@@ -30,8 +30,8 @@ const ArticleContainer = () => {
             </Suspense>
           </Tab.List>
           <SearchForm
-            pushUrl={({ keyword, option }) =>
-              `/search/article/${category}?keyword=${keyword}&option=${option}`
+            pushUrl={({ method, keyword }) =>
+              `/search/${category}/${method}/?keyword=${keyword}&page=1&size=22`
             }
           />
         </TopBox>

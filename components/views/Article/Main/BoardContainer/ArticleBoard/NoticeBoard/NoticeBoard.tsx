@@ -5,12 +5,12 @@ import { defaultProfile } from '@images/common'
 import { ImageIcon } from '@svgs/common'
 import { colors, flex, flexCenter, font } from '@/styles/emotion'
 import { RenderIf } from '@/components/common'
-import { cutString } from '@/utils'
+import { cutString, getImageSrcByUuid } from '@/utils'
 import { convertCommentCount, convertKilo } from '../utils'
 import { Date, Likes, Tag, Title, Views, Writer } from '../styles'
 
 interface Props {
-  items: Article.Notice[]
+  items: Article.NoticeItem[]
 }
 
 const NoticeBoard = ({ items }: Props) => {
@@ -22,39 +22,47 @@ const NoticeBoard = ({ items }: Props) => {
         {items.slice(0, 2).map(notice => {
           return (
             <Tr key={notice.id}>
-              <TdTag css={Tag}>{notice.tag}</TdTag>
+              <TdTag css={Tag}>{cutString(notice.tag, 8)}</TdTag>
               <TdTitle css={Title}>
                 <TitleBox onClick={() => push(`/article/notice/${notice.id}`)}>
                   <RenderIf
-                    condition={notice.isContainImage}
+                    condition={notice.containImage}
                     render={<ImageIcon />}
                   />
-                  {notice.isContainImage
+                  {notice.containImage
                     ? cutString(notice.title, 22)
                     : cutString(notice.title, 24)}
                   <RenderIf
-                    condition={notice.comments.length > 0}
+                    condition={notice.commentCount > 0}
                     render={
                       <CommentCount>
-                        {convertCommentCount(notice.comments.length)}
+                        {convertCommentCount(notice.commentCount)}
                       </CommentCount>
                     }
                   />
                 </TitleBox>
               </TdTitle>
               <TdWriter css={Writer}>
-                <WriterBox>
+                <WriterBox onClick={() => push(`/profile/${notice.author.id}`)}>
                   <Image
-                    src={notice.writer.profile ?? defaultProfile}
+                    src={
+                      getImageSrcByUuid(
+                        notice.author.profileImage.uuidFileName
+                      ) ?? defaultProfile
+                    }
                     alt="user-profile"
                     width={22}
                     height={22}
                     style={{ borderRadius: '50%' }}
                   />
-                  {notice.writer.nickname}
+                  {notice.author.nickname}
                 </WriterBox>
               </TdWriter>
-              <TdDate css={Date}>{notice.createAt}</TdDate>
+              <TdDate css={Date}>
+                {new Intl.DateTimeFormat('ko')
+                  .format(notice.createdAt)
+                  .slice(0, -1)}
+              </TdDate>
               <TdViews css={Views}>{convertKilo(notice.views, 1)}</TdViews>
               <TdLikes css={Likes}>{convertKilo(notice.likes, 1)}</TdLikes>
             </Tr>
@@ -86,6 +94,7 @@ const WriterBox = styled.div`
   gap: 4px;
   width: 100%;
   height: 100%;
+  cursor: pointer;
 `
 
 const TdWriter = styled.td`

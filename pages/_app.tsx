@@ -1,18 +1,19 @@
-import '@/styles/globals.css'
+import { Error as ErrorFallback, ResetErrorBoundary } from '@/components/common'
+import RouterBoundary from '@/components/common/RouterBoundary'
+import { useRouterChange } from '@/hooks'
+import GlobalStyles from '@/styles/GlobalStyles'
 import '@/styles/anime.css'
 import '@/styles/carousel.css'
+import '@/styles/globals.css'
 import '@/styles/modal.css'
-import type { AppProps } from 'next/app'
-import { useCallback } from 'react'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
-import { Toaster } from 'react-hot-toast'
-import * as gtag from 'lib/gtag'
-import GlobalStyles from '@/styles/GlobalStyles'
 import { AppLayout } from '@views/Layout'
 import { AppScript, useStartWorker } from '@views/_App'
-import { useRouterChange } from '@/hooks'
+import * as gtag from 'lib/gtag'
+import type { AppProps } from 'next/app'
+import { useCallback } from 'react'
+import { Toaster } from 'react-hot-toast'
 import { RecoilRoot } from 'recoil'
-import { Error, ResetErrorBoundary } from '@/components/common'
 
 export default function App({
   Component,
@@ -23,6 +24,7 @@ export default function App({
       queries: {
         refetchOnWindowFocus: false,
         staleTime: Infinity,
+        retry: 0,
       },
     },
   })
@@ -36,7 +38,21 @@ export default function App({
   const { isActiveServiceWorker } = useStartWorker()
 
   if (!isActiveServiceWorker) {
-    return <div>서비스워커가 활성화 되기 전입니다.</div>
+    return (
+      <div
+        style={{
+          position: 'fixed',
+          top: '50%',
+          left: '50%',
+          transform: 'translate(-50%,-50%)',
+          fontSize: '30px',
+          fontWeight: 'bold',
+          color: '#000',
+        }}
+      >
+        ...loading
+      </div>
+    )
   }
 
   return (
@@ -44,9 +60,11 @@ export default function App({
       <RecoilRoot>
         <GlobalStyles />
         <AppScript />
-        <ResetErrorBoundary fallback={<Error />}>
+        <ResetErrorBoundary fallback={<ErrorFallback />}>
           <AppLayout>
-            <Component {...pageProps} />
+            <RouterBoundary>
+              <Component {...pageProps} />
+            </RouterBoundary>
             <Toaster />
           </AppLayout>
         </ResetErrorBoundary>

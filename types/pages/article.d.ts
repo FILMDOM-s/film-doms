@@ -31,6 +31,7 @@ declare module Article {
     views: number
     likes: number
     commentCount: number
+    mainImage: string
     containImage: boolean
   }
 
@@ -138,18 +139,57 @@ declare module Article {
     }
   }
 
-  type Notice = {
+  type NoticeItem = {
     id: number
+    category: string
     tag: string
-    isContainImage: boolean
     title: string
-    comments: number[]
-    writer: User
-    createAt: string
-    updateAt: string
+    author: {
+      id: number
+      nickname: string
+      profileImage: {
+        id: number
+        uuidFileName: string
+      }
+    }
+    createdAt: number
+    updatedAt: number
     views: number
     likes: number
-    category: 'notice'
+    commentCount: number
+    containImage: boolean
+  }
+
+  type NoticeDTO = {
+    resultCode: string
+    result: {
+      content: NoticeItem[]
+      pageable: {
+        sort: {
+          empty: boolean
+          sorted: boolean
+          unsorted: boolean
+        }
+        offset: number
+        pageSize: number
+        pageNumber: number
+        paged: boolean
+        unpaged: boolean
+      }
+      last: boolean
+      totalPages: number
+      totalElements: number
+      size: number
+      number: number
+      sort: {
+        empty: boolean
+        sorted: boolean
+        unsorted: boolean
+      }
+      first: boolean
+      numberOfElements: number
+      empty: boolean
+    }
   }
 
   type Popular = {
@@ -166,5 +206,82 @@ declare module Article {
   type PopularDTO = {
     resultCode: string
     result: Popular[]
+  }
+
+  type ArticleCreateRequestDto = {
+    title: string
+    category: string
+    tag: string
+    content: string
+    containsImage: string
+    mainImageId: string
+    startAt?: string
+    endAt?: string
+  }
+
+  type ArticleUpdateRequestDto = {
+    title: string
+    category: string
+    tag: string
+    content: string
+    containsImage: string
+    mainImageId: string
+    startAt?: string
+    endAt?: string
+  }
+
+  type ArticleCreateResponseContent = {
+    id: number
+    category: string
+  }
+
+  type ArticleCreateResponseDTO = {
+    resultCode: string
+    result: ArticleCreateResponseContent
+  }
+
+  type ArticleUpdateResponseDTO = {
+    resultCode: string
+    result: null
+  }
+
+  type FilmUniverseCreateRequestDto = {
+    title: string
+    category: string
+    tag: string
+    content: string
+    containsImage: string
+    mainImageId: string
+  }
+
+  type CriticCreateRequestDto = {
+    title: string
+    category: string
+    tag: string
+    content: string
+    containsImage: string
+    mainImageId: string
+  }
+  type CommentCreateContent = {
+    commentId: number
+  }
+  type CommentCreateRequestDto = {
+    articleId: number
+    parentCommentId: number | null
+    content: string
+  }
+  type CommentCreateResponseDto = {
+    resultCode: string
+    result: CommentCreateContent
+  }
+
+  type LikeResponseDto = {
+    resultCode: string
+    result: LikeContentDto
+  }
+
+  type LikeContentDto = {
+    isVoted: boolean
+    voteCount: number
   }
 }

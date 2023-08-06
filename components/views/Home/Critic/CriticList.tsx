@@ -3,12 +3,14 @@ import styled from '@emotion/styled'
 import Link from 'next/link'
 import Critic from './Critic'
 import { getImageSrcByUuid } from '@/utils'
+import { useScrollFadeIn } from '@/hooks'
 
 const CriticList = () => {
   const { data: criticList } = useFetchCriticList()
+  const scrollFadeIn = useScrollFadeIn(0.2, '10%')
 
   return (
-    <CriticsList>
+    <CriticsList {...scrollFadeIn}>
       {criticList.map(critic => (
         <Link
           key={critic.id}

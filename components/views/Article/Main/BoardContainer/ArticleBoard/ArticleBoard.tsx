@@ -3,7 +3,7 @@ import THead from './THead'
 import NoticeBoard from './NoticeBoard'
 
 interface Props {
-  noticeItems: Article.Notice[]
+  noticeItems: Article.NoticeItem[]
   articleItems: Article.MainContent[]
 }
 

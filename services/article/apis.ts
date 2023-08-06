@@ -1,5 +1,5 @@
-import { createParams, getRandomNum } from '@/utils'
-import api, { mswApi } from '../api'
+import { createParams } from '@/utils'
+import api from '../api'
 
 export const getArticleTagListByCategory = async (category: string) => {
   const { result } = await api.get<null, Article.TagDTO>(
@@ -31,10 +31,12 @@ export const getArticleDetailContentByCategoryById = async (
   return result
 }
 
-export const getArticleNoticeList = async () => {
-  const data = await mswApi.get<null, Article.Notice[]>(`/api/article/notice`)
+export const getArticleNoticeList = async (category: string) => {
+  const { result } = await api.get<null, Article.NoticeDTO>(
+    `/api/v1/article/${category}/announce`
+  )
 
-  return data
+  return result
 }
 
 export const getArticleCommentListByCategoryById = async (
@@ -48,10 +50,95 @@ export const getArticleCommentListByCategoryById = async (
   return result
 }
 
+export const getArticleListBySearchString = async (
+  category: string,
+  method: string,
+  param: string
+) => {
+  const { result } = await api.get<null, Article.MainContentDTO>(
+    `/api/v1/${category}/${method}?${param}`
+  )
+
+  return result
+}
+
 export const getPopularArticleList = async () => {
   const { result } = await api.get<null, Article.PopularDTO>(
     `/api/v1/article/top-posts`
   )
 
   return result
+}
+
+export const createArticle = (item: Article.ArticleCreateRequestDto) => {
+  return api.post<
+    null,
+    Article.ArticleCreateResponseDTO,
+    Article.ArticleCreateRequestDto
+  >('/api/v1/article', item)
+}
+// title, tag, content, mainImage, startAt, endAt 변경 가능
+export const updateArticle = ({
+  category,
+  articleId,
+  item,
+}: {
+  category: string
+  articleId: number
+  item: Article.ArticleUpdateRequestDto
+}) => {
+  return api.put<
+    null,
+    Article.ArticleUpdateResponseDTO,
+    Article.ArticleUpdateRequestDto
+  >(`/api/v1/article/${category}/${articleId}`, item)
+}
+
+export const deleteArticle = ({
+  category,
+  articleId,
+}: {
+  category: string
+  articleId: number
+}) => {
+  return api.delete<null, Article.ArticleCreateResponseDTO, null>(
+    `/api/v1/article/${category}/${articleId}`
+  )
+}
+
+export const createComment = (item: Article.CommentCreateRequestDto) => {
+  return api.post<
+    null,
+    Article.CommentCreateResponseDto,
+    Article.CommentCreateRequestDto
+  >('/api/v1/comment', item)
+}
+
+export const updateComment = ({
+  commentId,
+  content,
+}: {
+  commentId: number
+  content: string
+}) => {
+  return api.put<null, DefaultResponse, { content: string }>(
+    `/api/v1/comment/${commentId}`,
+    { content }
+  )
+}
+
+export const deleteComment = ({ commentId }: { commentId: number }) => {
+  return api.delete<null, DefaultResponse>(`/api/v1/comment/${commentId}`)
+}
+
+export const toggleArticleLike = (item: number) => {
+  return api.post<null, Article.LikeResponseDto, null>(
+    `/api/v1/article/${item}/vote`
+  )
+}
+
+export const toggleCommentLike = (item: number) => {
+  return api.post<null, Article.LikeResponseDto, null>(
+    `/api/v1/comment/${item}/vote`
+  )
 }

@@ -6,7 +6,9 @@ const TopSection = () => {
   useAnime()
   return (
     <TopContainerSection>
-      <TopTextContainer>영화인을 위한, 영화인의공간 FILMDOM'S</TopTextContainer>
+      <TopTextContainer>
+        영화인을 위한, 영화인의 공간 FILMDOM’S
+      </TopTextContainer>
       <SvgContainer>
         <FilmDomsAnime />
       </SvgContainer>

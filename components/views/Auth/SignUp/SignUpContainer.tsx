@@ -3,13 +3,16 @@ import { colors, flexGap } from '@/styles/emotion'
 import { Divider } from '@/components/common'
 import Header from './Header'
 import SignUpForm from './SignUpForm'
+import { Suspense } from 'react'
 
 const SignUpContainer = () => {
   return (
     <Container>
       <Divider limit="56px" size={4} color={colors.primary.orange} />
       <Header />
-      <SignUpForm />
+      <Suspense>
+        <SignUpForm />
+      </Suspense>
     </Container>
   )
 }

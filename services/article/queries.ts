@@ -1,8 +1,10 @@
+import { useQuery } from '@tanstack/react-query'
 import { useSuspendedQuery } from '@/hooks'
 import queryKeys from '../queryKeys'
 import {
   getArticleCommentListByCategoryById,
   getArticleDetailContentByCategoryById,
+  getArticleListBySearchString,
   getArticleMainContentByCategory,
   getArticleNoticeList,
   getArticleTagListByCategory,
@@ -35,8 +37,21 @@ export const useFetchArticleDetailContentByCategoryById = (
   )
 }
 
-export const useFetchArticleNoticeList = () => {
-  return useSuspendedQuery(queryKeys.article.noticeDTO, getArticleNoticeList)
+export const useFetchArticleNoticeList = (category: string) => {
+  return useSuspendedQuery(
+    queryKeys.article.noticeDTO,
+    () => getArticleNoticeList(category),
+    {
+      enabled: category !== 'recent',
+    }
+  )
+}
+
+export const useFetchArticleDetailEdit = (category: string, id: number) => {
+  return useQuery(
+    queryKeys.article.detailContentDTOByCategoryById(category, id),
+    () => getArticleDetailContentByCategoryById(category, id)
+  )
 }
 
 export const useFetchArticleCommentListByCategoryById = (
@@ -51,4 +66,15 @@ export const useFetchArticleCommentListByCategoryById = (
 
 export const useFetchPopularArticleList = () => {
   return useSuspendedQuery(queryKeys.article.popularDTO, getPopularArticleList)
+}
+
+export const useFetchSearchArticleList = (
+  category: string,
+  method: string,
+  param: string
+) => {
+  return useSuspendedQuery(
+    queryKeys.article.articleBySearchString(category, method, param),
+    () => getArticleListBySearchString(category, method, param)
+  )
 }

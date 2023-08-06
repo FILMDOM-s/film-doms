@@ -1,46 +1,24 @@
 import styled from '@emotion/styled'
 import { colors, flexGap, font } from '@/styles/emotion'
-import { Divider, Tag } from '@/components/common'
-import { MAX_INTEREST_MOVIE_COUNT } from '../constants'
+import { Divider } from '@/components/common'
+import MovieTagList from './MovieTagList'
 
 interface Props {
+  type: 'private' | 'public'
   interestMovieList: User.InterestMovie[]
 }
 
-const InterestMovieSection = ({ interestMovieList }: Props) => {
-  const sliceInterestMovieList = interestMovieList.slice(
-    0,
-    MAX_INTEREST_MOVIE_COUNT
-  )
-
+const InterestMovieSection = ({ type, interestMovieList }: Props) => {
   return (
     <Container>
       <Divider color={colors.primary.orange} size={4} limit="24px" />
-      <Title>관심영화</Title>
-      <Wrapper>
-        <Box>
-          {sliceInterestMovieList.map((movie, idx) => {
-            return (
-              <Tag key={`interestMovie-${idx}`} shape="round">
-                {movie}
-              </Tag>
-            )
-          })}
-        </Box>
-      </Wrapper>
+      <Flex>
+        <Title>관심영화</Title>
+      </Flex>
+      <MovieTagList type={type} interestMovieList={interestMovieList} />
     </Container>
   )
 }
-
-const Box = styled.div`
-  ${flexGap('8px', 'row')}
-  width: max-content;
-`
-
-const Wrapper = styled.div`
-  width: 100%;
-  overflow-x: auto;
-`
 
 const Title = styled.h1`
   ${font({ size: '20px', weight: '700', lineHeight: '24px' })}
@@ -50,6 +28,12 @@ const Title = styled.h1`
 const Container = styled.div`
   ${flexGap('20px')}
   width: 100%;
+`
+
+const Flex = styled.div`
+  display: flex;
+  align-items: center;
+  gap: 1rem;
 `
 
 export default InterestMovieSection

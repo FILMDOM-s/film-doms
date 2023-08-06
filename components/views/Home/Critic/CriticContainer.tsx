@@ -20,7 +20,7 @@ const CriticContainer = () => {
         right={
           <Button
             rightIcon={<ArrowRight />}
-            onClick={() => push('/community/critic')}
+            onClick={() => push('/article/critic')}
           >
             More
           </Button>

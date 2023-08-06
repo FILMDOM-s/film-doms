@@ -3,7 +3,7 @@ import { LinkList } from './type'
 export const CONTACT: LinkList = [
   {
     title: 'Contact Us',
-    link: '/contact',
+    link: 'https://www.instagram.com/filmdomaypole/',
   },
 ]
 
@@ -17,15 +17,11 @@ export const ABOUT: LinkList = [
 export const FOLLOWUS: LinkList = [
   {
     title: 'Instagram',
-    link: 'https://www.instagram.com/filmdoms/',
+    link: 'https://www.instagram.com/filmdomaypole/',
   },
   {
-    title: 'Twitter',
-    link: 'https://twitter.com/filmdoms',
-  },
-  {
-    title: 'Facebook',
-    link: 'https://www.facebook.com/filmdoms',
+    title: 'Threads',
+    link: 'https://www.threads.net/@filmdomaypole/',
   },
 ]
 

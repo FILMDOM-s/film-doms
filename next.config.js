@@ -32,6 +32,7 @@ const nextConfig = {
     })
     return config
   },
+  reactStrictMode: false,
 }
 
 const isDev = process.env.NODE_ENV !== 'production'
