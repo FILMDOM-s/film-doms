@@ -10,7 +10,7 @@ export type DomainType = 'server' | 'msw'
 export const getDomain = (type: DomainType) => {
   switch (type) {
     case 'server':
-      return 'https://nginx-nginx-4uvg2mlecrl7qe.sel3.cloudtype.app'
+      return 'https://api.filmdoms.studio'
     case 'msw':
       return '/'
     default:

@@ -13,7 +13,7 @@ export type LoginFormType = {
   password: string
 }
 function SignIn({ closeModal }: { closeModal: () => void }) {
-  const GOOGLE_OAUTH = `https://nginx-nginx-4uvg2mlecrl7qe.sel3.cloudtype.app/oauth2/authorization/google`
+  const GOOGLE_OAUTH = `https://api.filmdoms.studio/oauth2/authorization/google`
 
   const router = useRouter()
   const {

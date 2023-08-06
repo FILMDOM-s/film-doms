@@ -26,8 +26,7 @@ const Google = () => {
 
       await axios
         .get(
-          'https://nginx-nginx-4uvg2mlecrl7qe.sel3.cloudtype.app/login/oauth2/code/google?' +
-            queryString,
+          'https://api.filmdoms.studio/login/oauth2/code/google?' + queryString,
           {
             withCredentials: true,
           }
