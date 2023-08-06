@@ -17,6 +17,7 @@ const nextConfig = {
       'picsum.photos',
       'cdn.pixabay.com',
       'nginx-nginx-4uvg2mlecrl7qe.sel3.cloudtype.app',
+      'api.filmdoms.studio',
     ],
   },
   eslint: {
