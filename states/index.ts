@@ -1,4 +1,7 @@
 import { atom } from 'recoil'
+import { recoilPersist } from 'recoil-persist'
+
+const { persistAtom } = recoilPersist()
 
 type ModalType = {
   isOpen: boolean
@@ -26,4 +29,10 @@ export const pureModalState = atom<ModalType>({
     content: '',
     theme: 'dark',
   },
+})
+
+export const loginState = atom<boolean>({
+  key: 'loginState',
+  default: false,
+  effects_UNSTABLE: [persistAtom],
 })

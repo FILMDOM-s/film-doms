@@ -1,9 +1,4 @@
-import {
-  type AxiosError,
-  type AxiosInstance,
-  type InternalAxiosRequestConfig,
-} from 'axios'
-import Cookies from 'js-cookie'
+import { type AxiosError, type InternalAxiosRequestConfig } from 'axios'
 
 export type DomainType = 'server' | 'msw'
 
@@ -34,18 +29,6 @@ export const getAuthorizationConfig = ({
   }
 
   return _config
-}
-
-export const setAuthorization = ({
-  instance,
-  token,
-}: {
-  instance: AxiosInstance
-  token: string
-}) => {
-  instance.defaults.headers.common['Authorization'] = `Bearer ${token}`
-
-  Cookies.set('accessToken', token)
 }
 
 export const isTokenError = (error: AxiosError) => {
