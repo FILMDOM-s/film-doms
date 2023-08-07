@@ -13,9 +13,7 @@ type Props = {
 }
 
 const MyPage = ({ id }: Props) => {
-  const { data: userInfo } = useFetchUserInfo({
-    enabled: id === undefined,
-  })
+  const { data: userInfo } = useFetchUserInfo()
   const { data: publicUserInfo } = useFetchPublicUserInfo(id as string, {
     enabled: id !== undefined,
   })

@@ -7,6 +7,7 @@ import { useRouter } from 'next/router'
 
 const AppLayout = ({ children }: PropsWithChildren) => {
   const router = useRouter()
+
   return (
     <>
       <Header />

@@ -104,7 +104,8 @@ export const ArticleDetail = ({ articleId, category }: ArticleDetailProps) => {
                     },
                     {
                       onSuccess: () => {
-                        router.push(`/article/${category}`)
+                        toast.error('삭제 성공')
+                        router.push(`/article/${snakeToCamel(category)}`)
                       },
                       onError: () => {
                         toast.error('삭제 실패')

@@ -276,11 +276,11 @@ const SignUpForm = () => {
 
       setServerInput(prev => ({
         ...prev,
-        email: data?.email,
+        email: data?.email ?? '',
         uuid: 'google',
         validEmail: true,
       }))
-      setValue('email', data?.email)
+      setValue('email', data?.email ?? '')
     }
   }, [data?.email, from, setValue])
 

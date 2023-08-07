@@ -11,7 +11,7 @@ import { AppLayout } from '@views/Layout'
 import { AppScript, useStartWorker } from '@views/_App'
 import * as gtag from 'lib/gtag'
 import type { AppProps } from 'next/app'
-import { useCallback } from 'react'
+import { Suspense, useCallback } from 'react'
 import { Toaster } from 'react-hot-toast'
 import { RecoilRoot } from 'recoil'
 
