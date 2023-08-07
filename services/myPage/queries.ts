@@ -6,15 +6,9 @@ import {
   getUserActivityComment,
   getUserInfo,
 } from './apis'
-import Cookies from 'js-cookie'
 
-export const useFetchUserInfo = (options?: { enabled?: boolean }) => {
-  const token = Cookies.get('accessToken')
-
-  return useSuspendedQuery(queryKeys.myPage.userInfo, getUserInfo, {
-    enabled: !!token && options?.enabled,
-    ...options,
-  })
+export const useFetchUserInfo = () => {
+  return useSuspendedQuery(queryKeys.myPage.userInfo, getUserInfo, {})
 }
 
 export const useFetchUserActivityArticle = (params: User.Activity.Params) => {

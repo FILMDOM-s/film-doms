@@ -1,44 +1,37 @@
 import { defaultProfile } from '@/assets/images/common'
 import useSignInModal from '@/components/views/Auth/SignIn/hooks/useSignInModal'
 import { useFetchUserInfo } from '@/services/myPage'
+import { loginState } from '@/states'
 import { getImageSrcByUuid } from '@/utils'
 import styled from '@emotion/styled'
 import { Person } from '@svgs/common'
-import Cookies from 'js-cookie'
 import Image from 'next/image'
 import Link from 'next/link'
-import { Suspense, useEffect, useState } from 'react'
-import { ErrorBoundary } from 'react-error-boundary'
+import { useEffect, useState } from 'react'
+import { useRecoilState } from 'recoil'
 
 const Avatar = () => {
-  const token = Cookies.get('accessToken')
-  const [isLogin, setIsLogin] = useState(!!token)
+  const { data } = useFetchUserInfo()
+  const [, setIsLoggedIn] = useRecoilState(loginState)
 
   useEffect(() => {
-    if (token) {
-      setIsLogin(true)
-
-      return
+    if (data && data?.id) {
+      setIsLoggedIn(true)
     }
-
-    setIsLogin(false)
-  }, [token])
-
-  return (
-    <ErrorBoundary fallback={<GuestUser />}>
-      <Suspense fallback={<GuestUser />}>
-        {isLogin ? <LoginUser /> : <GuestUser />}
-      </Suspense>
-    </ErrorBoundary>
-  )
+  }, [data, setIsLoggedIn])
+  return data ? <User profileImage={data.profileImage} /> : <GuestUser />
 }
 
 export default Avatar
 
-const LoginUser = () => {
-  const {
-    data: { profileImage },
-  } = useFetchUserInfo()
+const User = ({
+  profileImage,
+}: {
+  profileImage: {
+    id: number
+    uuidFileName: string
+  }
+}) => {
   const [toggle, setToggle] = useState(false)
 
   return (

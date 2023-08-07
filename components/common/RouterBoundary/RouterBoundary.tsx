@@ -1,21 +1,21 @@
 import useSignInModal from '@/components/views/Auth/SignIn/hooks/useSignInModal'
-import Cookies from 'js-cookie'
+import { loginState } from '@/states'
 import { type MittEmitter } from 'next/dist/shared/lib/mitt'
 import { Router, useRouter } from 'next/router'
 import { useEffect, type PropsWithChildren, useRef } from 'react'
+import { useRecoilState } from 'recoil'
 
 const RouterBoundary = ({ children }: PropsWithChildren) => {
   const { openModal } = useSignInModal()
   const { pathname, replace, back } = useRouter()
   const prevPathname = useRef<string | null>(null)
-
-  const token = Cookies.get('accessToken')
+  const [isLoggedIn] = useRecoilState(loginState)
 
   useEffect(() => {
     const beforeHistoryChange: Parameters<
       MittEmitter<'beforeHistoryChange'>['on']
     >['1'] = route => {
-      if (!isAuthUser(route, token)) {
+      if (!isAuthUser(route, isLoggedIn)) {
         Router.events.emit('routeChangeError', {
           code: ROUTE_ERROR_CODE.AUTH_ERROR,
         })
@@ -49,10 +49,10 @@ const RouterBoundary = ({ children }: PropsWithChildren) => {
       Router.events.off('routeChangeError', routeChangeError)
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [token])
+  }, [isLoggedIn])
 
   useEffect(() => {
-    if (isAuthUser(pathname, token)) {
+    if (isAuthUser(pathname, isLoggedIn)) {
       prevPathname.current = pathname
 
       return
@@ -70,9 +70,9 @@ const RouterBoundary = ({ children }: PropsWithChildren) => {
 
     prevPathname.current = pathname
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [pathname, token])
+  }, [pathname, isLoggedIn])
 
-  return <>{isAuthUser(pathname, token) ? children : null}</>
+  return <>{isAuthUser(pathname, isLoggedIn) ? children : null}</>
 }
 
 export default RouterBoundary
@@ -89,14 +89,14 @@ const AUTH_REQUIRE_ROUTE_LIST = [
   '/write/article/critic',
 ]
 
-const isAuthUser = (pathname: string, token: string | undefined) => {
+const isAuthUser = (pathname: string, isLoggedIn: boolean) => {
   const isAuthRequireRoute = AUTH_REQUIRE_ROUTE_LIST.includes(pathname)
 
   if (!isAuthRequireRoute) {
     return true
   }
 
-  if (token) {
+  if (isLoggedIn) {
     return true
   }
 

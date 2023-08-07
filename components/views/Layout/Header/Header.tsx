@@ -2,12 +2,15 @@ import { mediaQuery } from '@/styles/emotion'
 import styled from '@emotion/styled'
 import { flexCenter } from '@/styles/emotion'
 import SideNav from '../SideNav'
-import { useState } from 'react'
+import { Suspense, useState } from 'react'
 import * as Svgs from '@svgs/common'
 import NavContainer from '../../Home/Nav/NavContainer'
 import Link from 'next/link'
 import { Modal, PureModal } from '@/components/common/Modal'
 import Avatar from './Avatar'
+import { ErrorBoundary } from 'react-error-boundary'
+import { Person } from '@svgs/common'
+import { useSignInModal } from '../../Auth/SignIn/hooks'
 
 const Header = () => {
   const [showSideNav, setShowSideNav] = useState(false)
@@ -39,7 +42,11 @@ const Header = () => {
             </IconWrapper>
           </IconMutableWrapper>
           <IconWrapper>
-            <Avatar />
+            <ErrorBoundary fallback={<GuestUser />}>
+              <Suspense fallback={<GuestUser />}>
+                <Avatar />
+              </Suspense>
+            </ErrorBoundary>
           </IconWrapper>
         </RightSideWrapper>
       </HeaderInner>
@@ -54,6 +61,16 @@ const Header = () => {
 }
 
 export default Header
+
+const GuestUser = () => {
+  const { openModal } = useSignInModal()
+
+  return (
+    <button onClick={openModal}>
+      <Person fill="#FFFFFF" />
+    </button>
+  )
+}
 
 const HeaderContainer = styled.header`
   height: 120px;
