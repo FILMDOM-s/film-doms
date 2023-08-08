@@ -1,21 +1,16 @@
-import api from '@/services/api'
-import { useGetGoogleAccessCode } from '@/services/auth/queries'
+import { loginState } from '@/states'
 import styled from '@emotion/styled'
 
 import axios from 'axios'
 import { useRouter } from 'next/router'
 import { memo, useEffect } from 'react'
 import { toast } from 'react-hot-toast'
+import { useRecoilState } from 'recoil'
 
 const Google = () => {
   const router = useRouter()
 
-  // const queryString = Object.entries(router.query)
-  //   .map(([key, value]) => `${key}=${value}`)
-  //   .concat()
-  //   .join('&')
-
-  // const { data, } = useGetGoogleAccessCode(queryString)
+  const [, setIsLoggedIn] = useRecoilState(loginState)
 
   useEffect(() => {
     ;(async () => {
@@ -34,9 +29,7 @@ const Google = () => {
         .then(response => {
           // 성공적으로 응답을 받았을 때 실행되는 코드
           const { data } = response
-          api.defaults.headers.common[
-            'Authorization'
-          ] = `Bearer ${data.result.accessToken}`
+          setIsLoggedIn(true)
           toast.success('로그인 성공!', {
             icon: '👏',
             position: 'top-center',
@@ -48,7 +41,7 @@ const Google = () => {
             },
           })
         })
-        .catch(error => {
+        .catch(() => {
           // 오류가 발생했을 때 실행되는 코드
           toast.error('로그인에 실패했습니다. 관리자에게 문의하세요.', {
             icon: '😥',
@@ -59,7 +52,7 @@ const Google = () => {
           })
         })
     })()
-  }, [router])
+  }, [router, setIsLoggedIn])
 
   return (
     <LoginBox>
