@@ -11,7 +11,7 @@ const Logout = () => {
   const [, setIsLoggedIn] = useRecoilState(loginState)
 
   useEffect(() => {
-    mutate(undefined, {
+    mutate(null, {
       onSuccess: () => {
         setIsLoggedIn(false)
         router.push('/')

@@ -44,7 +44,9 @@ export const signInAccount = (item: Auth.SignIn.Request) => {
 }
 
 export const signOutAccount = () => {
-  return api.post<null, null, null>(`/api/v1/account/logout`)
+  return api.post<null, null, null>(`/api/v1/account/logout`, null, {
+    withCredentials: true,
+  })
 }
 
 export const signInGoogle = (code: string) => {
