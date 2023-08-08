@@ -34,8 +34,14 @@ export const useSignInAccount = (
   return useMutation(signInAccount, options)
 }
 
-export const useSignOutAccount = () => {
-  return useMutation(signOutAccount)
+export const useSignOutAccount = (
+  options?: UseMutationOptions<
+    Awaited<ReturnType<typeof signOutAccount>>,
+    unknown,
+    null
+  >
+) => {
+  return useMutation(signOutAccount, options)
 }
 
 export const useSignInGoogle = (

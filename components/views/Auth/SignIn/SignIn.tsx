@@ -7,6 +7,8 @@ import { EMAIL_REGEX, PASSWORD_REGEX } from '@/constants/auth/regex'
 import { google } from '@/assets/images/common'
 import Image from 'next/image'
 import { useSignInAccount } from '@/services/auth'
+import { loginState } from '@/states'
+import { useRecoilState } from 'recoil'
 
 export type LoginFormType = {
   email: string
@@ -14,6 +16,8 @@ export type LoginFormType = {
 }
 function SignIn({ closeModal }: { closeModal: () => void }) {
   const GOOGLE_OAUTH = `https://api.filmdoms.studio/oauth2/authorization/google`
+
+  const [, setIsLoggedIn] = useRecoilState(loginState)
 
   const router = useRouter()
   const {
@@ -28,11 +32,13 @@ function SignIn({ closeModal }: { closeModal: () => void }) {
   const { mutate: signIn } = useSignInAccount({
     onSuccess: ({ resultCode }) => {
       if (resultCode === 'SUCCESS') {
+        setIsLoggedIn(true)
         toast('로그인 성공!', {
           icon: '👏',
           position: 'top-center',
         })
         router.push('/')
+
         closeModal()
       } else {
         toast.error(resultCode, {
