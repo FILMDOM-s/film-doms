@@ -1,23 +1,27 @@
 import { useSignOutAccount } from '@/services/auth'
+import { loginState } from '@/states'
 import styled from '@emotion/styled'
 import { useRouter } from 'next/router'
 import { useEffect } from 'react'
+import { useRecoilState } from 'recoil'
 
 const Logout = () => {
   const router = useRouter()
   const { mutate } = useSignOutAccount()
+  const [, setIsLoggedIn] = useRecoilState(loginState)
 
   useEffect(() => {
     mutate(undefined, {
       onSuccess: () => {
+        setIsLoggedIn(false)
         router.push('/')
       },
     })
-  }, [mutate, router])
+  }, [mutate, router, setIsLoggedIn])
 
   return (
     <LogoutBox>
-      <h1>로그아웃 중입니다. 조금만 기다려 주세요.</h1>
+      <h1>로그아웃 중입니다. 다음에 또 만나요! 😆</h1>
     </LogoutBox>
   )
 }

@@ -2,44 +2,45 @@ export const imageList = [
   {
     id: 1,
     image:
-      'https://imagedelivery.net/6qzLODAqs2g1LZbVYqtuQw/9ca7cb64-2f3f-4b2e-642d-69e16847f200/public',
-    title: `'본즈 앤 올',|결코 다다를 수 없는 곳`,
-    author: '김성찬',
+      'https://imagedelivery.net/6qzLODAqs2g1LZbVYqtuQw/b73904d8-e9b5-422a-5cd3-88ecb8f14d00/public',
+    title: `<중경삼림> & <아비정전>|'정의할 수 없는 감정들의 향연'`,
+    author: '허창훈',
   },
   {
     id: 2,
     image:
-      'https://imagedelivery.net/6qzLODAqs2g1LZbVYqtuQw/946fa3ce-5c22-4a9b-5780-757728eb1f00/public',
-    title: `'헤어질 결심' 의심의 몽타주,|그 미학의 결계`,
-    author: '이현동',
+      'https://imagedelivery.net/6qzLODAqs2g1LZbVYqtuQw/eae5c8ad-9981-4324-869f-73d7cbbb9b00/public',
+    title: `<컨택트(Arrival)>|'그럼에도 불구하고'`,
+    author: '차채은',
   },
   {
     id: 3,
     image:
-      'https://imagedelivery.net/6qzLODAqs2g1LZbVYqtuQw/26d14a5d-99e3-4e23-8662-2a683d896b00/public',
+      'https://imagedelivery.net/6qzLODAqs2g1LZbVYqtuQw/093e23ca-7684-4d38-186c-8f49ce2ae500/public',
 
-    title: `계급과 성자의 대립함을|세우고 부순 박찬욱식 영화언어`,
-    author: '김소희',
+    title: `<진짜로 일어날지도 몰라 기적>|'소멸로 쌓아올린 세계를 만나다!'`,
+    author: '권영은',
   },
   {
     id: 4,
     image:
-      'https://imagedelivery.net/6qzLODAqs2g1LZbVYqtuQw/9ca7cb64-2f3f-4b2e-642d-69e16847f200/public',
-    title: `'본즈 앤 올',|결코 다다를 수 없는 곳`,
-    author: '김성찬',
+      'https://imagedelivery.net/6qzLODAqs2g1LZbVYqtuQw/b73904d8-e9b5-422a-5cd3-88ecb8f14d00/public',
+    title: `<중경삼림> & <아비정전>|'정의할 수 없는 감정들의 향연'`,
+    author: '허창훈',
   },
   {
     id: 5,
     image:
-      'https://imagedelivery.net/6qzLODAqs2g1LZbVYqtuQw/946fa3ce-5c22-4a9b-5780-757728eb1f00/public',
-    title: `'헤어질 결심' 의심의 몽타주,|그 미학의 결계`,
-    author: '이현동',
+      'https://imagedelivery.net/6qzLODAqs2g1LZbVYqtuQw/eae5c8ad-9981-4324-869f-73d7cbbb9b00/public',
+    title: `<컨택트(Arrival)>|'그럼에도 불구하고'`,
+    author: '차채은',
   },
   {
     id: 6,
     image:
-      'https://imagedelivery.net/6qzLODAqs2g1LZbVYqtuQw/26d14a5d-99e3-4e23-8662-2a683d896b00/public',
-    title: `계급과 성자의 대립함을|세우고 부순 박찬욱식 영화언어`,
-    author: '김소희',
+      'https://imagedelivery.net/6qzLODAqs2g1LZbVYqtuQw/093e23ca-7684-4d38-186c-8f49ce2ae500/public',
+
+    title: `<진짜로 일어날지도 몰라 기적>|'소멸로 쌓아올린 세계를 만나다!'`,
+    author: '권영은',
   },
 ]

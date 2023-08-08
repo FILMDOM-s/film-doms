@@ -11,15 +11,25 @@ import { useEffect, useState } from 'react'
 import { useRecoilState } from 'recoil'
 
 const Avatar = () => {
-  const { data } = useFetchUserInfo()
-  const [, setIsLoggedIn] = useRecoilState(loginState)
+  const { data, refetch } = useFetchUserInfo()
+  const [isLoggedIn, setIsLoggedIn] = useRecoilState(loginState)
 
   useEffect(() => {
     if (data && data?.id) {
       setIsLoggedIn(true)
     }
   }, [data, setIsLoggedIn])
-  return data ? <User profileImage={data.profileImage} /> : <GuestUser />
+
+  useEffect(() => {
+    if (isLoggedIn) {
+      refetch()
+    }
+  }, [isLoggedIn, refetch])
+  return isLoggedIn && data ? (
+    <User profileImage={data?.profileImage} />
+  ) : (
+    <GuestUser />
+  )
 }
 
 export default Avatar
