@@ -20,7 +20,9 @@ const FilmUniverse = ({
 }) => {
   return (
     <FilmUniverseElement>
-      <Image width={360} height={400} src={image} alt="title" />
+      <div style={{ width: '360px', height: '400px', position: 'relative' }}>
+        <Image src={image} alt="title" fill />
+      </div>
       <FilmUniverseElementOwnerWrapper>
         <FilmUniverseElementOwner>{owner}</FilmUniverseElementOwner>
         <Tag shape="round">{classification}</Tag>

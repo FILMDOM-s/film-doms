@@ -3,7 +3,7 @@ import { CATEGORIES } from '@/constants/article'
 import { colors, flexCenter, flexGap, typography } from '@/styles/emotion'
 import styled from '@emotion/styled'
 import Link from 'next/link'
-import { Suspense, useEffect, useState } from 'react'
+import { Suspense, useEffect, useRef, useState } from 'react'
 import LabeledCheckbox from './Check'
 import { useForm } from 'react-hook-form'
 import { useFetchArticleDetailEdit, useUpdateArticle } from '@/services/article'
@@ -12,6 +12,7 @@ import toast from 'react-hot-toast'
 import { camelToSnake } from '@/utils'
 import SelectBox from './Select/Select'
 import { Editor } from '@/components/common/Editor'
+import { ImageListProps } from '@/components/common/Editor/Editor'
 
 export type EditorContainerProps = {
   category: string
@@ -34,6 +35,8 @@ const UpdateEditorContainer = ({
 }: EditorContainerProps) => {
   const router = useRouter()
   const [content, setContent] = useState('')
+  const contentLength = useRef(0)
+  const [imageList, setImageList] = useState<ImageListProps>({})
   const { register, handleSubmit, getValues, setValue } = useForm<ArticleProps>(
     {
       mode: 'onChange',
@@ -49,44 +52,181 @@ const UpdateEditorContainer = ({
   const onSubmit = async () => {
     const { title, tag, startAt, endAt } = getValues()
     try {
-      await updateArticle(
-        {
-          category: camelToSnake(category).toUpperCase(),
-          articleId: id,
-          item: {
-            title: title,
-            category: camelToSnake(category).toUpperCase(),
-            tag: tag,
-            content: content,
-            containsImage: 'true',
-            mainImageId: '1',
-            startAt: new Date(startAt).toISOString(),
-            endAt: new Date(endAt).toISOString(),
+      if (!title) {
+        toast.error('제목을 입력해주세요', {
+          icon: '😥',
+          position: 'top-center',
+        })
+        return
+      }
+
+      const tempImageList = content.match(
+        /<img[^>]*src=[\"']?([^>\"']+)[\"']?[^>]*>/g
+      )
+
+      let thumbnail = ''
+      if (tempImageList && tempImageList.length > 0) {
+        const src = tempImageList[0].split('src=')[1].split('"')[1]
+        // https://nginx-nginx-4uvg2mlecrl7qe.sel3.cloudtype.app/image/를 제거
+        thumbnail = src.replace(
+          'https://nginx-nginx-4uvg2mlecrl7qe.sel3.cloudtype.app/image/',
+          ''
+        )
+      }
+
+      if (category === 'filmUniverse') {
+        if (!startAt || !endAt) {
+          toast.error('게시 기간을 입력해주세요', {
+            icon: '😥',
+            position: 'top-center',
+          })
+          return
+        }
+
+        if (!tempImageList) {
+          toast.error('이미지가 반드시 포함되어야 해요!', {
+            icon: '😥',
+            position: 'top-center',
+          })
+          return
+        }
+        await updateArticle(
+          {
+            category: 'FILM_UNIVERSE',
+            articleId: id,
+            item: {
+              title: title,
+              category: 'FILM_UNIVERSE',
+              tag: tag,
+              content: content,
+              containsImage: 'true',
+              mainImageId: imageList[thumbnail].toString(),
+              startAt: new Date(startAt).toISOString(),
+              endAt: new Date(endAt).toISOString(),
+            },
           },
-        },
-        {
-          onSuccess: ({ resultCode }) => {
-            if (resultCode === 'SUCCESS') {
-              toast('수정 완료!', {
-                icon: '👏',
-                position: 'top-center',
-              })
-              router.push(`/article/${[category]}`, `/article/${category}`)
-            } else {
-              toast.error(resultCode, {
+          {
+            onSuccess: ({ resultCode }) => {
+              if (resultCode === 'SUCCESS') {
+                toast('수정 완료!', {
+                  icon: '👏',
+                  position: 'top-center',
+                })
+                router.push(`/article/${[category]}`, `/article/${category}`)
+              } else {
+                toast.error(resultCode, {
+                  icon: '😥',
+                  position: 'top-center',
+                })
+              }
+            },
+            onError: () => {
+              toast.error('수정 실패!', {
                 icon: '😥',
                 position: 'top-center',
               })
-            }
-          },
-          onError: () => {
-            toast.error('수정 실패!', {
-              icon: '😥',
-              position: 'top-center',
-            })
-          },
+            },
+          }
+        )
+      } else if (category === 'critic') {
+        if (!tempImageList) {
+          toast.error('이미지가 반드시 포함되어야 해요!', {
+            icon: '😥',
+            position: 'top-center',
+          })
+          return
         }
-      )
+
+        if (tempImageList.length < 3) {
+          toast.error('이미지는 3개 이상 포함되어야 해요!', {
+            icon: '😥',
+            position: 'top-center',
+          })
+          return
+        }
+
+        if (contentLength.current < 3000) {
+          toast.error('3000자 이상 입력해주세요!', {
+            icon: '😥',
+            position: 'top-center',
+          })
+          return
+        }
+
+        await updateArticle(
+          {
+            category: 'CRITIC',
+            articleId: id,
+            item: {
+              title: title,
+              category: 'CRITIC',
+              tag: tag,
+              content: content,
+              containsImage: 'true',
+              mainImageId: imageList[thumbnail].toString(),
+            },
+          },
+          {
+            onSuccess: ({ resultCode }) => {
+              if (resultCode === 'SUCCESS') {
+                toast('수정 완료!', {
+                  icon: '👏',
+                  position: 'top-center',
+                })
+                router.push(`/article/${[category]}`, `/article/${category}`)
+              } else {
+                toast.error(resultCode, {
+                  icon: '😥',
+                  position: 'top-center',
+                })
+              }
+            },
+            onError: () => {
+              toast.error('수정 실패!', {
+                icon: '😥',
+                position: 'top-center',
+              })
+            },
+          }
+        )
+      } else {
+        await updateArticle(
+          {
+            category: 'MOVIE',
+            articleId: id,
+            item: {
+              title: title,
+              category: 'MOVIE',
+              tag: tag,
+              content: content,
+              containsImage: 'true',
+              mainImageId: imageList[thumbnail].toString(),
+            },
+          },
+          {
+            onSuccess: ({ resultCode }) => {
+              if (resultCode === 'SUCCESS') {
+                toast('수정 완료!', {
+                  icon: '👏',
+                  position: 'top-center',
+                })
+                router.push(`/article/${[category]}`, `/article/${category}`)
+              } else {
+                toast.error(resultCode, {
+                  icon: '😥',
+                  position: 'top-center',
+                })
+              }
+            },
+            onError: () => {
+              toast.error('수정 실패!', {
+                icon: '😥',
+                position: 'top-center',
+              })
+            },
+          }
+        )
+      }
     } catch (err) {}
   }
 
@@ -125,7 +265,11 @@ const UpdateEditorContainer = ({
         </Header>
         <Editor
           content={content}
-          onChangeContent={content => setContent(content)}
+          onChangeContent={(value, length) => {
+            setContent(value)
+            contentLength.current = length
+          }}
+          onChangeImageList={setImageList}
         />
         <Checks>
           <LabeledCheckbox

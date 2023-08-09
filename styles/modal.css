@@ -1,42 +1,71 @@
+@keyframes open {
+  0% {
+    opacity: 0%;
+    transform: translate(0, -100%);
+  }
 
-  
-  @keyframes open {
-    0% {
-      opacity: 0%;
-      transform: translate(0, -100%);
-    }
-  
-    100% {
-      opacity: 100%;
-      transform: translate(0, 0);
-    }
+  100% {
+    opacity: 100%;
+    transform: translate(0, 0);
   }
-  
-  @keyframes close {
-    0% {
-      opacity: 100%;
-      transform: translate(0, 0);
-    }
-  
-    50% {
-      opacity: 0%;
-    }
-  
-    100% {
-      opacity: 0%;
-      transform: translate(0, 100%);
-    }
+}
+
+@keyframes profileOpen {
+  0% {
+    opacity: 0%;
   }
-  
-  .open-modal {
-    animation-name: open;
-    animation-duration: 0.3s;
-    animation-timing-function: ease-out;
+
+  100% {
+    opacity: 100%;
   }
-  
-  .close-modal {
-    animation-name: close;
-    animation-duration: 0.3s;
-    animation-timing-function: ease-out;
+}
+
+@keyframes close {
+  0% {
+    opacity: 100%;
+    transform: translate(0, 0);
   }
-  
+
+  50% {
+    opacity: 0%;
+  }
+
+  100% {
+    opacity: 0%;
+    transform: translate(0, 100%);
+  }
+}
+
+@keyframes profileClose {
+  0% {
+    opacity: 100%;
+  }
+  100% {
+    opacity: 0%;
+  }
+}
+
+.open-modal {
+  animation-name: open;
+  animation-duration: 0.3s;
+  animation-timing-function: ease-out;
+}
+
+.open-profile-modal {
+  animation-name: profileOpen;
+  animation-duration: 0.2s;
+  animation-timing-function: ease-out;
+}
+
+.close-modal {
+  animation-name: close;
+  animation-duration: 0.3s;
+  animation-timing-function: ease-out;
+}
+
+.close-profile-modal {
+  animation-name: profileClose;
+  animation-duration: 0.2s;
+  animation-timing-function: ease-out;
+  animation-fill-mode: forwards;
+}

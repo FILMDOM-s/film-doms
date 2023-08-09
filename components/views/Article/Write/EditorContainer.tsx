@@ -3,7 +3,6 @@ import { Editor } from '@/components/common/Editor'
 import { CATEGORIES } from '@/constants/article'
 import { useCreateArticle } from '@/services/article'
 import { colors, flexCenter, flexGap, typography } from '@/styles/emotion'
-import { camelToSnake } from '@/utils'
 import styled from '@emotion/styled'
 import Link from 'next/link'
 import { useRouter } from 'next/router'
@@ -12,6 +11,7 @@ import { useForm } from 'react-hook-form'
 import toast from 'react-hot-toast'
 import LabeledCheckbox from './Check'
 import SelectBox from './Select'
+import { ImageListProps } from '@/components/common/Editor/Editor'
 
 export type EditorContainerProps = {
   category: string
@@ -31,7 +31,7 @@ const EditorContainer = ({ category = 'critic' }: EditorContainerProps) => {
   const router = useRouter()
   const [content, setContent] = useState('')
   const contentLength = useRef(0)
-  const [imageList, setImageList] = useState<string[]>([])
+  const [imageList, setImageList] = useState<ImageListProps>({})
   const { register, handleSubmit, getValues } = useForm<ArticleProps>({
     mode: 'onChange',
   })
@@ -51,7 +51,7 @@ const EditorContainer = ({ category = 'critic' }: EditorContainerProps) => {
         })
       }
     },
-    onError: () => {
+    onError: err => {
       toast.error('등록 실패!', {
         icon: '😥',
         position: 'top-center',
@@ -61,25 +61,71 @@ const EditorContainer = ({ category = 'critic' }: EditorContainerProps) => {
 
   const onSubmit = async () => {
     const { title, tag, startAt, endAt } = getValues()
-    const imageCount = content.split('<img src=').length - 1
 
     try {
-      if (category === 'critic') {
-        if (title === '') {
-          toast.error('제목을 입력해주세요!', {
+      if (!title) {
+        toast.error('제목을 입력해주세요', {
+          icon: '😥',
+          position: 'top-center',
+        })
+        return
+      }
+
+      const tempImageList = content.match(
+        /<img[^>]*src=[\"']?([^>\"']+)[\"']?[^>]*>/g
+      )
+
+      let thumbnail = ''
+      if (tempImageList && tempImageList.length > 0) {
+        const src = tempImageList[0].split('src=')[1].split('"')[1]
+        // https://nginx-nginx-4uvg2mlecrl7qe.sel3.cloudtype.app/image/를 제거
+        thumbnail = src.replace(
+          'https://nginx-nginx-4uvg2mlecrl7qe.sel3.cloudtype.app/image/',
+          ''
+        )
+      }
+
+      if (category === 'filmUniverse') {
+        if (!startAt || !endAt) {
+          toast.error('게시 기간을 입력해주세요', {
             icon: '😥',
             position: 'top-center',
           })
-
           return
         }
 
-        if (imageCount < 3) {
-          toast.error('이미지를 3개 이상 등록해주세요!', {
+        if (!tempImageList) {
+          toast.error('이미지가 반드시 포함되어야 해요!', {
             icon: '😥',
             position: 'top-center',
           })
+          return
+        }
 
+        await createArticle({
+          title: title,
+          category: 'FILM_UNIVERSE',
+          tag: tag,
+          content: content,
+          containsImage: 'true',
+          mainImageId: imageList[thumbnail].toString(),
+          startAt: new Date(startAt).toISOString(),
+          endAt: new Date(endAt).toISOString(),
+        })
+      } else if (category === 'critic') {
+        if (!tempImageList) {
+          toast.error('이미지가 반드시 포함되어야 해요!', {
+            icon: '😥',
+            position: 'top-center',
+          })
+          return
+        }
+
+        if (tempImageList.length < 3) {
+          toast.error('이미지는 3개 이상 포함되어야 해요!', {
+            icon: '😥',
+            position: 'top-center',
+          })
           return
         }
 
@@ -88,81 +134,27 @@ const EditorContainer = ({ category = 'critic' }: EditorContainerProps) => {
             icon: '😥',
             position: 'top-center',
           })
-
           return
         }
 
-        createArticle({
-          title,
-          category: camelToSnake(category).toUpperCase(),
-          tag,
-          content,
+        await createArticle({
+          title: title,
+          category: 'CRITIC',
+          tag: tag,
+          content: content,
           containsImage: 'true',
-          mainImageId: imageList.length > 0 ? imageList[0] : '',
+          mainImageId: imageList[thumbnail].toString(),
         })
-
-        return
-      }
-
-      if (category === 'filmUniverse') {
-        if (title === '') {
-          toast.error('제목을 입력해주세요!', {
-            icon: '😥',
-            position: 'top-center',
-          })
-
-          return
-        }
-
-        if (imageCount < 1) {
-          toast.error('이미지를 1개 이상 등록해주세요!', {
-            icon: '😥',
-            position: 'top-center',
-          })
-
-          return
-        }
-
-        if (startAt === '' || endAt === '') {
-          toast.error('게시 기간을 입력해주세요!', {
-            icon: '😥',
-            position: 'top-center',
-          })
-
-          return
-        }
-
+      } else {
         createArticle({
-          title,
-          category: camelToSnake(category).toUpperCase(),
-          tag,
-          content,
+          title: title,
+          category: 'MOVIE',
+          tag: tag,
+          content: content,
           containsImage: 'true',
-          mainImageId: imageList.length > 0 ? imageList[0] : '',
-          startAt: new Date(startAt).toISOString(),
-          endAt: new Date(endAt).toISOString(),
+          mainImageId: imageList[thumbnail].toString(),
         })
-
-        return
       }
-
-      if (title === '') {
-        toast.error('제목을 입력해주세요!', {
-          icon: '😥',
-          position: 'top-center',
-        })
-
-        return
-      }
-
-      createArticle({
-        title: title,
-        category: camelToSnake(category).toUpperCase(),
-        tag,
-        content,
-        containsImage: imageCount > 0 ? 'true' : 'false',
-        mainImageId: imageList.length > 0 ? imageList[0] : '',
-      })
     } catch (err) {}
   }
 
@@ -190,11 +182,11 @@ const EditorContainer = ({ category = 'critic' }: EditorContainerProps) => {
         </Header>
         <Editor
           content={content}
-          onChangeImageList={setImageList}
           onChangeContent={(value, length) => {
             setContent(value)
             contentLength.current = length
           }}
+          onChangeImageList={setImageList}
         />
         <Checks>
           <LabeledCheckbox

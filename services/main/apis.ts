@@ -1,7 +1,7 @@
 import api, { mswApi } from '../api'
 
 export const getBannerList = () => {
-  return mswApi.get<null, Main.Banner[]>('/api/banner')
+  return mswApi.get<null, Main.Banner[]>('/api/v1/main/banner')
 }
 
 export const getRecentList = async () => {

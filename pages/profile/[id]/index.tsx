@@ -1,5 +1,5 @@
 import { OpenGraph } from '@/components/common'
-import { MyPageViews } from '@views/MyPage'
+import { ProfileViews } from '@/components/views/MyPage'
 import { useRouter } from 'next/router'
 
 const PublicProfilePage = () => {
@@ -8,7 +8,7 @@ const PublicProfilePage = () => {
 
   return (
     <OpenGraph title={'Profile'} path={`/profile/${id}`}>
-      <MyPageViews id={id} />
+      <ProfileViews id={id} />
     </OpenGraph>
   )
 }

@@ -1,9 +1,9 @@
 import { ComponentMeta, ComponentStory } from '@storybook/react'
-import SideNav from './SideNav'
+import SideProfile from './SideProfile'
 
 export default {
-  component: SideNav,
-  title: 'Layout/Generic/SideNav',
+  component: SideProfile,
+  title: 'Layout/Generic/SideProfile',
   argTypes: {
     onClose: {
       table: {
@@ -11,9 +11,11 @@ export default {
       },
     },
   },
-} as ComponentMeta<typeof SideNav>
+} as ComponentMeta<typeof SideProfile>
 
-const Template: ComponentStory<typeof SideNav> = args => <SideNav {...args} />
+const Template: ComponentStory<typeof SideProfile> = args => (
+  <SideProfile {...args} />
+)
 
 export const Default = Template.bind({})
 Default.args = {
