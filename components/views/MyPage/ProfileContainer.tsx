@@ -1,5 +1,5 @@
 import { Loading, RenderIf } from '@/components/common'
-import { useFetchUserInfo } from '@/services/myPage'
+import { useFetchPublicUserInfo, useFetchUserInfo } from '@/services/myPage'
 import { flexCenter, flexGap } from '@/styles/emotion'
 import styled from '@emotion/styled'
 import { Suspense } from 'react'
@@ -8,38 +8,43 @@ import ProfileSection from './ProfileSection'
 import UserActivitySection from './UserActivitySection'
 import UserInfoSection from './UserInfoSection'
 
-const MyPage = () => {
-  const { data: userInfo } = useFetchUserInfo()
+type Props = {
+  id?: string
+}
 
-  if (!userInfo) {
+const Profile = ({ id }: Props) => {
+  const { data: publicUserInfo } = useFetchPublicUserInfo(id as string, {
+    enabled: id !== undefined,
+  })
+
+  if (!publicUserInfo) {
     return null
   }
 
-  const uuidFileName = userInfo?.profileImage?.uuidFileName
-  const nickname = userInfo?.nickname
-  const email = userInfo?.email
-  const registeredAt = userInfo?.registeredAt
-  const favoriteMovies = userInfo?.favoriteMovies
+  const uuidFileName = publicUserInfo?.profileImage?.uuidFileName
+  const nickname = publicUserInfo?.nickname
+  const email = ''
+  const registeredAt = publicUserInfo?.registeredAt
+  const favoriteMovies = publicUserInfo?.favoriteMovies
 
   return (
     <Container>
       <Wrapper>
         <ProfileSection
-          type={'private'}
+          type={'public'}
           profileImage={uuidFileName}
           nickname={nickname}
         />
         <InterestMovieSection
-          type={'private'}
+          type={'public'}
           interestMovieList={favoriteMovies}
         />
         <UserInfoSection
-          type={'private'}
+          type={'public'}
           email={email}
           nickname={nickname}
           registeredAt={registeredAt}
         />
-        <RenderIf condition={true} render={<UserActivitySection />} />
       </Wrapper>
     </Container>
   )
@@ -57,12 +62,16 @@ const Container = styled.div`
   margin: 80px 0;
 `
 
-const MyPageContainer = () => {
+type ContainerProps = {
+  id?: string
+}
+
+const ProfileContainer = ({ id }: ContainerProps) => {
   return (
     <Suspense fallback={<Loading height="100vh" empty />}>
-      <MyPage />
+      <Profile id={id} />
     </Suspense>
   )
 }
 
-export default MyPageContainer
+export default ProfileContainer

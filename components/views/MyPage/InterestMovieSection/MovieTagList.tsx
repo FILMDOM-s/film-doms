@@ -92,25 +92,27 @@ const MovieTagList = ({ type, interestMovieList }: Props) => {
           />
         </TagSpan>
       ))}
-      <TagSpan
-        style={{
-          display:
-            hashtags.length >= MAX_INTEREST_MOVIE_COUNT ? 'none' : 'flex',
-          color: '#AAAAAA',
-          border: '2px solid #AAAAAA',
-          backgroundColor: 'transparent',
-        }}
-      >
-        #
-        <TagInput
-          ref={inputRef}
-          value={value}
-          onChange={handleInputChange}
-          onKeyDown={handleInputKeyDown}
-          placeholder="영화제목"
-          color="#AAAAAA"
-        />
-      </TagSpan>
+      {type === 'private' && (
+        <TagSpan
+          style={{
+            display:
+              hashtags.length >= MAX_INTEREST_MOVIE_COUNT ? 'none' : 'flex',
+            color: '#AAAAAA',
+            border: '2px solid #AAAAAA',
+            backgroundColor: 'transparent',
+          }}
+        >
+          #
+          <TagInput
+            ref={inputRef}
+            value={value}
+            onChange={handleInputChange}
+            onKeyDown={handleInputKeyDown}
+            placeholder="영화제목"
+            color="#AAAAAA"
+          />
+        </TagSpan>
+      )}
     </TagContainer>
   )
 }

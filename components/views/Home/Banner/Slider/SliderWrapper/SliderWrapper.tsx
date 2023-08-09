@@ -70,7 +70,6 @@ const TextArea = styled.div`
   top: 120px;
   left: 110px;
   font-weight: 700;
-  border-left: 5px solid white;
   padding: 0 0 0 12px;
   display: flex;
   flex-direction: column;

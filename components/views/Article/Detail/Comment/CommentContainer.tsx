@@ -55,13 +55,15 @@ const CommentContainer = ({ articleId, category }: ArticleDetailProps) => {
           />
         )
       })}
-      <Form onSubmit={handleCommentSubmit}>
-        <CommentHead>댓글 작성</CommentHead>
-        <TextArea onChange={handleCommentChange} value={comment} />
-        <SubmitCommentButton leftIcon={isLoading && <IconLoader />}>
-          등록
-        </SubmitCommentButton>
-      </Form>
+      {userInfo?.id && (
+        <Form onSubmit={handleCommentSubmit}>
+          <CommentHead>댓글 작성</CommentHead>
+          <TextArea onChange={handleCommentChange} value={comment} />
+          <SubmitCommentButton leftIcon={isLoading && <IconLoader />}>
+            등록
+          </SubmitCommentButton>
+        </Form>
+      )}
     </Container>
   )
 }

@@ -1,6 +1,6 @@
 import styled from '@emotion/styled'
 import { ComponentMeta, ComponentStory } from '@storybook/react'
-import SideNavListItem from './SideNavListItem'
+import SideNavListItem from './SideProfileListItem'
 
 export default {
   component: SideNavListItem,

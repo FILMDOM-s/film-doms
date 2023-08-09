@@ -9,6 +9,8 @@ type ModalType = {
   content: JSX.Element | string
   callBack?: () => any
   theme: 'dark' | 'white'
+  clientX?: number
+  clientY?: number
 }
 
 export const modalState = atom<ModalType>({
@@ -35,4 +37,21 @@ export const loginState = atom<boolean>({
   key: 'loginState',
   default: false,
   effects_UNSTABLE: [persistAtom],
+})
+
+export const sideProfileState = atom<boolean>({
+  key: 'sideProfileState',
+  default: false,
+})
+
+export const profileModalState = atom<ModalType>({
+  key: 'profileModalState',
+  default: {
+    isOpen: false,
+    title: '',
+    content: '',
+    theme: 'dark',
+    clientX: 0,
+    clientY: 0,
+  },
 })

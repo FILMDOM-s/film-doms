@@ -1,8 +1,7 @@
 import { mediaQuery } from '@/styles/emotion'
 import styled from '@emotion/styled'
 import { flexCenter } from '@/styles/emotion'
-import SideNav from '../SideNav'
-import { Suspense, useState } from 'react'
+import { Suspense } from 'react'
 import * as Svgs from '@svgs/common'
 import NavContainer from '../../Home/Nav/NavContainer'
 import Link from 'next/link'
@@ -11,10 +10,9 @@ import Avatar from './Avatar'
 import { ErrorBoundary } from 'react-error-boundary'
 import { Person } from '@svgs/common'
 import { useSignInModal } from '../../Auth/SignIn/hooks'
+import ProfileModal from '@/components/common/Modal/ProfileModal'
 
 const Header = () => {
-  const [showSideNav, setShowSideNav] = useState(false)
-
   return (
     <HeaderContainer>
       <HeaderInner>
@@ -52,10 +50,7 @@ const Header = () => {
       </HeaderInner>
       <Modal />
       <PureModal />
-      <SideNav
-        isShow={showSideNav}
-        onClose={() => setShowSideNav(!showSideNav)}
-      />
+      <ProfileModal />
     </HeaderContainer>
   )
 }

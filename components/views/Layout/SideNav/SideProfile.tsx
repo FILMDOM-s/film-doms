@@ -1,9 +1,9 @@
 import styled from '@emotion/styled'
 import { IconX } from '@tabler/icons-react'
-import SideNavList from './SideNavList'
+import SideProfileList from './SideProfileList'
 import { css } from '@emotion/react'
 
-const SideNav = ({
+const SideProfile = ({
   isShow,
   onClose,
 }: {
@@ -11,8 +11,8 @@ const SideNav = ({
   onClose: VoidFunction
 }) => {
   return (
-    <SideNavContainer show={isShow}>
-      <SideNavButtonWrapper>
+    <SideProfileContainer show={isShow}>
+      <SideProfileButtonWrapper>
         <IconX
           css={XIconStyle}
           stroke={2}
@@ -21,30 +21,31 @@ const SideNav = ({
             onClose()
           }}
         />
-      </SideNavButtonWrapper>
-      <SideNavList />
-    </SideNavContainer>
+      </SideProfileButtonWrapper>
+      <SideProfileList />
+    </SideProfileContainer>
   )
 }
 
-export default SideNav
+export default SideProfile
 
-const SideNavContainer = styled.div<{ show: boolean }>`
+const SideProfileContainer = styled.div<{ show: boolean }>`
   display: block;
   position: fixed;
-  top: 0;
-  left: ${props => (props.show ? '0' : '-100%')};
-  width: 200px;
-  height: 100%;
+  top: 100px;
+  right: 40px;
+  width: 320px;
+  height: 246px;
   margin: 0;
   list-style: none;
   background-color: white;
   box-shadow: 2px 2px 6px rgba(0, 0, 0, 0.15);
   transition-duration: 0.25s;
   z-index: 100;
+  opacity: ${props => (props.show ? '1' : '0')};
 `
 
-const SideNavButtonWrapper = styled.div`
+const SideProfileButtonWrapper = styled.div`
   display: flex;
   justify-content: flex-end;
   padding: 1rem 1rem;

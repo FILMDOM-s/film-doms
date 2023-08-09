@@ -1,4 +1,5 @@
 import { defaultProfile } from '@/assets/images/common'
+import { useMyProfileBox } from '@/components/views/Auth/Profile/hooks'
 import useSignInModal from '@/components/views/Auth/SignIn/hooks/useSignInModal'
 import { useFetchUserInfo } from '@/services/myPage'
 import { loginState } from '@/states'
@@ -6,8 +7,7 @@ import { getImageSrcByUuid } from '@/utils'
 import styled from '@emotion/styled'
 import { Person } from '@svgs/common'
 import Image from 'next/image'
-import Link from 'next/link'
-import { useEffect, useState } from 'react'
+import { useEffect } from 'react'
 import { useRecoilState } from 'recoil'
 
 const Avatar = () => {
@@ -42,12 +42,13 @@ const User = ({
     uuidFileName: string
   }
 }) => {
-  const [toggle, setToggle] = useState(false)
+  const { openModal: openModalMyProfile } = useMyProfileBox()
 
   return (
     <Container
-      onClick={() => {
-        setToggle(!toggle)
+      onClick={e => {
+        const { clientX, clientY } = e
+        openModalMyProfile({ clientX, clientY })
       }}
     >
       <Image
@@ -56,57 +57,7 @@ const User = ({
         fill
         style={{ borderRadius: '50%', border: '1px solid #E2E2E2' }}
       />
-      {toggle && <ProfileMenu />}
     </Container>
-  )
-}
-
-const ProfileMenu = () => {
-  const menus = [
-    { title: '마이페이지', link: '/mypage' },
-    { title: '로그아웃', link: '/auth/logout' },
-  ]
-  return (
-    <div
-      css={{
-        position: 'absolute',
-        top: '120%',
-        left: '-32px',
-        width: '100px',
-        height: 'max-content',
-        backgroundColor: '#fff',
-        borderRadius: '5px',
-        boxShadow: '0 0 10px rgba(0, 0, 0, 0.2)',
-        zIndex: 10,
-        overflow: 'hidden',
-      }}
-    >
-      <ol
-        css={{
-          listStyle: 'none',
-          overflow: 'hidden',
-          margin: '0',
-          '& > a': {
-            textAlign: 'center',
-            cursor: 'pointer',
-            overflow: 'hidden',
-            '& > li': {
-              padding: '5px 0',
-              transition: 'all 0.2s ease',
-              '&:hover': {
-                backgroundColor: '#eeeeee',
-              },
-            },
-          },
-        }}
-      >
-        {menus.map(menu => (
-          <Link href={menu.link} key={menu.title}>
-            <li>{menu.title}</li>
-          </Link>
-        ))}
-      </ol>
-    </div>
   )
 }
 

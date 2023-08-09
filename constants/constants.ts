@@ -5,7 +5,7 @@ export const navItems = [
   { text: 'Critic', link: '/article/critic' },
 ]
 
-export const sideNavList = [
+export const sideProfileList = [
   {
     title: 'Home',
     link: '/',

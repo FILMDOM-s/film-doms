@@ -21,10 +21,14 @@ const Quill = dynamic(
   { loading: () => <div>...loading</div>, ssr: false }
 )
 
+export type ImageListProps = {
+  [key: string]: number
+}
+
 type EditorProps = {
   content: string
   onChangeContent: (value: string, length: number) => void
-  onChangeImageList?: (imageList: string[]) => void
+  onChangeImageList?: (imageList: ImageListProps) => void
 }
 
 const Editor = ({
@@ -33,7 +37,6 @@ const Editor = ({
   onChangeImageList,
 }: EditorProps) => {
   const quillRef = useRef<ReactQuill>(null)
-  const [imageList, setImageList] = useState<string[]>([])
   const { mutate: imageUpload } = useImageUpload()
 
   const imageHandler = useCallback(async () => {
@@ -48,12 +51,6 @@ const Editor = ({
 
         imageUpload(file[0], {
           onSuccess({ result: { uploadedFiles } }) {
-            if (setImageList !== undefined && uploadedFiles.length > 0) {
-              setImageList((prev: string[]) => [
-                ...prev,
-                getImageSrcByUuid(uploadedFiles[0].uuidFileName),
-              ])
-            }
             const editor = quillRef.current
               ? quillRef.current.getEditor()
               : null
@@ -62,17 +59,17 @@ const Editor = ({
             editor.focus()
 
             const imageUrl = getImageSrcByUuid(uploadedFiles[0].uuidFileName)
-
             editor.insertEmbed(range, 'image', imageUrl)
             editor.setSelection(range + 1, 0)
 
-            setImageList(prev => [...prev, imageUrl])
-            onChangeImageList?.([...imageList, uploadedFiles[0].id.toString()])
+            onChangeImageList?.({
+              [imageUrl]: uploadedFiles[0].id,
+            })
           },
         })
       } catch (error) {}
     })
-  }, [imageUpload, setImageList])
+  }, [imageUpload, onChangeImageList])
 
   const modules = useMemo(() => {
     return {
