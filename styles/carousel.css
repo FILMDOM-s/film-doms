@@ -24,8 +24,10 @@
 
 .swiper-pagination {
   right: 117px !important;
-  top: 89px !important;
+  top: 80px !important;
   width: auto !important;
+  text-align: right !important;
+  height: min-content !important;
 }
 
 .swiper-button-prev {

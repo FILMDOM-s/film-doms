@@ -28,7 +28,7 @@ export type ImageListProps = {
 type EditorProps = {
   content: string
   onChangeContent: (value: string, length: number) => void
-  onChangeImageList?: (imageList: ImageListProps) => void
+  onChangeImageList?: React.Dispatch<React.SetStateAction<ImageListProps>>
 }
 
 const Editor = ({
@@ -62,9 +62,10 @@ const Editor = ({
             editor.insertEmbed(range, 'image', imageUrl)
             editor.setSelection(range + 1, 0)
 
-            onChangeImageList?.({
+            onChangeImageList?.(prev => ({
+              ...prev,
               [imageUrl]: uploadedFiles[0].id,
-            })
+            }))
           },
         })
       } catch (error) {}
