@@ -27,15 +27,17 @@ function SliderWrapper({ banners }: Props) {
         modules={[Navigation, Pagination, A11y, Autoplay]}
         width={1280}
         height={440}
-        pagination={{ clickable: true }}
+        pagination={{
+          clickable: true,
+        }}
         style={{ position: 'relative' }}
         autoplay={{
           delay: 3000,
           disableOnInteraction: false,
         }}
       >
-        {banners.map(({ id, type, title, subtitle, image, onClick }) => (
-          <SwiperSlide key={id} onClick={onClick}>
+        {banners.map(({ type, title, subtitle, image, onClick }, index) => (
+          <SwiperSlide key={index} onClick={onClick}>
             <Image
               src={image}
               alt={title}

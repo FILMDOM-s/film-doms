@@ -152,7 +152,9 @@ const EditorContainer = ({ category = 'critic' }: EditorContainerProps) => {
           tag: tag,
           content: content,
           containsImage: 'true',
-          mainImageId: imageList[thumbnail].toString(),
+          mainImageId: imageList[thumbnail]
+            ? imageList[thumbnail].toString()
+            : '',
         })
       }
     } catch (err) {}
