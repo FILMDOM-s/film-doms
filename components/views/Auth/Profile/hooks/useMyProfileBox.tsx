@@ -26,8 +26,8 @@ const MyProfileBox = () => {
       >
         <div
           style={{
-            width: '64px',
-            height: '64px',
+            width: '56px',
+            height: '56px',
             borderRadius: '50%',
             overflow: 'hidden',
           }}
@@ -38,8 +38,8 @@ const MyProfileBox = () => {
                 data.profileImage.uuidFileName ?? defaultProfile
               )}
               alt="user-image"
-              width={64}
-              height={64}
+              width={56}
+              height={56}
             />
           )}
         </div>
@@ -47,7 +47,7 @@ const MyProfileBox = () => {
           <div>
             <TitleText
               style={{
-                fontSize: '18px',
+                fontSize: '16px',
                 fontWeight: 'bold',
                 color: '#FF5414',
               }}
@@ -126,7 +126,7 @@ const ProfileMenu = () => {
 }
 
 const useMyProfileBox = () => {
-  const { openModal, closeModal } = useProfileModal()
+  const { openModal, closeModal, toggleModal } = useProfileModal()
 
   const modalData: OpenProfileModalType = {
     title: '내 정보',
@@ -141,13 +141,15 @@ const useMyProfileBox = () => {
     openModal: ({ clientX, clientY }: { clientX: number; clientY: number }) =>
       openModal({ ...modalData, clientX, clientY }),
     closeModal,
+    toggleModal,
   }
 }
 
 export default useMyProfileBox
 
 const Container = styled.div`
-  width: 320px;
+  position: relative;
+  width: 280px;
   height: 264px;
   display: flex;
   flex-direction: column;

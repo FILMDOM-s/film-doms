@@ -11,8 +11,12 @@ import { ErrorBoundary } from 'react-error-boundary'
 import { Person } from '@svgs/common'
 import { useSignInModal } from '../../Auth/SignIn/hooks'
 import ProfileModal from '@/components/common/Modal/ProfileModal'
+import ProfileBox from './Avatar/ProfileBox'
+import { useRecoilState } from 'recoil'
+import { contextMenuState } from '@/states'
 
 const Header = () => {
+  const [contextMenuDataState] = useRecoilState(contextMenuState)
   return (
     <HeaderContainer>
       <HeaderInner>
@@ -51,6 +55,9 @@ const Header = () => {
       <Modal />
       <PureModal />
       <ProfileModal />
+      <ErrorBoundary fallback={<GuestUser />}>
+        <Suspense>{contextMenuDataState.isOpen && <ProfileBox />}</Suspense>
+      </ErrorBoundary>
     </HeaderContainer>
   )
 }

@@ -40,7 +40,7 @@ const BoardContainer = ({
         caseBy={{
           critic: (
             <>
-              <CriticBoard criticItems={articleList.content} />
+              <CriticBoard criticItems={articleList?.content ?? []} />
               <ButtonBox>
                 <Button onClick={() => push(`/write/article/${category}`)}>
                   게시글 작성하기

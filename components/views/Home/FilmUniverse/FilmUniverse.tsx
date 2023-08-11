@@ -49,6 +49,7 @@ const FilmUniverseElement = styled.div`
   display: flex;
   align-items: flex-start;
   justify-content: center;
+  width: 360px;
 `
 
 const FilmUniverseElementOwnerWrapper = styled.div`
