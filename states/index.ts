@@ -13,6 +13,12 @@ type ModalType = {
   clientY?: number
 }
 
+type ContextMenuType = {
+  isOpen: boolean
+  clientX: number
+  clientY: number
+}
+
 export const modalState = atom<ModalType>({
   key: 'modalState',
   default: {
@@ -51,6 +57,15 @@ export const profileModalState = atom<ModalType>({
     title: '',
     content: '',
     theme: 'dark',
+    clientX: 0,
+    clientY: 0,
+  },
+})
+
+export const contextMenuState = atom<ContextMenuType>({
+  key: 'contextMenuState',
+  default: {
+    isOpen: false,
     clientX: 0,
     clientY: 0,
   },

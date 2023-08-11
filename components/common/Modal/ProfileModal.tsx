@@ -1,11 +1,10 @@
 import { useProfileModal } from '@/hooks/useProfileModal'
 import styled from '@emotion/styled'
 import { Suspense, useEffect } from 'react'
-import { IconX } from '@tabler/icons-react'
 import { ErrorBoundary } from 'react-error-boundary'
 
 const ProfileModal = () => {
-  const { animation, profileModalDataState, closeModal } = useProfileModal()
+  const { animation, profileModalDataState } = useProfileModal()
 
   useEffect(() => {
     if (profileModalDataState.isOpen) {
@@ -33,18 +32,9 @@ const ProfileModal = () => {
             clientX={profileModalDataState.clientX ?? 0}
             clientY={profileModalDataState.clientY ?? 0}
           >
-            <ModalCloseButton onClick={() => closeModal()}>
-              <IconX
-                css={{
-                  cursor: 'pointer',
-                }}
-                stroke={2}
-                size={20}
-              />
-            </ModalCloseButton>
             <ErrorBoundary fallback={null}>
               <Suspense fallback={null}>
-                <ModalContents>{profileModalDataState.content}</ModalContents>
+                {profileModalDataState.content}
               </Suspense>
             </ErrorBoundary>
           </ModalBody>
@@ -83,9 +73,7 @@ const ModalBody = styled.div<{
   box-shadow: 0 0 8px rgba(0, 0, 0, 0.15);
   background-color: #ffffff;
 `
-const ModalContents = styled.div`
-  margin-top: 26px;
-`
+
 const ModalCloseButton = styled.button`
   position: absolute;
   top: 0;

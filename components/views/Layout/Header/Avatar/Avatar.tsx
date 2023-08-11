@@ -1,14 +1,17 @@
 import { defaultProfile } from '@/assets/images/common'
 import { useMyProfileBox } from '@/components/views/Auth/Profile/hooks'
 import useSignInModal from '@/components/views/Auth/SignIn/hooks/useSignInModal'
+import { useProfileModal } from '@/hooks/useProfileModal'
 import { useFetchUserInfo } from '@/services/myPage'
 import { loginState } from '@/states'
 import { getImageSrcByUuid } from '@/utils'
 import styled from '@emotion/styled'
 import { Person } from '@svgs/common'
 import Image from 'next/image'
-import { useEffect } from 'react'
+import { useEffect, useRef } from 'react'
 import { useRecoilState } from 'recoil'
+import { useContextMenu } from './hooks/useContextMenu'
+import ProfileBox from './ProfileBox'
 
 const Avatar = () => {
   const { data, refetch } = useFetchUserInfo()
@@ -42,15 +45,10 @@ const User = ({
     uuidFileName: string
   }
 }) => {
-  const { openModal: openModalMyProfile } = useMyProfileBox()
+  const { ref } = useContextMenu()
 
   return (
-    <Container
-      onClick={e => {
-        const { clientX, clientY } = e
-        openModalMyProfile({ clientX, clientY })
-      }}
-    >
+    <Container ref={ref}>
       <Image
         src={getImageSrcByUuid(profileImage?.uuidFileName ?? defaultProfile)}
         alt="user-image"

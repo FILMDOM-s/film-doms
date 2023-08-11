@@ -52,5 +52,36 @@ export const useProfileModal = () => {
     [setProfileModalDataState]
   )
 
-  return { animation, profileModalDataState, closeModal, openModal }
+  const toggleModal = useCallback(
+    ({
+      title,
+      content,
+      callback,
+      theme,
+      clientX,
+      clientY,
+    }: OpenProfileModalType) => {
+      if (profileModalDataState.isOpen) {
+        closeModal()
+      } else {
+        openModal({
+          title,
+          content,
+          callback,
+          theme,
+          clientX,
+          clientY,
+        })
+      }
+    },
+    [profileModalDataState.isOpen, closeModal, openModal]
+  )
+
+  return {
+    animation,
+    profileModalDataState,
+    closeModal,
+    openModal,
+    toggleModal,
+  }
 }
