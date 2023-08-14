@@ -21,7 +21,14 @@ const FilmUniverse = ({
   return (
     <FilmUniverseElement>
       <div style={{ width: '360px', height: '400px', position: 'relative' }}>
-        <Image src={image} alt="title" fill />
+        <Image
+          src={image}
+          alt="title"
+          fill
+          sizes="(max-width: 360px) 100vw,
+            (min-width: 240px) 50vw,
+              33vw"
+        />
       </div>
       <FilmUniverseElementOwnerWrapper>
         <FilmUniverseElementOwner>{owner}</FilmUniverseElementOwner>

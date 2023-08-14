@@ -2,7 +2,6 @@ import { useFetchCriticList } from '@/services/main'
 import styled from '@emotion/styled'
 import Link from 'next/link'
 import Critic from './Critic'
-import { getImageSrcByUuid } from '@/utils'
 import { useScrollFadeIn } from '@/hooks'
 
 const CriticList = () => {
@@ -20,7 +19,7 @@ const CriticList = () => {
           <Critic
             {...critic}
             createAt={critic.createdAt}
-            image={getImageSrcByUuid(critic.mainImage.uuidFileName)}
+            image={critic.mainImage ?? ''}
             author={critic.author.nickname}
           />
         </Link>

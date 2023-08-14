@@ -4,6 +4,7 @@ import { cutString } from '@/utils'
 import { convertHtmlToText } from '@/utils/convertStringToHtml'
 import styled from '@emotion/styled'
 import Image from 'next/image'
+import { Parser } from 'html-to-react'
 
 const Critic = ({
   image,

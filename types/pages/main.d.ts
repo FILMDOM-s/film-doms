@@ -1,9 +1,4 @@
 declare module Main {
-  type Image = {
-    id: number
-    uuidFileName: string
-  }
-
   type Author = {
     id: number
     nickname: string
@@ -40,7 +35,7 @@ declare module Main {
     category: string
     tag: string
     title: string
-    mainImage: Image
+    mainImage: string
     author: Author
     startAt: string
     endAt: string
@@ -56,7 +51,7 @@ declare module Main {
     category: string
     tag: string
     title: string
-    mainImage: Image
+    mainImage: string
     author: Author
     description: string
     createdAt: number

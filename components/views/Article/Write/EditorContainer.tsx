@@ -38,6 +38,13 @@ const EditorContainer = ({ category = 'critic' }: EditorContainerProps) => {
 
   const { mutate: createArticle } = useCreateArticle({
     onSuccess: ({ resultCode }) => {
+      if (resultCode === 'NO_IMAGE') {
+        toast.error('이미지를 등록해주세요!', {
+          icon: '😥',
+          position: 'top-center',
+        })
+        return
+      }
       if (resultCode === 'SUCCESS') {
         toast('등록 완료!', {
           icon: '👏',
@@ -61,7 +68,6 @@ const EditorContainer = ({ category = 'critic' }: EditorContainerProps) => {
 
   const onSubmit = async () => {
     const { title, tag, startAt, endAt } = getValues()
-
     try {
       if (!title) {
         toast.error('제목을 입력해주세요', {
@@ -74,16 +80,6 @@ const EditorContainer = ({ category = 'critic' }: EditorContainerProps) => {
       const tempImageList = content.match(
         /<img[^>]*src=[\"']?([^>\"']+)[\"']?[^>]*>/g
       )
-
-      let thumbnail = ''
-      if (tempImageList && tempImageList.length > 0) {
-        const src = tempImageList[0].split('src=')[1].split('"')[1]
-        // https://nginx-nginx-4uvg2mlecrl7qe.sel3.cloudtype.app/image/를 제거
-        thumbnail = src.replace(
-          'https://nginx-nginx-4uvg2mlecrl7qe.sel3.cloudtype.app/image/',
-          ''
-        )
-      }
 
       if (category === 'filmUniverse') {
         if (!startAt || !endAt) {
@@ -108,7 +104,6 @@ const EditorContainer = ({ category = 'critic' }: EditorContainerProps) => {
           tag: tag,
           content: content,
           containsImage: 'true',
-          mainImageId: imageList[thumbnail].toString(),
           startAt: new Date(startAt).toISOString(),
           endAt: new Date(endAt).toISOString(),
         })
@@ -143,7 +138,6 @@ const EditorContainer = ({ category = 'critic' }: EditorContainerProps) => {
           tag: tag,
           content: content,
           containsImage: 'true',
-          mainImageId: imageList[thumbnail].toString(),
         })
       } else {
         createArticle({
@@ -152,9 +146,6 @@ const EditorContainer = ({ category = 'critic' }: EditorContainerProps) => {
           tag: tag,
           content: content,
           containsImage: 'true',
-          mainImageId: imageList[thumbnail]
-            ? imageList[thumbnail].toString()
-            : '',
         })
       }
     } catch (err) {}
