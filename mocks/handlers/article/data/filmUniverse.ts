@@ -28,5 +28,7 @@ export const FILM_UNIVERSE_DATA: Article.MainContent[] = Array.from(
     commentCount: getRandomNum(0, 150),
     mainImage: 'https://picsum.photos/seed/picsum/200/300',
     containImage: getRandomNum(0, 1) === 1,
+    content: '안녕하세요',
+    description: '안녕하세요',
   })
 )
