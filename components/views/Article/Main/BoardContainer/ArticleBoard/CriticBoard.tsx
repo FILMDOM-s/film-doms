@@ -1,5 +1,4 @@
 import Link from 'next/link'
-import { getImageSrcByUuid } from '@/utils'
 import styled from '@emotion/styled'
 import Critic from '@/components/views/Home/Critic/Critic'
 
@@ -19,7 +18,7 @@ const CriticBoard = ({ criticItems }: Props) => {
           <Critic
             {...critic}
             createAt={critic.createdAt}
-            image={getImageSrcByUuid(critic.mainImage)}
+            image={critic.mainImage}
             author={critic.author.nickname}
             description={critic.title}
           />

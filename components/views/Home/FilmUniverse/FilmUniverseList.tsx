@@ -3,7 +3,6 @@ import { useFetchFilmUniverseList } from '@/services/main'
 import styled from '@emotion/styled'
 import Link from 'next/link'
 import FilmUniverse from './FilmUniverse'
-import { getImageSrcByUuid } from '@/utils'
 
 const FilmUniverseList = () => {
   const { data: filmUniverseList } = useFetchFilmUniverseList()
@@ -21,7 +20,7 @@ const FilmUniverseList = () => {
             {...filmUniverse}
             owner={filmUniverse.author.nickname}
             classification={filmUniverse.tag}
-            image={getImageSrcByUuid(filmUniverse.mainImage.uuidFileName)}
+            image={filmUniverse.mainImage ?? ''}
           />
         </Link>
       ))}

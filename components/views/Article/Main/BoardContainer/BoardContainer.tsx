@@ -53,7 +53,7 @@ const BoardContainer = ({
           <>
             <ArticleBoard
               noticeItems={noticeList?.content ?? []}
-              articleItems={articleList.content}
+              articleItems={articleList.content ?? []}
             />
             {category !== 'recent' && (
               <ButtonBox>

@@ -64,16 +64,6 @@ const UpdateEditorContainer = ({
         /<img[^>]*src=[\"']?([^>\"']+)[\"']?[^>]*>/g
       )
 
-      let thumbnail = ''
-      if (tempImageList && tempImageList.length > 0) {
-        const src = tempImageList[0].split('src=')[1].split('"')[1]
-        // https://nginx-nginx-4uvg2mlecrl7qe.sel3.cloudtype.app/image/를 제거
-        thumbnail = src.replace(
-          'https://nginx-nginx-4uvg2mlecrl7qe.sel3.cloudtype.app/image/',
-          ''
-        )
-      }
-
       if (category === 'filmUniverse') {
         if (!startAt || !endAt) {
           toast.error('게시 기간을 입력해주세요', {
@@ -100,13 +90,19 @@ const UpdateEditorContainer = ({
               tag: tag,
               content: content,
               containsImage: 'true',
-              mainImageId: imageList[thumbnail].toString(),
               startAt: new Date(startAt).toISOString(),
               endAt: new Date(endAt).toISOString(),
             },
           },
           {
             onSuccess: ({ resultCode }) => {
+              if (resultCode === 'NO_IMAGE') {
+                toast.error('이미지를 등록해주세요!', {
+                  icon: '😥',
+                  position: 'top-center',
+                })
+                return
+              }
               if (resultCode === 'SUCCESS') {
                 toast('수정 완료!', {
                   icon: '👏',
@@ -163,11 +159,17 @@ const UpdateEditorContainer = ({
               tag: tag,
               content: content,
               containsImage: 'true',
-              mainImageId: imageList[thumbnail].toString(),
             },
           },
           {
             onSuccess: ({ resultCode }) => {
+              if (resultCode === 'NO_IMAGE') {
+                toast.error('이미지를 등록해주세요!', {
+                  icon: '😥',
+                  position: 'top-center',
+                })
+                return
+              }
               if (resultCode === 'SUCCESS') {
                 toast('수정 완료!', {
                   icon: '👏',
@@ -200,11 +202,17 @@ const UpdateEditorContainer = ({
               tag: tag,
               content: content,
               containsImage: 'true',
-              mainImageId: imageList[thumbnail].toString(),
             },
           },
           {
             onSuccess: ({ resultCode }) => {
+              if (resultCode === 'NO_IMAGE') {
+                toast.error('이미지를 등록해주세요!', {
+                  icon: '😥',
+                  position: 'top-center',
+                })
+                return
+              }
               if (resultCode === 'SUCCESS') {
                 toast('수정 완료!', {
                   icon: '👏',

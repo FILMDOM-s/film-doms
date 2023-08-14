@@ -33,6 +33,8 @@ declare module Article {
     commentCount: number
     mainImage: string
     containImage: boolean
+    content: string
+    description: string
   }
 
   type MainContentParams = {
@@ -214,7 +216,6 @@ declare module Article {
     tag: string
     content: string
     containsImage: string
-    mainImageId: string
     startAt?: string
     endAt?: string
   }
@@ -225,7 +226,6 @@ declare module Article {
     tag: string
     content: string
     containsImage: string
-    mainImageId: string
     startAt?: string
     endAt?: string
   }
