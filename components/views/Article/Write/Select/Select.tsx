@@ -30,8 +30,9 @@ export default SelectBox
 const Select = styled.select`
   width: 200px;
   height: 40px;
-  border: 2px solid black;
   outline: none;
   cursor: pointer;
   padding-left: 10px;
+  box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.1);
+  border-radius: 5px;
 `

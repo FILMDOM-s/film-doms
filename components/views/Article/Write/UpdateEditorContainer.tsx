@@ -13,6 +13,7 @@ import { camelToSnake } from '@/utils'
 import SelectBox from './Select/Select'
 import { Editor } from '@/components/common/Editor'
 import { ImageListProps } from '@/components/common/Editor/Editor'
+import Viewer from './Viewer'
 
 export type EditorContainerProps = {
   category: string
@@ -36,12 +37,12 @@ const UpdateEditorContainer = ({
   const router = useRouter()
   const [content, setContent] = useState('')
   const contentLength = useRef(0)
+  const [preview, setPreview] = useState(false)
   const [imageList, setImageList] = useState<ImageListProps>({})
-  const { register, handleSubmit, getValues, setValue } = useForm<ArticleProps>(
-    {
+  const { register, handleSubmit, getValues, setValue, watch } =
+    useForm<ArticleProps>({
       mode: 'onChange',
-    }
-  )
+    })
   const { data: article } = useFetchArticleDetailEdit(
     camelToSnake(category),
     id
@@ -251,80 +252,91 @@ const UpdateEditorContainer = ({
 
   return (
     <Container>
-      <Title>
-        <ChevronWrapper>
-          <Link href={`/article/${category}`}>
-            <ChevronLeft width="10" height="16" />
-          </Link>
-        </ChevronWrapper>
-        {CATEGORIES[category].title}
-      </Title>
-      <EditorForm onSubmit={handleSubmit(onSubmit)}>
-        <Header>
-          <Suspense>
-            <SelectBox category={category} register={register} />
-          </Suspense>
-          <TitleInput
-            {...register('title')}
-            placeholder="제목"
-            name="title"
-            type="text"
+      <EditorAndViewerContainer>
+        <EditorForm onSubmit={handleSubmit(onSubmit)}>
+          <Header>
+            <Suspense>
+              <SelectBox category={category} register={register} />
+            </Suspense>
+            <TitleInput
+              {...register('title')}
+              placeholder="제목"
+              name="title"
+              type="text"
+            />
+          </Header>
+          <Editor
+            content={content}
+            onChangeContent={(value, length) => {
+              setContent(value)
+              contentLength.current = length
+            }}
+            onChangeImageList={setImageList}
           />
-        </Header>
-        <Editor
-          content={content}
-          onChangeContent={(value, length) => {
-            setContent(value)
-            contentLength.current = length
-          }}
-          onChangeImageList={setImageList}
-        />
-        <Checks>
-          <LabeledCheckbox
-            label={'공개'}
-            register={register}
-            name={'openAllowed'}
-          />
-          <LabeledCheckbox
-            label={'댓글 허용'}
-            register={register}
-            name={'commentsAllowed'}
-          />
-          <LabeledCheckbox
-            label={'퍼가기 금지'}
-            register={register}
-            name={'shareAllowed'}
-          />
-        </Checks>
-        {category === 'filmUniverse' && (
-          <Period>
-            <div>게시 기간</div>
-            <DateContainer>
-              <DateInput
-                type={'date'}
-                {...register('startAt')}
-                name="startAt"
+          {category === 'filmUniverse' && (
+            <Period>
+              <div>게시 기간</div>
+              <DateContainer>
+                <DateInput
+                  type={'date'}
+                  {...register('startAt')}
+                  name="startAt"
+                />
+                <span>~</span>
+                <DateInput type={'date'} {...register('endAt')} name="endAt" />
+              </DateContainer>
+            </Period>
+          )}
+          <div
+            style={{
+              display: 'flex',
+              justifyContent: 'space-between',
+              alignItems: 'center',
+              width: '100%',
+              marginTop: '1rem',
+            }}
+          >
+            <Checks>
+              <LabeledCheckbox
+                label={'공개'}
+                register={register}
+                name={'openAllowed'}
               />
-              <span>~</span>
-              <DateInput type={'date'} {...register('endAt')} name="endAt" />
-            </DateContainer>
-          </Period>
+              <LabeledCheckbox
+                label={'댓글 허용'}
+                register={register}
+                name={'commentsAllowed'}
+              />
+              <LabeledCheckbox
+                label={'퍼가기 금지'}
+                register={register}
+                name={'shareAllowed'}
+              />
+            </Checks>
+            <Buttons>
+              <Button
+                theme={'#111111'}
+                type="button"
+                onClick={() => {
+                  setPreview(!preview)
+                }}
+              >
+                {preview ? '숨기기' : '미리보기'}
+              </Button>
+              <Button theme={'#FF5414'} type="submit">
+                등록
+              </Button>
+            </Buttons>
+          </div>
+        </EditorForm>
+        {preview && (
+          <Viewer
+            title={watch('title')}
+            contents={content}
+            tag={watch('tag')}
+          />
         )}
-        <Buttons>
-          <Button theme={'#111111'} type="button" disabled>
-            임시 저장
-          </Button>
-          <Button theme={'#111111'} type="button" disabled>
-            임시 저장 불러오기
-          </Button>
-          <Button theme={'#111111'} type="button" disabled>
-            미리보기
-          </Button>
-          <Button theme={'#FF5414'} type="submit">
-            등록
-          </Button>
-        </Buttons>
-      </EditorForm>
+      </EditorAndViewerContainer>
     </Container>
   )
 }
@@ -333,66 +345,56 @@ export default UpdateEditorContainer
 
 const Container = styled.div`
   ${flexGap('40px')}
-  width: 954px;
-  align-items: flex-end;
-  padding: 40px 0px;
-`
-
-const Title = styled.div`
-  display: flex;
+  width: 100%;
   align-items: center;
-  width: 954px;
-  ${typography.h5}
-  color: ${colors.primary.black};
 `
 
 const TitleInput = styled.input`
   width: 100%;
+  height: 80px;
   color: ${colors.primary.black};
-  border: 2px solid ${colors.primary.black};
   outline: none;
   padding: 6px 20px;
+  font-size: 32px;
+  font-weight: 700;
 `
 
 const Header = styled.div`
-  ${flexGap('20px', 'row')}
-  width: 914px;
+  ${flexGap('10px', 'column')}
+  width: 100%;
 `
 
 const EditorForm = styled.form`
   ${flexGap('20px')}
-  width: 914px;
-`
-const ChevronWrapper = styled.div`
-  ${flexCenter}
-  padding: 0 19px 0 9px;
-  cursor: pointer;
+  max-width: 1280px;
+  height: 100%;
+  flex: 1;
 `
 
 const Checks = styled.div`
   ${flexGap('20px', 'row')}
   width: 100%;
+  padding: 0 15px;
 `
 
 const Buttons = styled.div`
   ${flexGap('10px', 'row')}
   width: 100%;
   margin-bottom: 20px;
+  padding: 0 15px;
+  justify-content: flex-end;
 `
 
 const Button = styled.button<{ theme: string }>`
-  width: 100%;
+  width: 120px;
   height: 40px;
   border: 2px solid ${({ theme }) => theme};
   border-radius: 5px;
   outline: none;
   cursor: pointer;
-  color: ${({ theme }) => theme};
+  color: white;
   transition: all 0.2s ease-in-out;
-  &:hover {
-    background-color: ${({ theme }) => theme};
-    color: ${colors.primary.white};
-  }
+  background-color: ${({ theme }) => theme};
 `
 
 const Period = styled.div`
@@ -400,7 +402,7 @@ const Period = styled.div`
   width: 100%;
   border: 2px solid #e5e5e5;
   border-radius: 5px;
-  padding: 10px;
+  padding: 0 15px;
 `
 
 const DateInput = styled.input`
@@ -412,4 +414,14 @@ const DateInput = styled.input`
 
 const DateContainer = styled.div`
   ${flexGap('20px', 'row')}
+`
+
+const EditorAndViewerContainer = styled.div`
+  ${flexGap('20px', 'row')}
+  width: 100%;
+  height: 100%;
+  padding: 20px;
+  border: 2px solid #e5e5e5;
+  border-radius: 5px;
+  justify-content: center;
 `

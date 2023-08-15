@@ -266,13 +266,10 @@ const SignUpForm = () => {
 
   useEffect(() => {
     if (from === 'google') {
-      toast.success(
-        '구글로 회원가입했어요! 닉네임과 관심영화만 입력해주세요.',
-        {
-          icon: '👏',
-          position: 'top-center',
-        }
-      )
+      toast.success('구글로 회원가입했어요! 추가 정보를 입력해주세요.', {
+        icon: '👏',
+        position: 'top-center',
+      })
 
       setServerInput(prev => ({
         ...prev,
