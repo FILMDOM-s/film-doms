@@ -1,5 +1,4 @@
 import { useFetchArticleTagListByCategory } from '@/services/article'
-import { colors } from '@/styles/emotion'
 import { camelToSnake } from '@/utils'
 import styled from '@emotion/styled'
 
@@ -34,6 +33,6 @@ const Select = styled.select`
   outline: none;
   cursor: pointer;
   padding-left: 10px;
+  box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.1);
   border-radius: 5px;
-  border: 1px solid ${colors.primary.black};
 `

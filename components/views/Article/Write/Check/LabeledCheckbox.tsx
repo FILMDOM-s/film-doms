@@ -12,7 +12,12 @@ const LabeledCheckbox = ({
 }) => {
   return (
     <Container>
-      <Checkbox type={'checkbox'} {...register(name)} name={name} />
+      <Checkbox
+        type={'checkbox'}
+        {...register(name)}
+        name={name}
+        defaultChecked
+      />
       <Label>{label}</Label>
     </Container>
   )

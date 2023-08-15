@@ -1,10 +1,7 @@
-import { ChevronLeft } from '@/assets/svgs/common'
 import { Editor } from '@/components/common/Editor'
-import { CATEGORIES } from '@/constants/article'
 import { useCreateArticle } from '@/services/article'
-import { colors, flexCenter, flexGap, typography } from '@/styles/emotion'
+import { colors, flexGap } from '@/styles/emotion'
 import styled from '@emotion/styled'
-import Link from 'next/link'
 import { useRouter } from 'next/router'
 import { Suspense, useRef, useState } from 'react'
 import { useForm } from 'react-hook-form'
@@ -32,6 +29,7 @@ const EditorContainer = ({ category = 'critic' }: EditorContainerProps) => {
   const router = useRouter()
   const [content, setContent] = useState('')
   const contentLength = useRef(0)
+  const [preview, setPreview] = useState(false)
   const [imageList, setImageList] = useState<ImageListProps>({})
   const { register, handleSubmit, getValues, watch } = useForm<ArticleProps>({
     mode: 'onChange',
@@ -175,23 +173,6 @@ const EditorContainer = ({ category = 'critic' }: EditorContainerProps) => {
             }}
             onChangeImageList={setImageList}
           />
-          <Checks>
-            <LabeledCheckbox
-              label={'공개'}
-              register={register}
-              name={'openAllowed'}
-            />
-            <LabeledCheckbox
-              label={'댓글 허용'}
-              register={register}
-              name={'commentsAllowed'}
-            />
-            <LabeledCheckbox
-              label={'퍼가기 금지'}
-              register={register}
-              name={'shareAllowed'}
-            />
-          </Checks>
           {category === 'filmUniverse' && (
             <Period>
               <div>게시 기간</div>
@@ -206,19 +187,55 @@ const EditorContainer = ({ category = 'critic' }: EditorContainerProps) => {
               </DateContainer>
             </Period>
           )}
-          <Buttons>
-            <Button theme={'#111111'} type="button" disabled>
-              임시 저장
-            </Button>
-            <Button theme={'#111111'} type="button" disabled>
-              임시 저장 불러오기
-            </Button>
-            <Button theme={'#FF5414'} type="submit">
-              등록
-            </Button>
-          </Buttons>
+          <div
+            style={{
+              display: 'flex',
+              justifyContent: 'space-between',
+              alignItems: 'center',
+              width: '100%',
+              marginTop: '1rem',
+            }}
+          >
+            <Checks>
+              <LabeledCheckbox
+                label={'공개'}
+                register={register}
+                name={'openAllowed'}
+              />
+              <LabeledCheckbox
+                label={'댓글 허용'}
+                register={register}
+                name={'commentsAllowed'}
+              />
+              <LabeledCheckbox
+                label={'퍼가기 금지'}
+                register={register}
+                name={'shareAllowed'}
+              />
+            </Checks>
+            <Buttons>
+              <Button
+                theme={'#111111'}
+                type="button"
+                onClick={() => {
+                  setPreview(!preview)
+                }}
+              >
+                {preview ? '숨기기' : '미리보기'}
+              </Button>
+              <Button theme={'#FF5414'} type="submit">
+                등록
+              </Button>
+            </Buttons>
+          </div>
         </EditorForm>
-        <Viewer title={watch('title')} contents={content} tag={watch('tag')} />
+        {preview && (
+          <Viewer
+            title={watch('title')}
+            contents={content}
+            tag={watch('tag')}
+          />
+        )}
       </EditorAndViewerContainer>
     </Container>
   )
@@ -249,10 +266,9 @@ const Header = styled.div`
 
 const EditorForm = styled.form`
   ${flexGap('20px')}
-  width: 100%;
+  max-width: 1280px;
   height: 100%;
   flex: 1;
-  border-right: 1px solid black;
 `
 
 const Checks = styled.div`
@@ -266,21 +282,19 @@ const Buttons = styled.div`
   width: 100%;
   margin-bottom: 20px;
   padding: 0 15px;
+  justify-content: flex-end;
 `
 
 const Button = styled.button<{ theme: string }>`
-  width: 100%;
+  width: 120px;
   height: 40px;
   border: 2px solid ${({ theme }) => theme};
   border-radius: 5px;
   outline: none;
   cursor: pointer;
-  color: ${({ theme }) => theme};
+  color: white;
   transition: all 0.2s ease-in-out;
-  &:hover {
-    background-color: ${({ theme }) => theme};
-    color: ${colors.primary.white};
-  }
+  background-color: ${({ theme }) => theme};
 `
 
 const Period = styled.div`
@@ -309,4 +323,5 @@ const EditorAndViewerContainer = styled.div`
   padding: 20px;
   border: 2px solid #e5e5e5;
   border-radius: 5px;
+  justify-content: center;
 `
