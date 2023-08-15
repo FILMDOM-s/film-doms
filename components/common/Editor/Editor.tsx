@@ -151,13 +151,20 @@ const Editor = ({
 export default Editor
 
 const Container = styled(Quill)`
-  width: 914px;
+  width: 100%;
   align-items: flex-end;
-  border: 2px solid black;
+  border: none;
   .ql-toolbar {
-    border-bottom: 2px solid black;
+    border: none;
+    border-top: 1px solid #eaeaea;
+    border-bottom: 1px solid #eaeaea;
   }
   .ql-editor {
-    height: 400px;
+    min-height: 800px;
+    border: none;
+    font-size: 1.125rem;
+  }
+  .ql-container {
+    border: none;
   }
 `

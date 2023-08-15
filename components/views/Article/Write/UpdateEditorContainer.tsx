@@ -356,12 +356,12 @@ const TitleInput = styled.input`
 
 const Header = styled.div`
   ${flexGap('20px', 'row')}
-  width: 914px;
+  width: 100%;
 `
 
 const EditorForm = styled.form`
   ${flexGap('20px')}
-  width: 914px;
+  width: 100%;
 `
 const ChevronWrapper = styled.div`
   ${flexCenter}
