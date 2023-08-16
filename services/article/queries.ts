@@ -8,6 +8,7 @@ import {
   getArticleMainContentByCategory,
   getArticleNoticeList,
   getArticleTagListByCategory,
+  getArticleTemplateByCategory,
   getPopularArticleList,
 } from './apis'
 
@@ -76,5 +77,12 @@ export const useFetchSearchArticleList = (
   return useSuspendedQuery(
     queryKeys.article.articleBySearchString(category, method, param),
     () => getArticleListBySearchString(category, method, param)
+  )
+}
+
+export const useFetchArticleTemplate = (category: string) => {
+  return useSuspendedQuery(
+    queryKeys.article.templateDTOByCategory(category),
+    () => getArticleTemplateByCategory(category)
   )
 }

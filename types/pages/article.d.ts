@@ -20,6 +20,13 @@ declare module Article {
     result: Tag[]
   }
 
+  type TemplateDTO = {
+    resultCode: string
+    result: {
+      editorContent: string
+    }
+  }
+
   type MainContent = {
     id: number
     category: string

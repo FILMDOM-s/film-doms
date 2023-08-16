@@ -158,6 +158,10 @@ const Container = styled(Quill)`
     border: none;
     border-top: 1px solid #eaeaea;
     border-bottom: 1px solid #eaeaea;
+    position: sticky;
+    top: 0;
+    background-color: #fff;
+    z-index: 1;
   }
   .ql-editor {
     min-height: 800px;

@@ -29,6 +29,8 @@ import { ERROR_MESSAGE } from './constants'
 import { useFetchUserInfo } from '@/services/myPage'
 import { useTerms } from '../../SignIn/hooks'
 import MovieTagStateList from '@/components/views/MyPage/InterestMovieSection/MovieTagStateList'
+import { lockState } from '@/states'
+import { useRecoilState } from 'recoil'
 
 type CreateUserFormType = {
   email: string
@@ -56,6 +58,7 @@ const SignUpForm = () => {
   const { mutate: checkNicknameDuplicate } = useFetchCheckNicknameDuplicate()
   const { mutate: createSignUpAccount } = useCreateSignUpAccount()
   const { mutate: createGoogleAccount } = useCreateGoogleAccount()
+  const [lock, setLock] = useRecoilState(lockState)
 
   const { openModal } = useTerms()
 
@@ -106,6 +109,7 @@ const SignUpForm = () => {
               icon: '👏',
               position: 'top-right',
             })
+            setLock(false)
             router.replace('/')
           },
         }
@@ -271,6 +275,8 @@ const SignUpForm = () => {
         position: 'top-center',
       })
 
+      setLock(true)
+
       setServerInput(prev => ({
         ...prev,
         email: data?.email ?? '',
@@ -279,7 +285,7 @@ const SignUpForm = () => {
       }))
       setValue('email', data?.email ?? '')
     }
-  }, [data?.email, from, setValue])
+  }, [data?.email, from, setLock, setValue])
 
   return (
     <Box>

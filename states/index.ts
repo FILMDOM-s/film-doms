@@ -70,3 +70,9 @@ export const contextMenuState = atom<ContextMenuType>({
     clientY: 0,
   },
 })
+
+export const lockState = atom<boolean>({
+  key: 'lockState',
+  default: false,
+  effects_UNSTABLE: [persistAtom],
+})
