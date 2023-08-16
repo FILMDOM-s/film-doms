@@ -1,15 +1,19 @@
 import { Editor } from '@/components/common/Editor'
-import { useCreateArticle } from '@/services/article'
+import { useCreateArticle, useFetchArticleTemplate } from '@/services/article'
 import { colors, flexGap } from '@/styles/emotion'
 import styled from '@emotion/styled'
 import { useRouter } from 'next/router'
-import { Suspense, useRef, useState } from 'react'
+import { Suspense, useEffect, useRef, useState } from 'react'
 import { useForm } from 'react-hook-form'
 import toast from 'react-hot-toast'
 import LabeledCheckbox from './Check'
 import SelectBox from './Select'
 import { ImageListProps } from '@/components/common/Editor/Editor'
 import Viewer from './Viewer'
+import { templateObj } from './Template'
+import { useQuery } from '@tanstack/react-query'
+import api from '@/services/api'
+import { camelToSnake } from '@/utils'
 
 export type EditorContainerProps = {
   category: string
@@ -34,6 +38,8 @@ const EditorContainer = ({ category = 'critic' }: EditorContainerProps) => {
   const { register, handleSubmit, getValues, watch } = useForm<ArticleProps>({
     mode: 'onChange',
   })
+
+  const { data } = useFetchArticleTemplate(camelToSnake(category))
 
   const { mutate: createArticle } = useCreateArticle({
     onSuccess: ({ resultCode }) => {
@@ -149,6 +155,12 @@ const EditorContainer = ({ category = 'critic' }: EditorContainerProps) => {
       }
     } catch (err) {}
   }
+
+  useEffect(() => {
+    if (data) {
+      setContent(data.editorContent)
+    }
+  }, [data])
 
   return (
     <Container>

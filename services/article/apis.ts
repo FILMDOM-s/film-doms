@@ -9,6 +9,14 @@ export const getArticleTagListByCategory = async (category: string) => {
   return result
 }
 
+export const getArticleTemplateByCategory = async (category: string) => {
+  const { result } = await api.get<null, Article.TemplateDTO>(
+    `/api/v1/editor/${category}`
+  )
+
+  return result
+}
+
 export const getArticleMainContentByCategory = async (
   category: string,
   params: Article.MainContentParams

@@ -12,6 +12,11 @@ const queryKeys = {
       'tagDTOByCategory',
       category,
     ],
+    templateDTOByCategory: (category: string) => [
+      'article',
+      'templateDTOByCategory',
+      category,
+    ],
     mainContentDTOByCategory: (
       category: string,
       params: Article.MainContentParams
