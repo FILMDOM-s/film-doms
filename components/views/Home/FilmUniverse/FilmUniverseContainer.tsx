@@ -9,6 +9,7 @@ import { css } from '@emotion/react'
 import { useRouter } from 'next/router'
 import { Suspense } from 'react'
 import FilmUniverseList from './FilmUniverseList'
+import FallbackLoading from '@/components/common/Loading/FallbackLoading'
 
 const FilmUniverseContainer = () => {
   const { push } = useRouter()
@@ -28,7 +29,7 @@ const FilmUniverseContainer = () => {
       />
       <Section.Body css={SectionBody}>
         <ResetErrorBoundary fallback={<div>에러...</div>}>
-          <Suspense fallback={<Loading width="100%" height="611px" />}>
+          <Suspense fallback={<FallbackLoading />}>
             <FilmUniverseList />
           </Suspense>
         </ResetErrorBoundary>

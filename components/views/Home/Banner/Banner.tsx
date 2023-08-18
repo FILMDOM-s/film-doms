@@ -23,7 +23,7 @@ const Banner = () => {
       subtitle: '',
       image: banner2,
       onClick: () => {
-        push('/article/critic')
+        push('/article/critic/976')
       },
     },
     {
@@ -33,7 +33,7 @@ const Banner = () => {
       subtitle: '',
       image: banner3,
       onClick: () => {
-        push('/article/critic')
+        push('/article/critic/984')
       },
     },
     {

@@ -30,39 +30,56 @@ declare module User {
 
     type Article = {
       id: number
+      category: string
       tag: string
       title: string
-      commentCount: number
-      createdAt: string
+      status: string
+      createdAt: number
+      updatedAt: number
       views: number
       likes: number
+      commentCount: number
       containImage: boolean
     }
 
     type ArticleDTO = {
       resultCode: string
       result: {
-        content: Article[]
-        totalElements: number
-        totalPages: number
-        size: number
+        articles: Article[]
+        pageInfo: {
+          pageNumber: number
+          pageSize: number
+          totalPages: number
+          totalElements: number
+          numberOfElements: number
+        }
       }
     }
 
     type Comment = {
       id: number
       content: string
-      childrenCommentCount: number
-      createdAt: string
+      status: string
+      likes: number
+      createdAt: number
+      updatedAt: number
+      article: {
+        id: number
+        category: string
+      }
     }
 
     type CommentDTO = {
       resultCode: string
       result: {
-        content: Comment[]
-        totalElements: number
-        totalPages: number
-        size: number
+        comments: Comment[]
+        pageInfo: {
+          pageNumber: number
+          pageSize: number
+          totalPages: number
+          totalElements: number
+          numberOfElements: number
+        }
       }
     }
   }

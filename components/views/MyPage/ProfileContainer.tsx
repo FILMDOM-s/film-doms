@@ -7,6 +7,7 @@ import InterestMovieSection from './InterestMovieSection'
 import ProfileSection from './ProfileSection'
 import UserActivitySection from './UserActivitySection'
 import UserInfoSection from './UserInfoSection'
+import FallbackLoading from '@/components/common/Loading/FallbackLoading'
 
 type Props = {
   id?: string
@@ -68,7 +69,7 @@ type ContainerProps = {
 
 const ProfileContainer = ({ id }: ContainerProps) => {
   return (
-    <Suspense fallback={<Loading height="100vh" empty />}>
+    <Suspense fallback={<FallbackLoading />}>
       <Profile id={id} />
     </Suspense>
   )

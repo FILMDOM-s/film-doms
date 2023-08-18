@@ -8,6 +8,7 @@ import { Suspense } from 'react'
 import { ArticleDetail } from './ArticleDetail'
 import { CommentContainerView } from './Comment'
 import { camelToSnake } from '@/utils'
+import FallbackLoading from '@/components/common/Loading/FallbackLoading'
 
 export type ArticleDetailContainerProps = {
   articleId: number
@@ -31,12 +32,12 @@ const ArticleDetailContainer = ({
         {CATEGORIES[category].title}
       </Title>
       <ArticleSection>
-        <Suspense fallback={<Loading />}>
+        <Suspense fallback={<FallbackLoading />}>
           <ArticleDetail articleId={articleId} category={snakeCategory} />
         </Suspense>
       </ArticleSection>
       <CommentSection>
-        <Suspense fallback={<Loading />}>
+        <Suspense fallback={<FallbackLoading />}>
           <CommentContainerView
             articleId={articleId}
             category={snakeCategory}

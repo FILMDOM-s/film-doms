@@ -1,4 +1,5 @@
 import { Error as ErrorFallback, ResetErrorBoundary } from '@/components/common'
+import FallbackLoading from '@/components/common/Loading/FallbackLoading'
 import RouterBoundary from '@/components/common/RouterBoundary'
 import { useRouterChange } from '@/hooks'
 import GlobalStyles from '@/styles/GlobalStyles'
@@ -38,21 +39,7 @@ export default function App({
   const { isActiveServiceWorker } = useStartWorker()
 
   if (!isActiveServiceWorker) {
-    return (
-      <div
-        style={{
-          position: 'fixed',
-          top: '50%',
-          left: '50%',
-          transform: 'translate(-50%,-50%)',
-          fontSize: '30px',
-          fontWeight: 'bold',
-          color: '#000',
-        }}
-      >
-        ...loading
-      </div>
-    )
+    return <FallbackLoading />
   }
 
   return (

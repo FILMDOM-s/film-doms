@@ -29,20 +29,28 @@ const Google = () => {
         .then(response => {
           // 성공적으로 응답을 받았을 때 실행되는 코드
           const { data } = response
-          setIsLoggedIn(true)
-          toast.success('로그인 성공!', {
-            icon: '👏',
-            position: 'top-center',
-          })
-          router.push({
-            pathname: data.result.type === 'SIGNUP' ? '/auth/signup' : '/',
-            query: {
-              from: 'google',
-            },
-          })
+          if (data.result.type === 'SIGNUP') {
+            setIsLoggedIn(false)
+            router.push({
+              pathname: '/auth/signup',
+              query: {
+                from: 'google',
+              },
+            })
+          } else {
+            toast.success('로그인 성공!', {
+              icon: '👏',
+              position: 'top-center',
+            })
+            setIsLoggedIn(true)
+            router.push({
+              pathname: '/',
+            })
+          }
         })
         .catch(() => {
           // 오류가 발생했을 때 실행되는 코드
+          setIsLoggedIn(false)
           toast.error('로그인에 실패했습니다. 관리자에게 문의하세요.', {
             icon: '😥',
             position: 'top-center',

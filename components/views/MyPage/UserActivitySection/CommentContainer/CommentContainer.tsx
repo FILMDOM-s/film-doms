@@ -16,20 +16,24 @@ const CommentContainer = () => {
     <Container>
       <Wrapper>
         <Title>
-          &#39;{activityCommentList.totalElements}&#39; 개의 작성한 댓글이
-          있습니다.
+          &#39;{activityCommentList.pageInfo.numberOfElements}&#39; 개의 작성한
+          댓글이 있습니다.
         </Title>
         <Table>
           <tbody>
-            {activityCommentList.content.map(comment => {
+            {activityCommentList.comments.map(comment => {
               return (
                 <Tr key={comment.id}>
                   <Td color={colors.primary.black} role="button">
                     {cutString(comment.content, 65)}
                     {'  '}
-                    <CommentCount>{comment.childrenCommentCount}</CommentCount>
+                    <CommentLikes>{comment.likes}</CommentLikes>
                   </Td>
-                  <Td color="#888888">{comment.createdAt}</Td>
+                  <Td color="#888888">
+                    {new Intl.DateTimeFormat('ko')
+                      .format(comment.createdAt)
+                      .slice(0, -1)}
+                  </Td>
                 </Tr>
               )
             })}
@@ -40,7 +44,7 @@ const CommentContainer = () => {
         <Pagination
           count={5}
           currentPage={currentPage}
-          totalPage={activityCommentList.totalPages}
+          totalPage={activityCommentList.pageInfo.totalPages}
           onChange={page => setCurrentPage(page)}
         />
       </PaginationBox>
@@ -60,7 +64,7 @@ const PaginationBox = styled.div`
   ${flexCenter}
 `
 
-const CommentCount = styled.span`
+const CommentLikes = styled.span`
   ${font({ size: '16px', weight: '500', lineHeight: '27px' })}
   color: ${colors.primary.orange};
   text-decoration: underline;

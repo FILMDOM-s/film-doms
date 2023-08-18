@@ -1,15 +1,16 @@
-import { Error, Loading, ResetErrorBoundary } from '@/components/common'
+import { Error, ResetErrorBoundary } from '@/components/common'
 import { colors, typography } from '@/styles/emotion'
 import styled from '@emotion/styled'
 import { Suspense } from 'react'
 import ArticlePopular from './ArticlePopular'
+import FallbackLoading from '@/components/common/Loading/FallbackLoading'
 
 const ArticlePopularContainer = () => {
   return (
     <Container>
       <Title>인기 게시글</Title>
       <ResetErrorBoundary fallback={<Error />}>
-        <Suspense fallback={<Loading />}>
+        <Suspense fallback={<FallbackLoading />}>
           <ArticlePopular />
         </Suspense>
       </ResetErrorBoundary>

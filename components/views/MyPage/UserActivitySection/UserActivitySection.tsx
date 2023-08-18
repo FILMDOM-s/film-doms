@@ -5,6 +5,7 @@ import CommentContainer from './CommentContainer'
 import styled from '@emotion/styled'
 import { colors, flex, flexGap, font } from '@/styles/emotion'
 import { css } from '@emotion/react'
+import FallbackLoading from '@/components/common/Loading/FallbackLoading'
 
 const ACTIVITY_TABLIST = [
   {
@@ -44,7 +45,7 @@ const UserActivitySection = () => {
         <Tab.Views>
           {({ selected }) => {
             return (
-              <Suspense fallback={<Loading height="880px" empty />}>
+              <Suspense fallback={<FallbackLoading />}>
                 <SwitchCase
                   value={selected}
                   caseBy={ACTIVITY_TABLIST.reduce(
