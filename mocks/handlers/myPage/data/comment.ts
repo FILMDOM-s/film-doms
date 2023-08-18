@@ -14,6 +14,13 @@ export const activityCommentList: User.Activity.Comment[] = Array.from(
     id: idx + 1,
     content: CONTENT[getRandomNum(0, CONTENT.length - 1)],
     childrenCommentCount: getRandomNum(0, 200),
-    createdAt: '2023.01.01',
+    createdAt: 1234567890,
+    updatedAt: 1234567890,
+    likes: getRandomNum(0, 1000),
+    status: 'ACTIVE',
+    article: {
+      id: getRandomNum(1, 78),
+      category: 'MOVIE',
+    },
   })
 )
