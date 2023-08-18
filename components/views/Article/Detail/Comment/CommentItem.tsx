@@ -106,7 +106,7 @@ const CommentItem = ({
         />
         <ButtonBox>
           <CommentButton
-            leftIcon={isToggleLoading ? <Loading /> : <MiniThumb />}
+            leftIcon={isToggleLoading ? <IconLoader /> : <MiniThumb />}
             onClick={handleToggleLike}
           >
             {comment.likes}

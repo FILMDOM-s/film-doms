@@ -29,7 +29,7 @@ import { ERROR_MESSAGE } from './constants'
 import { useFetchUserInfo } from '@/services/myPage'
 import { useTerms } from '../../SignIn/hooks'
 import MovieTagStateList from '@/components/views/MyPage/InterestMovieSection/MovieTagStateList'
-import { lockState } from '@/states'
+import { lockState, loginState } from '@/states'
 import { useRecoilState } from 'recoil'
 
 type CreateUserFormType = {
@@ -59,6 +59,7 @@ const SignUpForm = () => {
   const { mutate: createSignUpAccount } = useCreateSignUpAccount()
   const { mutate: createGoogleAccount } = useCreateGoogleAccount()
   const [lock, setLock] = useRecoilState(lockState)
+  const [, setIsLoggedIn] = useRecoilState(loginState)
 
   const { openModal } = useTerms()
 
@@ -103,6 +104,7 @@ const SignUpForm = () => {
         {
           onError: () => {
             toast.error('회원가입에 실패했습니다.')
+            setIsLoggedIn(false)
           },
           onSuccess: () => {
             toast.success('회원가입이 완료되었습니다.', {
@@ -110,6 +112,7 @@ const SignUpForm = () => {
               position: 'top-right',
             })
             setLock(false)
+            setIsLoggedIn(true)
             router.replace('/')
           },
         }
@@ -127,9 +130,11 @@ const SignUpForm = () => {
       },
       {
         onError: () => {
+          setIsLoggedIn(false)
           toast.error('회원가입에 실패했습니다.')
         },
         onSuccess: () => {
+          setIsLoggedIn(true)
           toast.success('회원가입이 완료되었습니다.', {
             icon: '👏',
             position: 'top-right',
@@ -270,10 +275,14 @@ const SignUpForm = () => {
 
   useEffect(() => {
     if (from === 'google') {
-      toast.success('구글로 회원가입했어요! 추가 정보를 입력해주세요.', {
-        icon: '👏',
-        position: 'top-center',
-      })
+      setIsLoggedIn(false)
+      toast.success(
+        '구글로 회원가입했어요! \n 반드시 추가 정보를 입력해주세요.',
+        {
+          icon: '👏',
+          position: 'top-center',
+        }
+      )
 
       setLock(true)
 
@@ -285,7 +294,7 @@ const SignUpForm = () => {
       }))
       setValue('email', data?.email ?? '')
     }
-  }, [data?.email, from, setLock, setValue])
+  }, [data?.email, from, setIsLoggedIn, setLock, setValue])
 
   return (
     <Box>

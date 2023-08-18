@@ -1,10 +1,10 @@
 import { Suspense } from 'react'
 import Banner from './Banner'
-import { Loading } from '@/components/common'
+import FallbackLoading from '@/components/common/Loading/FallbackLoading'
 
 const BannerContainer = () => {
   return (
-    <Suspense fallback={<Loading width="1280px" height="512px" />}>
+    <Suspense fallback={<FallbackLoading />}>
       <Banner />
     </Suspense>
   )

@@ -18,8 +18,8 @@ const ArticleContainer = () => {
       <Wrapper>
         <Box>
           <Title>
-            &#39;{activityArticleList.totalElements}&#39; 개의 작성한 글이
-            있습니다.
+            &#39;{activityArticleList.pageInfo.numberOfElements}&#39; 개의
+            작성한 글이 있습니다.
           </Title>
         </Box>
         <Table>
@@ -33,7 +33,7 @@ const ArticleContainer = () => {
             </THeadTr>
           </thead>
           <tbody>
-            {activityArticleList.content.map(article => {
+            {activityArticleList.articles.map(article => {
               return (
                 <TBodyTr key={article.id}>
                   <Td width="10%" color={colors.grey[600]}>
@@ -56,7 +56,9 @@ const ArticleContainer = () => {
                     </Content>
                   </Td>
                   <Td width="20%" color="#888888">
-                    {article.createdAt}
+                    {new Intl.DateTimeFormat('ko')
+                      .format(article.createdAt)
+                      .slice(0, -1)}
                   </Td>
                   <Td width="20%" color={colors.grey[100]}>
                     {article.views}
@@ -74,7 +76,7 @@ const ArticleContainer = () => {
         <Pagination
           count={5}
           currentPage={currentPage}
-          totalPage={activityArticleList.totalPages}
+          totalPage={activityArticleList.pageInfo.totalPages}
           onChange={page => setCurrentPage(page)}
         />
       </PaginationBox>

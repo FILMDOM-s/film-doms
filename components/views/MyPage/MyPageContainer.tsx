@@ -7,6 +7,7 @@ import InterestMovieSection from './InterestMovieSection'
 import ProfileSection from './ProfileSection'
 import UserActivitySection from './UserActivitySection'
 import UserInfoSection from './UserInfoSection'
+import FallbackLoading from '@/components/common/Loading/FallbackLoading'
 
 const MyPage = () => {
   const { data: userInfo } = useFetchUserInfo()
@@ -59,7 +60,7 @@ const Container = styled.div`
 
 const MyPageContainer = () => {
   return (
-    <Suspense fallback={<Loading height="100vh" empty />}>
+    <Suspense fallback={<FallbackLoading />}>
       <MyPage />
     </Suspense>
   )

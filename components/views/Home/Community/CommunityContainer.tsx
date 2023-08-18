@@ -4,11 +4,12 @@ import { flex } from '@/styles/emotion'
 import { Loading } from '@/components/common'
 import MovieContainer from './Movie'
 import RecentContainer from './Recent'
+import FallbackLoading from '@/components/common/Loading/FallbackLoading'
 
 const CommunityContainer = () => {
   return (
     <Section>
-      <Suspense fallback={<Loading width="1280px" height="392px" />}>
+      <Suspense fallback={<FallbackLoading />}>
         <RecentContainer />
         <MovieContainer />
       </Suspense>

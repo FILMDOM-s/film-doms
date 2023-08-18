@@ -15,6 +15,7 @@ import { snakeToCamel } from '@/utils'
 import { useEffect, useState } from 'react'
 import { useRouter } from 'next/router'
 import { useFetchUserInfo } from '@/services/myPage'
+import { IconLoader } from '@tabler/icons-react'
 
 export type ArticleDetailProps = {
   articleId: number
@@ -122,7 +123,7 @@ export const ArticleDetail = ({ articleId, category }: ArticleDetailProps) => {
         <ReadOnlyEditor content={article && article.content} />
         <BottomContentGrid>
           <OrangeButton
-            leftIcon={isLoading ? <Loading /> : <Thumb />}
+            leftIcon={isLoading ? <IconLoader /> : <Thumb />}
             onClick={handleToggleLike}
           >
             {article.likes}
