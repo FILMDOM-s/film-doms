@@ -2,8 +2,9 @@ import { useState } from 'react'
 import styled from '@emotion/styled'
 import { useFetchUserActivityComment } from '@/services/myPage'
 import { colors, flex, flexCenter, flexGap, font } from '@/styles/emotion'
-import { cutString } from '@/utils'
+import { cutString, snakeToCamel } from '@/utils'
 import { Pagination } from '@/components/common'
+import { useRouter } from 'next/router'
 
 const CommentContainer = () => {
   const [currentPage, setCurrentPage] = useState(1)
@@ -11,6 +12,7 @@ const CommentContainer = () => {
     page: Math.max(currentPage - 1, 0),
     size: 10,
   })
+  const router = useRouter()
 
   return (
     <Container>
@@ -24,7 +26,22 @@ const CommentContainer = () => {
             {activityCommentList.comments.map(comment => {
               return (
                 <Tr key={comment.id}>
-                  <Td color={colors.primary.black} role="button">
+                  <Td
+                    color={colors.primary.black}
+                    role="button"
+                    css={{
+                      '&:hover': {
+                        textDecoration: 'underline',
+                      },
+                    }}
+                    onClick={() => {
+                      router.push(
+                        `/article/${snakeToCamel(
+                          comment.article.category.toLowerCase()
+                        )}/${comment.article.id}`
+                      )
+                    }}
+                  >
                     {cutString(comment.content, 65)}
                     {'  '}
                     <CommentLikes>{comment.likes}</CommentLikes>

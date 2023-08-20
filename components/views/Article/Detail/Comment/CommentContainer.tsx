@@ -52,6 +52,7 @@ const CommentContainer = ({ articleId, category }: ArticleDetailProps) => {
             articleId={articleId}
             refetch={refetch}
             isMine={userInfo?.id === comment.author.id}
+            userInfo={userInfo as User.Info}
           />
         )
       })}

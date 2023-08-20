@@ -134,7 +134,7 @@ const LoginButton = styled.button`
   transition: all 0.2s ease-in-out;
   width: 100%;
   height: 50px;
-  background-color: #ff5414;
+  background-color: #ff5414 !important;
   color: #f7f7f5;
   margin-top: 32px;
 `

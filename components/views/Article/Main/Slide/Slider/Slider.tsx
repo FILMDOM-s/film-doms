@@ -10,8 +10,10 @@ import Image from 'next/image'
 import { imageList } from './data'
 import SlidePrev from '@/assets/svgs/common/SlidePrev'
 import SlideNext from '@/assets/svgs/common/SlideNext'
+import { useRouter } from 'next/router'
 
 const Slider = () => {
+  const router = useRouter()
   return (
     <SliderContainer>
       <button className="_swiper-button-prev">
@@ -38,6 +40,12 @@ const Slider = () => {
                   height={550}
                   src={slide.image}
                   priority
+                  style={{
+                    cursor: 'pointer',
+                  }}
+                  onClick={() => {
+                    router.push(slide.link)
+                  }}
                 />
                 <CriticTextArea>
                   {slide.title.split('|').map((title, index) => (

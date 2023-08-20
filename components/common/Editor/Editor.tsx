@@ -155,9 +155,9 @@ const Container = styled(Quill)`
   align-items: flex-end;
   border: none;
   .ql-toolbar {
-    border: none;
-    border-top: 1px solid #eaeaea;
-    border-bottom: 1px solid #eaeaea;
+    border: none !important;
+    border-top: 1px solid #eaeaea !important;
+    border-bottom: 1px solid #eaeaea !important;
     position: sticky;
     top: 0;
     background-color: #fff;
@@ -165,10 +165,10 @@ const Container = styled(Quill)`
   }
   .ql-editor {
     min-height: 800px;
-    border: none;
+    border: none !important;
     font-size: 1.125rem;
   }
   .ql-container {
-    border: none;
+    border: none !important;
   }
 `

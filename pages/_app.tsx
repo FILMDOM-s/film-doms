@@ -1,5 +1,4 @@
 import { Error as ErrorFallback, ResetErrorBoundary } from '@/components/common'
-import FallbackLoading from '@/components/common/Loading/FallbackLoading'
 import RouterBoundary from '@/components/common/RouterBoundary'
 import { useRouterChange } from '@/hooks'
 import GlobalStyles from '@/styles/GlobalStyles'
@@ -12,7 +11,7 @@ import { AppLayout } from '@views/Layout'
 import { AppScript, useStartWorker } from '@views/_App'
 import * as gtag from 'lib/gtag'
 import type { AppProps } from 'next/app'
-import { Suspense, useCallback } from 'react'
+import { useCallback } from 'react'
 import { Toaster } from 'react-hot-toast'
 import { RecoilRoot } from 'recoil'
 
@@ -34,7 +33,7 @@ export default function App({
     gtag.pageview(url)
   }, [])
 
-  useRouterChange(handleRouteChange)
+  const { isLoading, FallbackLoading } = useRouterChange(handleRouteChange)
 
   const { isActiveServiceWorker } = useStartWorker()
 
@@ -50,6 +49,7 @@ export default function App({
         <ResetErrorBoundary fallback={<ErrorFallback />}>
           <AppLayout>
             <RouterBoundary>
+              {isLoading && <FallbackLoading />}
               <Component {...pageProps} />
             </RouterBoundary>
             <Toaster />

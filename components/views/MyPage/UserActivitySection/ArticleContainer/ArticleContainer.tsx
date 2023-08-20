@@ -3,8 +3,9 @@ import styled from '@emotion/styled'
 import { ImageIcon } from '@svgs/common'
 import { useFetchUserActivityArticle } from '@/services/myPage'
 import { colors, flex, flexCenter, flexGap, font } from '@/styles/emotion'
-import { cutString } from '@/utils'
+import { cutString, snakeToCamel } from '@/utils'
 import { Pagination, RenderIf } from '@/components/common'
+import { useRouter } from 'next/router'
 
 const ArticleContainer = () => {
   const [currentPage, setCurrentPage] = useState(1)
@@ -12,6 +13,7 @@ const ArticleContainer = () => {
     page: Math.max(currentPage - 1, 0),
     size: 10,
   })
+  const router = useRouter()
 
   return (
     <Container>
@@ -44,7 +46,16 @@ const ArticleContainer = () => {
                     color={colors.primary.black}
                     justify="flex-start"
                   >
-                    <Content role="button">
+                    <Content
+                      role="button"
+                      onClick={() => {
+                        router.push(
+                          `/article/${snakeToCamel(
+                            article.category.toLowerCase()
+                          )}/${article.id}`
+                        )
+                      }}
+                    >
                       <RenderIf
                         condition={article.containImage}
                         render={<ImageIcon width="15" height="15" />}
@@ -88,6 +99,9 @@ const Content = styled.div`
   ${flex({ justify: 'flex-start', align: 'center' })}
   gap: 8px;
   cursor: pointer;
+  &:hover {
+    text-decoration: underline;
+  }
 `
 
 const PaginationBox = styled.div`

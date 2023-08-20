@@ -39,6 +39,7 @@ const MyPage = () => {
           email={email}
           nickname={nickname}
           registeredAt={registeredAt}
+          socialLogin={userInfo?.socialLogin}
         />
         <RenderIf condition={true} render={<UserActivitySection />} />
       </Wrapper>
