@@ -296,7 +296,7 @@ const UpdateEditorContainer = ({
               marginTop: '1rem',
             }}
           >
-            <Checks>
+            {/* <Checks>
               <LabeledCheckbox
                 label={'공개'}
                 register={register}
@@ -312,7 +312,7 @@ const UpdateEditorContainer = ({
                 register={register}
                 name={'shareAllowed'}
               />
-            </Checks>
+            </Checks> */}
             <Buttons>
               <Button
                 theme={'#111111'}
@@ -394,7 +394,7 @@ const Button = styled.button<{ theme: string }>`
   cursor: pointer;
   color: white;
   transition: all 0.2s ease-in-out;
-  background-color: ${({ theme }) => theme};
+  background-color: ${({ theme }) => theme} !important;
 `
 
 const Period = styled.div`

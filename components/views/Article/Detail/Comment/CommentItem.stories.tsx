@@ -52,5 +52,6 @@ export const Default = () => (
     articleId={articleId}
     refetch={() => {}}
     isMine={true}
+    userInfo={{} as User.Info}
   />
 )

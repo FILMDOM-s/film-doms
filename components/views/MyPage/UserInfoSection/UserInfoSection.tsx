@@ -12,9 +12,16 @@ interface Props {
   registeredAt: number
   password?: string
   type: 'public' | 'private'
+  socialLogin: boolean
 }
 
-const UserInfoSection = ({ type, email, nickname, registeredAt }: Props) => {
+const UserInfoSection = ({
+  type,
+  email,
+  nickname,
+  registeredAt,
+  socialLogin,
+}: Props) => {
   const [newNickname, setNewNickname] = useState(nickname)
   const [editNewNickname, setEditNewNickname] = useState(false)
   const { mutate: updateNickname } = useUpdateNickname()
@@ -90,7 +97,7 @@ const UserInfoSection = ({ type, email, nickname, registeredAt }: Props) => {
             />
           </Tr>
           <RenderIf
-            condition={isPrivate}
+            condition={isPrivate && !socialLogin}
             render={
               <Tr>
                 <Label>비밀번호</Label>

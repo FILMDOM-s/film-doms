@@ -27,6 +27,7 @@ const Profile = ({ id }: Props) => {
   const email = ''
   const registeredAt = publicUserInfo?.registeredAt
   const favoriteMovies = publicUserInfo?.favoriteMovies
+  const socialLogin = publicUserInfo?.socialLogin
 
   return (
     <Container>
@@ -45,6 +46,7 @@ const Profile = ({ id }: Props) => {
           email={email}
           nickname={nickname}
           registeredAt={registeredAt}
+          socialLogin={socialLogin}
         />
       </Wrapper>
     </Container>

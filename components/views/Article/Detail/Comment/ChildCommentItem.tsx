@@ -1,18 +1,46 @@
 import { defaultProfile } from '@/assets/images/common'
+import MiniThumb from '@/assets/svgs/common/MiniThumb'
 import { Button } from '@/components/common'
+import {
+  useDeleteComment,
+  useToggleCommentLike,
+  useUpdateComment,
+} from '@/services/article'
 import { colors, flexGap, typography } from '@/styles/emotion'
 import { getImageSrcByUuid } from '@/utils'
 import { dateDiff } from '@/utils/dateDiff'
 import styled from '@emotion/styled'
+import { IconLoader } from '@tabler/icons-react'
 import Image from 'next/image'
+import { useState } from 'react'
 
 const ChildCommentItem = ({
   comment,
   borderBottom,
+  isMine,
+  refetch,
 }: {
   comment: Article.ChildComment
   borderBottom: boolean
+  isMine: boolean
+  refetch: () => void
 }) => {
+  const [content, setContent] = useState<string>(comment.content)
+  const [isUpdate, setIsUpdate] = useState<boolean>(false)
+  const { mutate: updateComment, isLoading: isUpdateLoading } =
+    useUpdateComment()
+  const { mutate: deleteComment, isLoading: isDeleteLoading } =
+    useDeleteComment()
+  const { mutate: toggleCommentLike, isLoading: isToggleLoading } =
+    useToggleCommentLike()
+
+  const handleToggleLike = () => {
+    toggleCommentLike(comment.id, {
+      onSuccess: () => {
+        refetch()
+      },
+    })
+  }
   return (
     <CommentItemContainer borderBottom={borderBottom}>
       <CommentProfileBox>
@@ -36,7 +64,64 @@ const ChildCommentItem = ({
           {comment.author.nickname}
           <span>{dateDiff(comment.createdAt)}</span>
         </NicknameBox>
-        <ContentBox>{comment.content}</ContentBox>
+        <ContentBox
+          value={content}
+          onChange={e => {
+            setContent(e.target.value)
+          }}
+          disabled={!isUpdate}
+        />
+        <ButtonBox>
+          <CommentButton
+            leftIcon={isToggleLoading ? <IconLoader /> : <MiniThumb />}
+            onClick={handleToggleLike}
+          >
+            {comment.likes}
+          </CommentButton>
+          {isMine && (
+            <CommentButton
+              onClick={() => {
+                if (isUpdate) {
+                  // 수정완료
+                  updateComment(
+                    {
+                      commentId: comment.id,
+                      content,
+                    },
+                    {
+                      onSuccess: () => {
+                        refetch()
+                      },
+                    }
+                  )
+                }
+
+                setIsUpdate(!isUpdate)
+              }}
+            >
+              {isUpdate ? '수정완료' : '수정'}
+            </CommentButton>
+          )}
+          {isMine && (
+            <CommentButton
+              onClick={() => {
+                // 수정완료
+                deleteComment(
+                  {
+                    commentId: comment.id,
+                  },
+                  {
+                    onSuccess: () => {
+                      refetch()
+                    },
+                  }
+                )
+              }}
+            >
+              삭제
+            </CommentButton>
+          )}
+        </ButtonBox>
       </CommentInfoBox>
     </CommentItemContainer>
   )
@@ -74,7 +159,7 @@ const NicknameBox = styled.div`
   }
 `
 
-const ContentBox = styled.div`
+const ContentBox = styled.input`
   ${typography.contentBody}
   color: ${colors.primary.black};
 `

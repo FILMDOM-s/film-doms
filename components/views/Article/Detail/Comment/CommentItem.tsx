@@ -23,12 +23,14 @@ const CommentItem = ({
   borderBottom,
   refetch,
   isMine,
+  userInfo,
 }: {
   articleId: number
   comment: Article.Comment
   borderBottom: boolean
   refetch: () => void
   isMine: boolean
+  userInfo: User.Info
 }) => {
   const [leaveReply, setLeaveReply] = useState<boolean>(false)
   const [replyToggle, setReplyToggle] = useState<boolean>(false)
@@ -178,6 +180,8 @@ const CommentItem = ({
                       key={index}
                       borderBottom={comment.childComments.length - 1 !== index}
                       comment={childComment}
+                      isMine={userInfo.id === childComment.author.id}
+                      refetch={refetch}
                     />
                   )
                 })}
