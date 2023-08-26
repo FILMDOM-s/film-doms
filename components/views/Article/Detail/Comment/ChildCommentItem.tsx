@@ -11,8 +11,13 @@ import { getImageSrcByUuid } from '@/utils'
 import { dateDiff } from '@/utils/dateDiff'
 import styled from '@emotion/styled'
 import { IconLoader } from '@tabler/icons-react'
+import {
+  QueryObserverResult,
+  RefetchOptions,
+  RefetchQueryFilters,
+} from '@tanstack/react-query'
 import Image from 'next/image'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 
 const ChildCommentItem = ({
   comment,
@@ -23,10 +28,21 @@ const ChildCommentItem = ({
   comment: Article.ChildComment
   borderBottom: boolean
   isMine: boolean
-  refetch: () => void
+  refetch: <TPageData>(
+    options?: (RefetchOptions & RefetchQueryFilters<TPageData>) | undefined
+  ) => Promise<
+    QueryObserverResult<
+      {
+        commentCount: number
+        comments: Article.Comment[]
+      },
+      unknown
+    >
+  >
 }) => {
-  const [content, setContent] = useState<string>(comment.content)
+  const [content, setContent] = useState<string>('')
   const [isUpdate, setIsUpdate] = useState<boolean>(false)
+  const [textareaEnterCount, setTextareaEnterCount] = useState(1)
   const { mutate: updateComment, isLoading: isUpdateLoading } =
     useUpdateComment()
   const { mutate: deleteComment, isLoading: isDeleteLoading } =
@@ -41,6 +57,19 @@ const ChildCommentItem = ({
       },
     })
   }
+  useEffect(() => {
+    const regex = /\n/g
+    const matches = content.match(regex)
+
+    if (matches) {
+      setTextareaEnterCount(matches.length)
+    }
+  }, [content])
+
+  useEffect(() => {
+    setContent(comment.content)
+  }, [comment])
+
   return (
     <CommentItemContainer borderBottom={borderBottom}>
       <CommentProfileBox>
@@ -70,6 +99,7 @@ const ChildCommentItem = ({
             setContent(e.target.value)
           }}
           disabled={!isUpdate}
+          rows={textareaEnterCount + 1}
         />
         <ButtonBox>
           <CommentButton
@@ -80,6 +110,7 @@ const ChildCommentItem = ({
           </CommentButton>
           {isMine && (
             <CommentButton
+              leftIcon={isUpdateLoading ? <IconLoader /> : null}
               onClick={() => {
                 if (isUpdate) {
                   // 수정완료
@@ -104,6 +135,7 @@ const ChildCommentItem = ({
           )}
           {isMine && (
             <CommentButton
+              leftIcon={isDeleteLoading ? <IconLoader /> : null}
               onClick={() => {
                 // 수정완료
                 deleteComment(
@@ -112,7 +144,10 @@ const ChildCommentItem = ({
                   },
                   {
                     onSuccess: () => {
-                      refetch()
+                      refetch({
+                        stale: true,
+                        exact: true,
+                      })
                     },
                   }
                 )
@@ -144,6 +179,7 @@ const CommentProfileBox = styled.div`
 
 const CommentInfoBox = styled.div`
   ${flexGap('10px', 'column')}
+  width: 100%;
 `
 
 const NicknameBox = styled.div`
@@ -159,9 +195,15 @@ const NicknameBox = styled.div`
   }
 `
 
-const ContentBox = styled.input`
+const ContentBox = styled.textarea`
+  width: 100%;
   ${typography.contentBody}
   color: ${colors.primary.black};
+  &:disabled {
+    border: none;
+    background-color: transparent;
+  }
+  resize: none;
 `
 
 const ButtonBox = styled.div`

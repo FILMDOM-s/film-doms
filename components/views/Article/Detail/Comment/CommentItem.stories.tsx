@@ -50,7 +50,9 @@ export const Default = () => (
     comment={commentItem}
     borderBottom={false}
     articleId={articleId}
-    refetch={() => {}}
+    refetch={() => {
+      return new Promise(() => {})
+    }}
     isMine={true}
     userInfo={{} as User.Info}
   />

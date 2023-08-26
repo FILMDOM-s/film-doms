@@ -26,7 +26,7 @@ const ArticleDetailContainer = ({
       <Title>
         <ChevronWrapper>
           <Link href={`/article/${category}`}>
-            <ChevronLeft width="10px" height="16px" />
+            <ChevronLeft width="10" height="16" />
           </Link>
         </ChevronWrapper>
         {CATEGORIES[category].title}

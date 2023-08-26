@@ -6,7 +6,7 @@ import { colors, flexGap, typography } from '@/styles/emotion'
 import { dateDiff } from '@/utils/dateDiff'
 import styled from '@emotion/styled'
 import Image from 'next/image'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import ChildCommentItem from './ChildCommentItem'
 import { getImageSrcByUuid } from '@/utils'
 import {
@@ -16,6 +16,11 @@ import {
   useUpdateComment,
 } from '@/services/article'
 import { IconLoader } from '@tabler/icons-react'
+import {
+  QueryObserverResult,
+  RefetchOptions,
+  RefetchQueryFilters,
+} from '@tanstack/react-query'
 
 const CommentItem = ({
   articleId,
@@ -28,14 +33,25 @@ const CommentItem = ({
   articleId: number
   comment: Article.Comment
   borderBottom: boolean
-  refetch: () => void
+  refetch: <TPageData>(
+    options?: (RefetchOptions & RefetchQueryFilters<TPageData>) | undefined
+  ) => Promise<
+    QueryObserverResult<
+      {
+        commentCount: number
+        comments: Article.Comment[]
+      },
+      unknown
+    >
+  >
   isMine: boolean
   userInfo: User.Info
 }) => {
   const [leaveReply, setLeaveReply] = useState<boolean>(false)
   const [replyToggle, setReplyToggle] = useState<boolean>(false)
-  const [content, setContent] = useState<string>(comment.content)
+  const [content, setContent] = useState<string>('')
   const [isUpdate, setIsUpdate] = useState<boolean>(false)
+  const [textareaEnterCount, setTextareaEnterCount] = useState(1)
 
   const [reply, setReply] = useState('')
   const { mutate: createComment, isLoading } = useCreateComment()
@@ -76,6 +92,19 @@ const CommentItem = ({
     })
   }
 
+  useEffect(() => {
+    const regex = /\n/g
+    const matches = content.match(regex)
+
+    if (matches) {
+      setTextareaEnterCount(matches.length)
+    }
+  }, [content])
+
+  useEffect(() => {
+    setContent(comment.content)
+  }, [comment])
+
   return (
     <CommentItemContainer borderBottom={borderBottom}>
       <CommentProfileBox>
@@ -105,6 +134,7 @@ const CommentItem = ({
             setContent(e.target.value)
           }}
           disabled={!isUpdate}
+          rows={textareaEnterCount + 1}
         />
         <ButtonBox>
           <CommentButton
@@ -122,6 +152,7 @@ const CommentItem = ({
           </CommentButton>
           {isMine && (
             <CommentButton
+              leftIcon={isUpdateLoading ? <IconLoader /> : null}
               onClick={() => {
                 if (isUpdate) {
                   // 수정완료
@@ -146,6 +177,7 @@ const CommentItem = ({
           )}
           {isMine && (
             <CommentButton
+              leftIcon={isDeleteLoading ? <IconLoader /> : null}
               onClick={() => {
                 // 수정완료
                 deleteComment(
@@ -180,7 +212,7 @@ const CommentItem = ({
                       key={index}
                       borderBottom={comment.childComments.length - 1 !== index}
                       comment={childComment}
-                      isMine={userInfo.id === childComment.author.id}
+                      isMine={userInfo?.id === childComment.author.id}
                       refetch={refetch}
                     />
                   )
@@ -234,14 +266,16 @@ const NicknameBox = styled.div`
     font-weight: 600;
   }
 `
-
-const ContentBox = styled.input`
+// textarea 스크롤이 생기지 않고 높이가 늘어나도록 설정
+const ContentBox = styled.textarea`
   ${typography.contentBody}
   color: ${colors.primary.black};
   &:disabled {
     border: none;
     background-color: transparent;
   }
+  resize: none;
+  width: 100%;
 `
 
 const ButtonBox = styled.div`
