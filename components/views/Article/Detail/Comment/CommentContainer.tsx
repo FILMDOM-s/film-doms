@@ -6,7 +6,7 @@ import { colors, flexGap, typography } from '@/styles/emotion'
 import styled from '@emotion/styled'
 import { ArticleDetailProps } from '../ArticleDetail'
 import CommentItem from './CommentItem'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { Button } from '@/components/common'
 import { IconLoader } from '@tabler/icons-react'
 import { useFetchUserInfo } from '@/services/myPage'
@@ -17,6 +17,10 @@ const CommentContainer = ({ articleId, category }: ArticleDetailProps) => {
   const [comment, setComment] = useState('')
   const { mutate: createComment, isLoading } = useCreateComment()
   const { data: userInfo } = useFetchUserInfo()
+
+  const [commentListState, setCommentListState] = useState<Article.Comment[]>(
+    []
+  )
 
   const handleCommentChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
     setComment(e.target.value)
@@ -34,16 +38,22 @@ const CommentContainer = ({ articleId, category }: ArticleDetailProps) => {
       {
         onSuccess: () => {
           setComment('')
-          refetch()
+          refetch({ stale: true })
         },
       }
     )
   }
 
+  useEffect(() => {
+    if (commentList) {
+      setCommentListState(commentList.comments)
+    }
+  }, [commentList])
+
   return (
     <Container>
       <CommentCount>{`댓글 ${commentList.commentCount}개`}</CommentCount>
-      {commentList.comments.map((comment, index) => {
+      {commentListState.map((comment, index) => {
         return (
           <CommentItem
             key={index}

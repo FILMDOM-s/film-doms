@@ -61,7 +61,8 @@ export const useFetchArticleCommentListByCategoryById = (
 ) => {
   return useSuspendedQuery(
     queryKeys.article.commentDTOByCategoryByArticleId(category, id),
-    () => getArticleCommentListByCategoryById(category, id)
+    () => getArticleCommentListByCategoryById(category, id),
+    { cacheTime: 0, staleTime: 0 }
   )
 }
 
