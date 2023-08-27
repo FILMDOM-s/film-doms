@@ -29,7 +29,7 @@ import { ERROR_MESSAGE } from './constants'
 import { useFetchUserInfo } from '@/services/myPage'
 import { useTerms } from '../../SignIn/hooks'
 import MovieTagStateList from '@/components/views/MyPage/InterestMovieSection/MovieTagStateList'
-import { lockState, loginState } from '@/states'
+import { lockState, loginState, loginTypeState } from '@/states'
 import { useRecoilState } from 'recoil'
 
 type CreateUserFormType = {
@@ -58,8 +58,9 @@ const SignUpForm = () => {
   const { mutate: checkNicknameDuplicate } = useFetchCheckNicknameDuplicate()
   const { mutate: createSignUpAccount } = useCreateSignUpAccount()
   const { mutate: createGoogleAccount } = useCreateGoogleAccount()
-  const [lock, setLock] = useRecoilState(lockState)
+  const [, setLock] = useRecoilState(lockState)
   const [, setIsLoggedIn] = useRecoilState(loginState)
+  const [, setLoginType] = useRecoilState(loginTypeState)
 
   const { openModal } = useTerms()
 
@@ -113,6 +114,7 @@ const SignUpForm = () => {
             })
             setLock(false)
             setIsLoggedIn(true)
+            setLoginType('done')
             router.replace('/')
           },
         }
@@ -135,6 +137,7 @@ const SignUpForm = () => {
         },
         onSuccess: () => {
           setIsLoggedIn(true)
+          setLoginType('done')
           toast.success('회원가입이 완료되었습니다.', {
             icon: '👏',
             position: 'top-right',
@@ -275,7 +278,7 @@ const SignUpForm = () => {
 
   useEffect(() => {
     if (from === 'google') {
-      setIsLoggedIn(false)
+      setIsLoggedIn(true)
       toast.success(
         '구글로 회원가입했어요! \n 반드시 추가 정보를 입력해주세요.',
         {
@@ -359,64 +362,73 @@ const SignUpForm = () => {
             }
           />
           <Divider color={colors.grey[100]} size={1} />
-          <Group>
-            <InputBox>
-              <Label required>비밀번호</Label>
-              <Input
-                {...register('password', {
-                  pattern: {
-                    value: PASSWORD_REGEX,
-                    message: ERROR_MESSAGE.PASSWORD,
-                  },
-                })}
-                type="password"
-                name="password"
-                minLength={8}
-                maxLength={100}
-                placeholder="영문 대,소문자, 숫자, 특수문자를 포함해 8자리 이상으로 기입해주세요."
-                required
-                autoComplete="off"
-                disabled={from === 'google'}
-              />
-            </InputBox>
-            <RenderIf
-              condition={isPatternError(errors.password)}
-              render={
-                <Flex>
-                  <Empty />
-                  <ErrorText>{getErrorMessage(errors.password)}</ErrorText>
-                </Flex>
-              }
-            />
-          </Group>
-          <Divider color={colors.grey[100]} size={1} />
-          <Group>
-            <InputBox>
-              <Label required>비밀번호확인</Label>
-              <Input
-                {...register('passwordCheck', {
-                  validate: handlePasswordCheckValidate,
-                })}
-                type="password"
-                name="passwordCheck"
-                minLength={8}
-                maxLength={100}
-                required
-                autoComplete="off"
-                disabled={from === 'google'}
-              />
-            </InputBox>
-            <RenderIf
-              condition={isValidateError(errors.passwordCheck)}
-              render={
-                <Flex>
-                  <Empty />
-                  <ErrorText>{ERROR_MESSAGE.PASSWORD_CHECK}</ErrorText>
-                </Flex>
-              }
-            />
-          </Group>
-          <Divider color={colors.grey[100]} size={1} />
+          <RenderIf
+            condition={from !== 'google'}
+            render={
+              <>
+                <Group>
+                  <InputBox>
+                    <Label required>비밀번호</Label>
+                    <Input
+                      {...register('password', {
+                        pattern: {
+                          value: PASSWORD_REGEX,
+                          message: ERROR_MESSAGE.PASSWORD,
+                        },
+                      })}
+                      type="password"
+                      name="password"
+                      minLength={8}
+                      maxLength={100}
+                      placeholder="영문 대,소문자, 숫자, 특수문자를 포함해 8자리 이상으로 기입해주세요."
+                      required
+                      autoComplete="off"
+                      disabled={from === 'google'}
+                    />
+                  </InputBox>
+                  <RenderIf
+                    condition={isPatternError(errors.password)}
+                    render={
+                      <Flex>
+                        <Empty />
+                        <ErrorText>
+                          {getErrorMessage(errors.password)}
+                        </ErrorText>
+                      </Flex>
+                    }
+                  />
+                </Group>
+                <Divider color={colors.grey[100]} size={1} />
+                <Group>
+                  <InputBox>
+                    <Label required>비밀번호확인</Label>
+                    <Input
+                      {...register('passwordCheck', {
+                        validate: handlePasswordCheckValidate,
+                      })}
+                      type="password"
+                      name="passwordCheck"
+                      minLength={8}
+                      maxLength={100}
+                      required
+                      autoComplete="off"
+                      disabled={from === 'google'}
+                    />
+                  </InputBox>
+                  <RenderIf
+                    condition={isValidateError(errors.passwordCheck)}
+                    render={
+                      <Flex>
+                        <Empty />
+                        <ErrorText>{ERROR_MESSAGE.PASSWORD_CHECK}</ErrorText>
+                      </Flex>
+                    }
+                  />
+                </Group>
+                <Divider color={colors.grey[100]} size={1} />
+              </>
+            }
+          />
           <Group>
             <InputBox>
               <Label required>닉네임</Label>

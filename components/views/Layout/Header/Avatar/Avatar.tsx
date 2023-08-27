@@ -1,7 +1,7 @@
 import { defaultProfile } from '@/assets/images/common'
 import useSignInModal from '@/components/views/Auth/SignIn/hooks/useSignInModal'
-import { useFetchUserInfo } from '@/services/myPage'
-import { loginState } from '@/states'
+import { useFetchSocialUserInfo, useFetchUserInfo } from '@/services/myPage'
+import { loginState, loginTypeState } from '@/states'
 import { getImageSrcByUuid } from '@/utils'
 import styled from '@emotion/styled'
 import { Person } from '@svgs/common'
@@ -12,21 +12,41 @@ import { useContextMenu } from './hooks/useContextMenu'
 
 const Avatar = () => {
   const { data, refetch } = useFetchUserInfo()
+  const { data: socialProfile } = useFetchSocialUserInfo()
   const [isLoggedIn, setIsLoggedIn] = useRecoilState(loginState)
+  const [, setLoginType] = useRecoilState(loginTypeState)
+
+  const userInfo = data || socialProfile
 
   useEffect(() => {
-    if (data && data?.id) {
+    if (!userInfo) {
+      setIsLoggedIn(false)
+      setLoginType('none')
+
+      return
+    }
+
+    if (userInfo?.id) {
       setIsLoggedIn(true)
     }
-  }, [data, setIsLoggedIn])
+
+    if (userInfo?.nickname) {
+      setLoginType('done')
+
+      return
+    }
+
+    setLoginType('none')
+  }, [userInfo, setIsLoggedIn, setLoginType, socialProfile])
 
   useEffect(() => {
     if (isLoggedIn) {
       refetch()
     }
   }, [isLoggedIn, refetch])
-  return isLoggedIn && data ? (
-    <User profileImage={data?.profileImage} />
+
+  return isLoggedIn && userInfo ? (
+    <User profileImage={userInfo?.profileImage} />
   ) : (
     <GuestUser />
   )
