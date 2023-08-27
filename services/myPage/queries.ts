@@ -5,10 +5,19 @@ import {
   getUserActivityArticle,
   getUserActivityComment,
   getUserInfo,
+  getSocialUserInfo,
 } from './apis'
 
 export const useFetchUserInfo = () => {
   return useSuspendedQuery(queryKeys.myPage.userInfo, getUserInfo, {})
+}
+
+export const useFetchSocialUserInfo = () => {
+  return useSuspendedQuery(
+    queryKeys.myPage.socialUserInfo,
+    getSocialUserInfo,
+    {}
+  )
 }
 
 export const useFetchUserActivityArticle = (params: User.Activity.Params) => {

@@ -17,7 +17,6 @@ const RouterBoundary = ({ children }: PropsWithChildren) => {
       MittEmitter<'beforeHistoryChange'>['on']
     >['1'] = route => {
       const isAuthRequireRoute = AUTH_REQUIRE_ROUTE_LIST.includes(route)
-
       if (isAuthRequireRoute) {
         if (isLoggedIn && loginType === 'none') {
           Router.events.emit('routeChangeError', {

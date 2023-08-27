@@ -26,10 +26,10 @@ import { colors, flex, flexCenter, font } from '@/styles/emotion'
 import { INPUT_WIDTH } from './style'
 import { getErrorMessage, isPatternError, isValidateError } from './utils'
 import { ERROR_MESSAGE } from './constants'
-import { useFetchUserInfo } from '@/services/myPage'
+import { useFetchSocialUserInfo } from '@/services/myPage'
 import { useTerms } from '../../SignIn/hooks'
 import MovieTagStateList from '@/components/views/MyPage/InterestMovieSection/MovieTagStateList'
-import { lockState, loginState } from '@/states'
+import { lockState, loginState, loginTypeState } from '@/states'
 import { useRecoilState } from 'recoil'
 
 type CreateUserFormType = {
@@ -58,12 +58,13 @@ const SignUpForm = () => {
   const { mutate: checkNicknameDuplicate } = useFetchCheckNicknameDuplicate()
   const { mutate: createSignUpAccount } = useCreateSignUpAccount()
   const { mutate: createGoogleAccount } = useCreateGoogleAccount()
-  const [lock, setLock] = useRecoilState(lockState)
+  const [, setLock] = useRecoilState(lockState)
   const [, setIsLoggedIn] = useRecoilState(loginState)
+  const [, setLoginType] = useRecoilState(loginTypeState)
 
   const { openModal } = useTerms()
 
-  const { data } = useFetchUserInfo()
+  const { data: socialUserInfo } = useFetchSocialUserInfo()
 
   const {
     register,
@@ -113,6 +114,7 @@ const SignUpForm = () => {
             })
             setLock(false)
             setIsLoggedIn(true)
+            setLoginType('done')
             router.replace('/')
           },
         }
@@ -135,6 +137,7 @@ const SignUpForm = () => {
         },
         onSuccess: () => {
           setIsLoggedIn(true)
+          setLoginType('done')
           toast.success('회원가입이 완료되었습니다.', {
             icon: '👏',
             position: 'top-right',
@@ -288,13 +291,13 @@ const SignUpForm = () => {
 
       setServerInput(prev => ({
         ...prev,
-        email: data?.email ?? '',
+        email: socialUserInfo?.email ?? '',
         uuid: 'google',
         validEmail: true,
       }))
-      setValue('email', data?.email ?? '')
+      setValue('email', socialUserInfo?.email ?? '')
     }
-  }, [data?.email, from, setIsLoggedIn, setLock, setValue])
+  }, [from, setIsLoggedIn, setLock, setValue, socialUserInfo?.email])
 
   return (
     <Box>
@@ -317,15 +320,20 @@ const SignUpForm = () => {
                 required
                 disabled={from === 'google'}
               />
-              <OptionBox>
-                <Button
-                  type="button"
-                  onClick={handleEmailAuthCodeRequest}
-                  disabled={!!errors.email?.type || from === 'google'}
-                >
-                  이메일발송
-                </Button>
-              </OptionBox>
+              <RenderIf
+                condition={from !== 'google'}
+                render={
+                  <OptionBox>
+                    <Button
+                      type="button"
+                      onClick={handleEmailAuthCodeRequest}
+                      disabled={!!errors.email?.type || from === 'google'}
+                    >
+                      이메일발송
+                    </Button>
+                  </OptionBox>
+                }
+              />
             </InputBox>
             <RenderIf
               condition={isPatternError(errors.email)}

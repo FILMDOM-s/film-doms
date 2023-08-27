@@ -44,6 +44,7 @@ const queryKeys = {
   myPage: {
     interestMovie: ['myPage', 'interestMovie'],
     userInfo: ['myPage', 'userInfo'],
+    socialUserInfo: ['myPage', 'socialUserInfo'],
     activityArticle: (params: User.Activity.Params) => [
       'myPage',
       'activityArticle',

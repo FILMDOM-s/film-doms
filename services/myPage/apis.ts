@@ -13,6 +13,18 @@ export const getUserInfo = async () => {
   return null
 }
 
+export const getSocialUserInfo = async () => {
+  const result = await api.get<null, User.InfoDTO>(
+    `/api/v1/account/oauth/profile`
+  )
+
+  if (result) {
+    return result.result
+  }
+
+  return null
+}
+
 export const getUserActivityArticle = async (params: User.Activity.Params) => {
   const { result } = await api.get<null, User.Activity.ArticleDTO>(
     `/api/v1/account/profile/article?${createParams(params)}`
