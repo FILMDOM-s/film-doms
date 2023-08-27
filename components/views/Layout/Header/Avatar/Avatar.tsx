@@ -15,7 +15,6 @@ const Avatar = () => {
   const { data: socialProfile } = useFetchSocialUserInfo()
   const [isLoggedIn, setIsLoggedIn] = useRecoilState(loginState)
   const [, setLoginType] = useRecoilState(loginTypeState)
-
   const userInfo = data || socialProfile
 
   useEffect(() => {
@@ -38,6 +37,7 @@ const Avatar = () => {
 
     setLoginType('none')
   }, [userInfo, setIsLoggedIn, setLoginType, socialProfile])
+
 
   useEffect(() => {
     if (isLoggedIn) {

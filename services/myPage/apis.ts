@@ -2,7 +2,9 @@ import { createParams } from '@/utils'
 import api from '../api'
 
 export const getUserInfo = async () => {
-  const result = await api.get<null, User.InfoDTO>(`/api/v1/account/profile`)
+  const result = await api.get<null, User.InfoDTO>(
+    `/api/v1/account/oauth/profile`
+  )
 
   if (result) {
     return result.result
