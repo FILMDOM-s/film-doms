@@ -45,12 +45,6 @@ export const loginState = atom<boolean>({
   effects_UNSTABLE: [persistAtom],
 })
 
-export const loginTypeState = atom<'done' | 'none'>({
-  key: 'loginType',
-  default: 'none',
-  effects_UNSTABLE: [persistAtom],
-})
-
 export const sideProfileState = atom<boolean>({
   key: 'sideProfileState',
   default: false,

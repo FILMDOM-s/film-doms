@@ -43,7 +43,7 @@ const Banner = () => {
       subtitle: '',
       image: banner4,
       onClick: () => {
-        push('article/filmUniverse/988')
+        push('/article/filmUniverse/988')
       },
     },
   ]

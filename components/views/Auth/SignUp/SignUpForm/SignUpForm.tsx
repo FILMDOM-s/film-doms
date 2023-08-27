@@ -29,7 +29,7 @@ import { ERROR_MESSAGE } from './constants'
 import { useFetchSocialUserInfo } from '@/services/myPage'
 import { useTerms } from '../../SignIn/hooks'
 import MovieTagStateList from '@/components/views/MyPage/InterestMovieSection/MovieTagStateList'
-import { lockState, loginState, loginTypeState } from '@/states'
+import { lockState, loginState } from '@/states'
 import { useRecoilState } from 'recoil'
 
 type CreateUserFormType = {
@@ -60,7 +60,6 @@ const SignUpForm = () => {
   const { mutate: createGoogleAccount } = useCreateGoogleAccount()
   const [, setLock] = useRecoilState(lockState)
   const [, setIsLoggedIn] = useRecoilState(loginState)
-  const [, setLoginType] = useRecoilState(loginTypeState)
 
   const { openModal } = useTerms()
 
@@ -114,7 +113,6 @@ const SignUpForm = () => {
             })
             setLock(false)
             setIsLoggedIn(true)
-            setLoginType('done')
             router.replace('/')
           },
         }
@@ -137,7 +135,6 @@ const SignUpForm = () => {
         },
         onSuccess: () => {
           setIsLoggedIn(true)
-          setLoginType('done')
           toast.success('회원가입이 완료되었습니다.', {
             icon: '👏',
             position: 'top-right',
@@ -278,7 +275,7 @@ const SignUpForm = () => {
 
   useEffect(() => {
     if (from === 'google') {
-      setIsLoggedIn(true)
+      setIsLoggedIn(false)
       toast.success(
         '구글로 회원가입했어요! \n 반드시 추가 정보를 입력해주세요.',
         {
