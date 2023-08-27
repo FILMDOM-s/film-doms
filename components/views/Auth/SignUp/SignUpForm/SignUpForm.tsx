@@ -26,7 +26,7 @@ import { colors, flex, flexCenter, font } from '@/styles/emotion'
 import { INPUT_WIDTH } from './style'
 import { getErrorMessage, isPatternError, isValidateError } from './utils'
 import { ERROR_MESSAGE } from './constants'
-import { useFetchUserInfo } from '@/services/myPage'
+import { useFetchSocialUserInfo } from '@/services/myPage'
 import { useTerms } from '../../SignIn/hooks'
 import MovieTagStateList from '@/components/views/MyPage/InterestMovieSection/MovieTagStateList'
 import { lockState, loginState, loginTypeState } from '@/states'
@@ -64,7 +64,7 @@ const SignUpForm = () => {
 
   const { openModal } = useTerms()
 
-  const { data } = useFetchUserInfo()
+  const { data: socialUserInfo } = useFetchSocialUserInfo()
 
   const {
     register,
@@ -291,13 +291,13 @@ const SignUpForm = () => {
 
       setServerInput(prev => ({
         ...prev,
-        email: data?.email ?? '',
+        email: socialUserInfo?.email ?? '',
         uuid: 'google',
         validEmail: true,
       }))
-      setValue('email', data?.email ?? '')
+      setValue('email', socialUserInfo?.email ?? '')
     }
-  }, [data?.email, from, setIsLoggedIn, setLock, setValue])
+  }, [from, setIsLoggedIn, setLock, setValue, socialUserInfo?.email])
 
   return (
     <Box>
@@ -320,15 +320,20 @@ const SignUpForm = () => {
                 required
                 disabled={from === 'google'}
               />
-              <OptionBox>
-                <Button
-                  type="button"
-                  onClick={handleEmailAuthCodeRequest}
-                  disabled={!!errors.email?.type || from === 'google'}
-                >
-                  이메일발송
-                </Button>
-              </OptionBox>
+              <RenderIf
+                condition={from !== 'google'}
+                render={
+                  <OptionBox>
+                    <Button
+                      type="button"
+                      onClick={handleEmailAuthCodeRequest}
+                      disabled={!!errors.email?.type || from === 'google'}
+                    >
+                      이메일발송
+                    </Button>
+                  </OptionBox>
+                }
+              />
             </InputBox>
             <RenderIf
               condition={isPatternError(errors.email)}
