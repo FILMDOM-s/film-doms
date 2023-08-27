@@ -1,5 +1,5 @@
-import { Loading, RenderIf } from '@/components/common'
-import { useFetchUserInfo } from '@/services/myPage'
+import { RenderIf } from '@/components/common'
+import { useFetchSocialUserInfo, useFetchUserInfo } from '@/services/myPage'
 import { flexCenter, flexGap } from '@/styles/emotion'
 import styled from '@emotion/styled'
 import { Suspense } from 'react'
@@ -11,16 +11,20 @@ import FallbackLoading from '@/components/common/Loading/FallbackLoading'
 
 const MyPage = () => {
   const { data: userInfo } = useFetchUserInfo()
+  const { data: socialUserInfo } = useFetchSocialUserInfo()
 
-  if (!userInfo) {
+  if (!userInfo || !socialUserInfo) {
     return null
   }
 
-  const uuidFileName = userInfo?.profileImage?.uuidFileName
-  const nickname = userInfo?.nickname
-  const email = userInfo?.email
-  const registeredAt = userInfo?.registeredAt
-  const favoriteMovies = userInfo?.favoriteMovies
+  const uuidFileName =
+    userInfo?.profileImage?.uuidFileName ||
+    socialUserInfo?.profileImage?.uuidFileName
+  const nickname = userInfo?.nickname || socialUserInfo?.nickname
+  const email = userInfo?.email || socialUserInfo?.email
+  const registeredAt = userInfo?.registeredAt || socialUserInfo?.registeredAt
+  const favoriteMovies =
+    userInfo?.favoriteMovies || socialUserInfo?.favoriteMovies
 
   return (
     <Container>

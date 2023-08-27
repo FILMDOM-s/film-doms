@@ -2,6 +2,16 @@ import { createParams } from '@/utils'
 import api from '../api'
 
 export const getUserInfo = async () => {
+  const result = await api.get<null, User.InfoDTO>(`/api/v1/account/profile`)
+
+  if (result) {
+    return result.result
+  }
+
+  return null
+}
+
+export const getSocialUserInfo = async () => {
   const result = await api.get<null, User.InfoDTO>(
     `/api/v1/account/oauth/profile`
   )

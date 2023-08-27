@@ -1,5 +1,5 @@
 import { useSignOutAccount } from '@/services/auth'
-import { loginState } from '@/states'
+import { loginState, loginTypeState } from '@/states'
 import styled from '@emotion/styled'
 import { useRouter } from 'next/router'
 import { useEffect } from 'react'
@@ -9,15 +9,17 @@ const Logout = () => {
   const router = useRouter()
   const { mutate } = useSignOutAccount()
   const [, setIsLoggedIn] = useRecoilState(loginState)
+  const [, setLoginType] = useRecoilState(loginTypeState)
 
   useEffect(() => {
     mutate(null, {
       onSuccess: () => {
         setIsLoggedIn(false)
+        setLoginType('none')
         router.push('/')
       },
     })
-  }, [mutate, router, setIsLoggedIn])
+  }, [mutate, router, setIsLoggedIn, setLoginType])
 
   return (
     <LogoutBox>
