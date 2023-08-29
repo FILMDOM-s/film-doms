@@ -11,6 +11,14 @@ export default function Document() {
           crossOrigin="anonymous"
           href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.6/dist/web/static/pretendard.css"
         />
+        <meta
+          name="google-site-verification"
+          content="Hvb2wMyklXkCej_4lFCpfNLSjX2CwEIdbbCzUG31vbw"
+        />
+        <meta
+          name="naver-site-verification"
+          content="b4bfad55f5b0004677f55afa4a9c0a715ddf8cb9"
+        />
       </Head>
       <body>
         <Main />
