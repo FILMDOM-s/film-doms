@@ -16,7 +16,7 @@ const OpenGraph = ({
   title,
   description = '필름덤즈는 영화인을 준비하는 사람들을 위한 공간입니다.',
   image,
-  baseUrl = 'https://filmdoms.com',
+  baseUrl = 'https://filmdoms.studio',
   path = '',
   url,
   children,
@@ -24,7 +24,7 @@ const OpenGraph = ({
   const _title = title ? `필름덤즈 | ${title}` : '필름덤즈'
   const _url = url ?? `${baseUrl}${path}`
   // TODO: 추후 기본 이미지 경로 수정
-  const _image = image ?? 'https://filmdoms.com/images/og-image.png'
+  const _image = image ?? 'https://filmdoms.studio/og-image.png'
 
   return (
     <>
