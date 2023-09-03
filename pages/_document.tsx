@@ -3,7 +3,7 @@ import { Html, Head, Main, NextScript } from 'next/document'
 export default function Document() {
   return (
     <Html lang="ko">
-      <Head>
+      <Head title="필름덤즈">
         <link
           rel="stylesheet"
           type="text/css"
@@ -20,6 +20,12 @@ export default function Document() {
           content="b4bfad55f5b0004677f55afa4a9c0a715ddf8cb9"
         />
         <meta name="description" content="영화인의 모든 것, 필름덤즈" />
+        <meta property="og:type" content="website" />
+        <meta property="og:title" content="필름덤즈" />
+        <meta property="og:description" content="영화인의 모든 것, 필름덤즈" />
+        <meta property="og:image" content="/og-image.png" />
+        <meta property="og:url" content="https://filmdoms.studio" />
+        <meta property="og:site_name" content="필름덤즈" />
       </Head>
       <body>
         <Main />
