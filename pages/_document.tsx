@@ -3,7 +3,7 @@ import { Html, Head, Main, NextScript } from 'next/document'
 export default function Document() {
   return (
     <Html lang="ko">
-      <Head title="필름덤즈">
+      <Head>
         <link
           rel="stylesheet"
           type="text/css"
@@ -13,19 +13,28 @@ export default function Document() {
         />
         <meta
           name="google-site-verification"
-          content="Hvb2wMyklXkCej_4lFCpfNLSjX2CwEIdbbCzUG31vbw"
+          content={process.env.NEXT_PUBLIC_GOOGLE_SITE_VERIFICATION}
         />
         <meta
           name="naver-site-verification"
-          content="b4bfad55f5b0004677f55afa4a9c0a715ddf8cb9"
+          content={process.env.NEXT_PUBLIC_NAVER_SITE_VERIFICATION}
         />
-        <meta name="description" content="영화인의 모든 것, 필름덤즈" />
-        <meta property="og:type" content="website" />
-        <meta property="og:title" content="필름덤즈" />
-        <meta property="og:description" content="영화인의 모든 것, 필름덤즈" />
-        <meta property="og:image" content="/og-image.png" />
+        <meta
+          name="description"
+          content={process.env.NEXT_PUBLIC_DESCRIPTION}
+        />
+        <meta property="og:type" content={process.env.NEXT_PUBLIC_OG_TYPE} />
+        <meta property="og:title" content={process.env.NEXT_PUBLIC_OG_TITLE} />
+        <meta
+          property="og:description"
+          content={process.env.NEXT_PUBLIC_OG_DESCRIPTION}
+        />
+        <meta property="og:image" content={process.env.NEXT_PUBLIC_OG_IMAGE} />
+        <meta
+          property="og:site_name"
+          content={process.env.NEXT_PUBLIC_OG_SITE_NAME}
+        />
         <meta property="og:url" content="https://filmdoms.studio" />
-        <meta property="og:site_name" content="필름덤즈" />
       </Head>
       <body>
         <Main />
