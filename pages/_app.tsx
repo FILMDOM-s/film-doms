@@ -14,6 +14,7 @@ import type { AppProps } from 'next/app'
 import { useCallback } from 'react'
 import { Toaster } from 'react-hot-toast'
 import { RecoilRoot } from 'recoil'
+import Head from 'next/head'
 
 export default function App({
   Component,
@@ -47,6 +48,9 @@ export default function App({
         <GlobalStyles />
         <AppScript />
         <ResetErrorBoundary fallback={<ErrorFallback />}>
+          <Head>
+            <title>필름덤즈</title>
+          </Head>
           <AppLayout>
             <RouterBoundary>
               {isLoading && <FallbackLoading />}
