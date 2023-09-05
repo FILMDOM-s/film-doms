@@ -3,6 +3,7 @@ import { Html, Head, Main, NextScript } from 'next/document'
 export default function Document() {
   return (
     <Html lang="ko">
+      <title>필름덤즈</title>
       <Head>
         <link
           rel="stylesheet"
