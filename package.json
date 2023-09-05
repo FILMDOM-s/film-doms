@@ -12,7 +12,8 @@
     "format:check": "yarn prettier --check .",
     "sb": "start-storybook -p 6006",
     "build-sb": "build-storybook",
-    "prepare": "husky install"
+    "prepare": "husky install",
+    "prebuild": "next-sitemap"
   },
   "dependencies": {
     "@emotion/core": "^11.0.0",
@@ -37,6 +38,7 @@
     "js-cookie": "^3.0.5",
     "lodash.clonedeep": "^4.5.0",
     "next": "13.1.6",
+    "next-sitemap": "^4.2.2",
     "react": "18.2.0",
     "react-dom": "18.2.0",
     "react-error-boundary": "^3.1.4",
