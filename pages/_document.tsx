@@ -4,6 +4,7 @@ export default function Document() {
   return (
     <Html lang="ko">
       <Head>
+        <title>필름덤즈, 영화인을 위한 공간</title>
         <link
           rel="stylesheet"
           type="text/css"
