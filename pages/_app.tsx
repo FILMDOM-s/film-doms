@@ -49,7 +49,7 @@ export default function App({
         <AppScript />
         <ResetErrorBoundary fallback={<ErrorFallback />}>
           <Head>
-            <title>필름덤즈</title>
+            <title>필름덤즈, 영화인을 위한 공간</title>
           </Head>
           <AppLayout>
             <RouterBoundary>
